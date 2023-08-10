@@ -13,8 +13,7 @@ main = putStrLn "Intro"
 \end{code}
 \end{comment}
 
-Trying to see if this works!!
-One of the great things about Haskell is its brainy type system that
+One of the amazing things about Haskell is its brainy type system that
 allows one to enforce a variety of invariants at compile time, thereby
 nipping in the bud a large swathe of run-time [errors](#getting-started).
 
