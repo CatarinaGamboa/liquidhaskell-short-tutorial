@@ -672,6 +672,10 @@ INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/natbib/bibentry.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/natbib/bibentry.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/natbib/bibentry.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/natbib/bibentry.sty
+INPUT ./book.bbl
+INPUT book.bbl
+INPUT ./book.bbl
+INPUT book.bbl
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/sauerj/optparams.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/sauerj/optparams.sty
 INPUT /usr/local/texlive/2023/texmf-dist/tex/latex/sauerj/optparams.sty

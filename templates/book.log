@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.19)  10 AUG 2023 15:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.19)  10 AUG 2023 16:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -293,10 +293,9 @@ LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count282
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/natbib/bibentry.sty
 Package: bibentry 2007/10/30 1.5 (PWD)
-)
-No file book.bbl.
+) (./book.bbl)
 \c@@tufte@num@bibkeys=\count283
-(/usr/local/texlive/2023/texmf-dist/tex/latex/sauerj/optparams.sty
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/sauerj/optparams.sty
 Package: optparams 2004/08/14 v0.9 multiple optional parameters in macros
 )
 \@tufte@sidenote@vertical@offset=\skip79
@@ -878,10 +877,10 @@ l.198 \input{00-intro}
 
  
 Here is how much of TeX's memory you used:
- 18412 strings out of 476025
- 295311 string characters out of 5790017
+ 18416 strings out of 476025
+ 295345 string characters out of 5790017
  1853388 words of memory out of 5000000
- 38387 multiletter control sequences out of 15000+600000
+ 38389 multiletter control sequences out of 15000+600000
  576522 words of font info for 202 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  97i,11n,93p,1059b,471s stack positions out of 10000i,1000n,20000p,200000b,200000s
