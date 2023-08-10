@@ -20,6 +20,7 @@ mkPDF () {
 }
 
 mkWeb() {
+  mkHTML ShortTutorial_01
   mkHTML Tutorial_01_Introduction
   mkHTML Tutorial_02_Logic
   mkHTML Tutorial_03_Basic
