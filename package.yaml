@@ -6,7 +6,7 @@ author: Ranjit Jhala
 maintainer: jhala@cs.ucsd.edu
 copyright: Ranjit Jhala
 license: MIT
-homepage: https://github.com/ucsd-progsys/liquidhaskell-tutorial
+# homepage: https://github.com/ucsd-progsys/liquidhaskell-tutorial
 extra-source-files:
 - README.md
 dependencies:
