@@ -27,7 +27,7 @@ of a list of integers:
 
 \begin{code}
 average    :: [Int] -> Int
-average xs = sum xs `div` length xs
+average xs = sum xs `div` 10
 \end{code}
 
 We get the desired result on a non-empty list of numbers:
