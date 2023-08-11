@@ -66,7 +66,7 @@ ghci> average [10, 20, 30, 40]
 </div>
 
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://www.youtube.com/watch?v=vQrutfPAERQ" frameborder="0" allowfullscreen></iframe>
 
 
 
