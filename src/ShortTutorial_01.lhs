@@ -66,10 +66,10 @@ ghci> average [10, 20, 30, 40]
 </div>
 
 
-<video width="640" height="360" controls>
-   <source src="https://www.youtube.com/watch?v=vQrutfPAERQ" type="video/mp4">
-   Your browser does not support the video tag.
-</video>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+
+
+
 
 
 
