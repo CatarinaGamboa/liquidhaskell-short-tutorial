@@ -326,7 +326,6 @@ average xs = sum xs `div` 10</div>
 <p>We get the desired result on a non-empty list of numbers:</p>
 <pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
 25</code></pre>
-–
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -335,7 +334,29 @@ average xs = sum xs `div` 10</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">-- module Demo.Lib where
+  <div id="program-2" class="programbox"><div id="question1">
+  <h2>Question 1:</h2>
+  <p>What is the result of <code>2 + 2</code>?</p>
+  <label><input type="radio" name="q1" value="3"> 3</label><br>
+  <label><input type="radio" name="q1" value="4"> 4</label><br>
+  <label><input type="radio" name="q1" value="5"> 5</label><br>
+  <label><input type="radio" name="q1" value="6"> 6</label><br>
+  <button onclick="checkAnswer(1)">Submit</button>
+  <p id="result1"></p>
+  <input type="hidden" id="correctAnswer1" value="4">
+</div></div>
+</div>
+
+–
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">-- module Demo.Lib where
 
 -- {-@ type Pos = {v:Int | 0 < v} @-}
 -- {-@ incr :: Pos -> Pos @-}
