@@ -37,6 +37,22 @@ ghci> average [10, 20, 30, 40]
 25
 ~~~~~
 
+
+<script>
+   function checkAnswer(questionNumber) {
+      const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+      const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+      const resultElement = document.getElementById(`result${questionNumber}`);
+
+      if (selectedAnswer === correctAnswer) {
+         resultElement.textContent = 'Correct!';
+      } else {
+         resultElement.textContent = 'Incorrect. Please try again.';
+      }
+   }
+</script>
+
+
 <div id="question1">
    <h2>Question 1:</h2>
    <p>What is the result of <code>2 + 2</code>?</p>
