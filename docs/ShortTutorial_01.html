@@ -339,7 +339,7 @@ average xs = sum xs `div` 10</div>
       }
    }
 </script>
-<div id="question1">
+<div id="question1" style="width=640;">
 <h2>
 Question 1:
 </h2>
@@ -350,11 +350,11 @@ zero?
 <label><input type="radio" name="q1" value="3"> <code>{-@ div :: Int
 -&gt; {v:Int | v &gt; 0} -&gt; Int @-}</code></label><br>
 <label><input type="radio" name="q1" value="4"> <code>{-@ div :: Int
--&gt; {v:Int | v /= 0} -&gt; Int @-}</code></label><br>
+-&gt; {v:Int | v /= 0} -&gt; Int @-}</code></label><br> –
 <label><input type="radio" name="q1" value="5"> {-@ div :: Int -&gt; Int
--&gt; Int @-}</label><br>
+-&gt; Int @-}</code></label><br> –
 <label><input type="radio" name="q1" value="6"> {-@ div :: Int -&gt; Int
--&gt; {v:Int | v /= 0} @-}</label><br>
+-&gt; {v:Int | v /= 0} @-}</code></label><br> –
 <button onclick="checkAnswer(1)">Submit</button>
 <p id="result1">
 </p>
