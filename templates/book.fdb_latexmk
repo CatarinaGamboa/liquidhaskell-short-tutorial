@@ -1,14 +1,14 @@
 # Fdb version 4
 ["bibtex book"] 0 "book.aux" "book.bbl" "book" 0 -1
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "book.aux" 1694394552 550 43e5f1e5e64eacfdaf4152fa12a25209 "pdflatex"
+  "book.aux" 1694402874 550 43e5f1e5e64eacfdaf4152fa12a25209 "pdflatex"
   (generated)
   "book.bbl"
   "book.blg"
   (rewritten before read)
-["pdflatex"] 1694394551 "/Users/cgamboa/git/liquidhaskell-short-tutorial/templates/book.tex" "book.pdf" "book" 1694394552 2
-  "/Users/cgamboa/git/liquidhaskell-short-tutorial/templates/book.tex" 1694394551 6064 a5fbedb3b1cf722875260a1a23e9727f ""
-  "/dev/null" 1694394549 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1694402874 "/Users/cgamboa/git/liquidhaskell-short-tutorial/templates/book.tex" "book.pdf" "book" 1694402875 2
+  "/Users/cgamboa/git/liquidhaskell-short-tutorial/templates/book.tex" 1694402873 6064 a5fbedb3b1cf722875260a1a23e9727f ""
+  "/dev/null" 1694402875 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm" 1136768653 4712 9ef4d7d106579d4b136e1529e1a4533c ""
@@ -162,12 +162,12 @@
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1687210758 7883453 6b7fe2d151e06cf5a43fa64ea8d36b2c ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
   "00-intro.tex" 0 -1 0 ""
-  "book.aux" 1694394552 550 43e5f1e5e64eacfdaf4152fa12a25209 "pdflatex"
-  "book.bbl" 1694394551 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex book"
-  "book.lof" 1694394552 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "book.lot" 1694394552 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "book.tex" 1694394551 6064 a5fbedb3b1cf722875260a1a23e9727f ""
-  "book.toc" 1694394552 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "book.aux" 1694402874 550 43e5f1e5e64eacfdaf4152fa12a25209 "pdflatex"
+  "book.bbl" 1694402873 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex book"
+  "book.lof" 1694402874 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "book.lot" 1694402874 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "book.tex" 1694402873 6064 a5fbedb3b1cf722875260a1a23e9727f ""
+  "book.toc" 1694402874 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   (generated)
   "book.aux"
   "book.lof"

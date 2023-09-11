@@ -55,7 +55,7 @@ ghci> average [10, 20, 30, 40]
 
 <div id="question1" style="width=640px;">
    <h2>Question 1:</h2>
-   <p>What should be the predicate of div to make it possible to divide by zero?</p>
+   <p>What should be the predicate of div to make it impossible to divide by zero?</p>
    <label><input type="radio" name="q1" value="3"> <code>{-@ div :: Int -> {v:Int | v > 0} -> Int @-}</code></label><br>
    <label><input type="radio" name="q1" value="4"> <code>{-@ div :: Int -> {v:Int | v /= 0} -> Int @-}</code></label><br>
    <button onclick="checkAnswer(1)">Submit</button>
