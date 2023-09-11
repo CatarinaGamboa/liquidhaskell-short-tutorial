@@ -53,14 +53,12 @@ ghci> average [10, 20, 30, 40]
 </script>
 
 
-<div id="question1" style="width=640;">
+<div id="question1" style="width=640px;">
    <h2>Question 1:</h2>
    <p>What should be the predicate of div to make it possible to divide by zero?</p>
    <label><input type="radio" name="q1" value="3"> <code>{-@ div :: Int -> {v:Int | v > 0} -> Int @-}</code></label><br>
    <label><input type="radio" name="q1" value="4"> <code>{-@ div :: Int -> {v:Int | v /= 0} -> Int @-}</code></label><br>
-   -- <label><input type="radio" name="q1" value="5"> {-@ div :: Int -> Int -> Int @-}</code></label><br>
-   -- <label><input type="radio" name="q1" value="6"> {-@ div :: Int -> Int -> {v:Int | v /= 0} @-}</code></label><br>
-   -- <button onclick="checkAnswer(1)">Submit</button>
+   <button onclick="checkAnswer(1)">Submit</button>
    <p id="result1"></p>
    <input type="hidden" id="correctAnswer1" value="4">
 </div>
