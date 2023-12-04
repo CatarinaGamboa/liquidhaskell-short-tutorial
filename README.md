@@ -52,9 +52,6 @@ favorite editor, to automatically display LH errors as well.
 ### Part III : Case Studies
 
 9. [Case Study: Okasaki's Lazy Queues](src/Tutorial_09_Case_Study_Lazy_Queues.lhs)
-10. [Case Study: Associative Maps](src/Tutorial_10_Case_Study_Associative_Maps.lhs)
-11. [Case Study: Pointers & Bytes](src/Tutorial_11_Case_Study_Pointers.lhs)
-12. [Case Study: AVL Trees](src/Tutorial_12_Case_Study_AVL.lhs)
 
 ### Update
 

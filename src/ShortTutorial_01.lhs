@@ -1,4 +1,4 @@
-Introduction {#intro}
+Introduction {#intro_short}
 ============
 
 \begin{comment}

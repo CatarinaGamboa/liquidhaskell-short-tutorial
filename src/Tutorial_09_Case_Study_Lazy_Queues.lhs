@@ -245,6 +245,8 @@ okQ  = Q okList nil  -- accepted, |front| > |back|
 badQ = Q nil okList  -- rejected, |front| < |back|
 \end{code}
 
+
+\begin{comment}
 Queue Operations
 ----------------
 
@@ -396,3 +398,4 @@ This example is particularly interesting because
 1. The refinements express invariants that are critical for efficiency,
 2. The code introspects on the `size` to guarantee the invariants, and
 3. The code is quite simple and we hope, easy to follow!
+\end{comment}
