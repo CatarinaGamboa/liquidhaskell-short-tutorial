@@ -316,15 +316,12 @@ main = do
     answer <- getChar
     putStrLn ""
     case answer of
-        'b' -> putStrLn "Correct!"
+        'b' -> putStrLn "Correct! If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero"
         _   -> putStrLn "Incorrect. The correct answer is c."</div>
 </div>
 
-<p>However, if we call it with an empty list, we get a rather unpleasant
-crash: <a href="#fn1" class="footnote-ref" id="fnref1"
+<p><a href="#fn1" class="footnote-ref" id="fnref1"
 role="doc-noteref"><sup>1</sup></a></p>
-<pre class="ghci"><code>ghci&gt; average []
-*** Exception: divide by zero</code></pre>
 <p>For certain kinds of programs, there is a fate worse than death.
 <code>text</code> is a high-performance string processing library for
 Haskell, that is used, for example, to build web services.</p>
@@ -360,13 +357,10 @@ the above calamities <em>cannot occur at run-time</em>.</p>
 <strong>LiquidHaskell</strong> is a Refinement Type Checker for Haskell,
 and in this tutorial we’ll describe how you can use it to make programs
 better and programming even more fun.</p>
-<p>In this tutorial you will learn how to add and reason about
-refinement types in Haskell, and how it can increase the realiability of
-Haskell problems.</p>
-<p>To get started, open the <a
-href="http://goto.ucsd.edu:8090/index.html#?demo=blank.hs">Web Demo</a>
-and see what is the result when you <code>Check</code> the code from the
-first example.</p>
+<p>As a glimpse of what LiquidHaskell can do, the average example can be
+specified to inform that return needs to be different than zero, and
+LiquidHaskell will check if the implementation complies with it. Run the
+example and read the error message.</p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -375,10 +369,18 @@ first example.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">average    :: [Int] -> Int
-average xs = sum xs `div` length xs</div>
+  <div id="program-3" class="programbox">{-@ average' :: [Int] -> {v: Int | v /= 0} @-}
+average'    :: [Int] -> Int
+average' xs = sum xs `div` length xs</div>
 </div>
 
+<p>In this tutorial you will learn how to add and reason about
+refinement types in Haskell, and how it can increase the realiability of
+Haskell problems.</p>
+<p>To get started, open the <a
+href="http://goto.ucsd.edu:8090/index.html#?demo=blank.hs">Web Demo</a>
+and see what is the result when you <code>Check</code> the code from the
+first example.</p>
 </section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
