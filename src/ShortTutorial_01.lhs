@@ -23,7 +23,7 @@ Well-Typed Programs Do Go Wrong! {#gowrong}
 Alas, well-typed programs *do* go quite wrong, in a variety of ways.
 
 \newthought{Division by Zero} This innocuous function computes the average
-of a list of integers:
+of a list of integers: AAAA
 
 \begin{code}
 average    :: [Int] -> Int
