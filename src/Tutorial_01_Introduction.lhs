@@ -36,10 +36,7 @@ average xs = sum xs `div` length xs
 
 We get the desired result on a non-empty list of numbers:
 
-~~~~~{.ghci}
-ghci> average [10, 20, 30, 40]
-25
-~~~~~
+
 
 However, if we call it with an empty list, we get a rather unpleasant crash:
 ^[We could write `average` more *defensively*, returning
