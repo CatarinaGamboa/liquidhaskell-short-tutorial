@@ -299,6 +299,27 @@ average xs = sum xs `div` length xs</div>
 <p>We get the desired result on a non-empty list of numbers:</p>
 <pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
 25</code></pre>
+<p>But, are there any inputs for which it crashes? a. Yes, e.g., the
+list [1] b. Yes, e.g., the list [] c. No, it should not crash</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">-- Code block with user interaction
+main :: IO ()
+main = do
+    putStr "Enter your answer (a, b, c, or d): "
+    answer <- getChar
+    putStrLn ""
+    case answer of
+        'b' -> putStrLn "Correct!"
+        _   -> putStrLn "Incorrect. The correct answer is c."</div>
+</div>
+
 <p>However, if we call it with an empty list, we get a rather unpleasant
 crash: <a href="#fn1" class="footnote-ref" id="fnref1"
 role="doc-noteref"><sup>1</sup></a></p>
@@ -346,7 +367,7 @@ Haskell problems.</p>
 href="http://goto.ucsd.edu:8090/index.html#?demo=blank.hs">Web Demo</a>
 and see what is the result when you <code>Check</code> the code from the
 first example.</p>
-<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -354,7 +375,7 @@ first example.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">average    :: [Int] -> Int
+  <div id="program-3" class="programbox">average    :: [Int] -> Int
 average xs = sum xs `div` length xs</div>
 </div>
 
