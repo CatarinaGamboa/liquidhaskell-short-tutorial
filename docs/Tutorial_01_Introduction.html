@@ -316,7 +316,7 @@ main = do
     answer <- getChar
     putStrLn ""
     case answer of
-        'b' -> putStrLn "Correct! If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero"
+        'b' -> putStrLn "Correct! "
         _   -> putStrLn "Incorrect. The correct answer is c."</div>
 </div>
 
@@ -387,13 +387,14 @@ first example.</p>
 role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>We could write <code>average</code> more
-<em>defensively</em>, returning a <code>Maybe</code> or
-<code>Either</code> value. However, this merely kicks the can down the
-road. Ultimately, we will want to extract the <code>Int</code> from the
-<code>Maybe</code> and if the inputs were invalid to start with, then at
-that point we’d be stuck.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>If we call it with an empty list, we get a rather
+unpleasant crash: *** Exception: divide by zero. We could write
+<code>average</code> more <em>defensively</em>, returning a
+<code>Maybe</code> or <code>Either</code> value. However, this merely
+kicks the can down the road. Ultimately, we will want to extract the
+<code>Int</code> from the <code>Maybe</code> and if the inputs were
+invalid to start with, then at that point we’d be stuck.<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
