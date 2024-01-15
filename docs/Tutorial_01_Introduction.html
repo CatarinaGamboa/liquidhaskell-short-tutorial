@@ -142,7 +142,6 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_02_Logic.html#'><b>3.4.</b> Examples: Propositions</a></li>
 <li><a href='Tutorial_02_Logic.html#'><b>3.5.</b> Examples: Arithmetic</a></li>
 <li><a href='Tutorial_02_Logic.html#'><b>3.6.</b> Examples: Uninterpreted Function</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.7.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_03_Basic.html'><b>4.</b>Refinement Types</a></li>
 <ul class='section'>
@@ -247,8 +246,24 @@ MathJax.Hub.Config({
 
 <section id="intro" class="level1">
 <h1>Introduction</h1>
-<link rel="stylesheet" href="html_quizzes/quizzes.css">
-<script src="html_quizzes/quizzes.js"></script>
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
 

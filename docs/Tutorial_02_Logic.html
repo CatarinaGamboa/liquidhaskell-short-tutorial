@@ -142,7 +142,6 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_02_Logic.html#'><b>3.4.</b> Examples: Propositions</a></li>
 <li><a href='Tutorial_02_Logic.html#'><b>3.5.</b> Examples: Arithmetic</a></li>
 <li><a href='Tutorial_02_Logic.html#'><b>3.6.</b> Examples: Uninterpreted Function</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.7.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_03_Basic.html'><b>4.</b>Refinement Types</a></li>
 <ul class='section'>
@@ -368,12 +367,19 @@ role="doc-noteref"><sup>4</sup></a>), and <code>not</code>.</p>
        | false | False</code></pre>
 <p><br />
 <strong>Examples of Predicates</strong> include the following:</p>
+<p>Can you select which of the following ones is not a valid
+predicate?</p>
 <ul>
-<li><code>x + y &lt;= 3</code></li>
-<li><code>null x</code></li>
+<li><code>x /= 3</code></li>
+<li><code>x + y &lt;= 3 &amp;&amp; y &lt; 1</code></li>
 <li><code>x &lt; 10 ==&gt; y &lt; 10 ==&gt; x + y &lt; 20</code></li>
+<li><code>x ** y &gt; 0</code> &lt;—-<br />
+</li>
 <li><code>0 &lt; x + y &lt;=&gt; 0 &lt; y + x</code></li>
 </ul>
+<p>All of them are valid syntatic expressions, except for
+<code>x ** y &gt; 0</code> since the operator ** is not part of the
+language.</p>
 </section>
 <section id="semantics" class="level2">
 <h2>Semantics</h2>
@@ -385,90 +391,24 @@ predicate is just a Boolean valued Haskell function with
 usual operators and <code>==&gt;</code> and <code>&lt;=&gt;</code> being
 two special operators.</p>
 <p><br />
-<strong>The Implication</strong> operator <code>==&gt;</code> is
-equivalent to the following Haskell function. (For now, ignore the
-signature: it just says the output is a <code>Bool</code> that is equal
-to the <em>logical</em> implication between the inputs <code>p</code>
-and <code>q</code>.)</p>
-<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-1" class="programbox">{-@ (==>) :: p:Bool -> q:Bool -> {v:Bool | v <=> (p ==> q)} @-}
-False ==> False = True
-False ==> True  = True
-True  ==> True  = True
-True  ==> False = False</div>
-</div>
-
-<p><br />
-<strong>The If-and-only-if</strong> operator <code>&lt;=&gt;</code> is
-equivalent to the Haskell function:<a href="#fn5" class="footnote-ref"
-id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-2" class="programbox">{-@ (<=>) :: p:Bool -> q:Bool -> {v:Bool | v <=> (p <=> q)} @-}
-False <=> False = True
-False <=> True  = False
-True  <=> True  = True
-True  <=> False = False</div>
-</div>
-
-<p><br />
-<strong>An Environment</strong> is a mapping from variables to their
-Haskell types. For example, let <code>G</code> be an environment defined
-as</p>
-<pre class="spec"><code>    x :: Int
-    y :: Int
-    z :: Int</code></pre>
-<p> which maps each variable <code>x</code>, <code>y</code> and
-<code>z</code> to the type <code>Int</code>.</p>
-<p><br />
-<strong>An Assignment</strong> under an environment, is a mapping from
-variables to values of the type specified in the environment. For
-example,</p>
+<strong>A Predicate is Satisfiable</strong> if <em>there exists</em> an
+assignment that makes the predicate evaluate to <code>True</code>. For
+example, with the following assignments of x, y and z, the predicate
+bellow is satisfiable.</p>
 <pre class="spec"><code>    x := 1
     y := 2
-    z := 3</code></pre>
-<p> is an assignment under <code>G</code> that maps <code>x</code>,
-<code>y</code> and <code>z</code> to the <code>Int</code> values
-<code>1</code>, <code>2</code> and <code>3</code> respectively.</p>
-<p><br />
-<strong>A Predicate Evaluates</strong> to either <code>True</code> or
-<code>False</code> under a given assignment. For example, the
-predicate</p>
-<pre class="spec"><code>    x + y &gt; 10</code></pre>
-<p> evaluates to <code>False</code> given the above assignment but
-evaluates to <code>True</code> under the assignment</p>
-<pre class="spec"><code>    x := 10
-    y := 10
-    z := 20</code></pre>
-<p><br />
-<strong>A Predicate is Satisfiable</strong> in an environment if
-<em>there exists</em> an assignment (in that environment) that makes the
-predicate evaluate to <code>True</code>. For example, in <code>G</code>
-the predicate</p>
-<pre class="spec"><code>    x + y == z</code></pre>
-<p> is satisfiable, as the above assignment makes the predicate evaluate
-to <code>True</code>.</p>
+    z := 3
+
+    x + y == z</code></pre>
+<p> as the above assignment makes the predicate evaluate to
+<code>True</code>.</p>
 <p><br />
 <strong>A Predicate is Valid</strong> in an environment if
 <em>every</em> assignment in that environment makes the predicate
 evaluate to <code>True</code>. For example, the predicate</p>
 <pre class="spec"><code>    x &lt; 10 || x == 10 || x &gt; 10</code></pre>
-<p> is valid under <code>G</code> as no matter what value we assign to
-<code>x</code>, the above predicate will evaluate to
-<code>True</code>.</p>
+<p> is valid no matter what value we assign to <code>x</code>, the above
+predicate will evaluate to <code>True</code>.</p>
 </section>
 <section id="verification-conditions" class="level2">
 <h2>Verification Conditions</h2>
@@ -478,27 +418,16 @@ specifications in roughly two steps.</p>
 <ol type="1">
 <li><p>First, LH combines the code and types down to a set of
 <em>Verification Conditions</em> (VC) which are predicates that are
-valid <em>only if</em> your program satisfies a given property. <a
-href="#fn6" class="footnote-ref" id="fnref6"
-role="doc-noteref"><sup>6</sup></a></p></li>
-<li><p>Next, LH <em>queries</em> an <a
-href="http://en.wikipedia.org/wiki/Satisfiability_Modulo_Theories">SMT
-solver</a> to determine whether these VCs are valid. If so, it says your
-program is <em>safe</em> and otherwise it <em>rejects</em> your
-program.</p></li>
+valid <em>only if</em> your program satisfies a given property.</p></li>
+<li><p>Next, LH <em>queries</em> an [SMT solver] to determine whether
+these VCs are valid. If so, it says your program is <em>safe</em> and
+otherwise it <em>rejects</em> your program.</p></li>
 </ol>
 <p><br />
 <strong>The SMT Solver decides</strong> whether a predicate (VC) is
-valid <em>without enumerating</em> and evaluating all assignments.
-Indeed, it is impossible to do so as there are usually infinitely many
-assignments once the predicates refer to integers or lists and so on.
-Instead, the SMT solver uses a variety of sophisticated <em>symbolic
-algorithms</em> to deduce whether a predicate is valid or not. This
-process is the result of decades of work in mathematical logic and
-decision procedures; the <a
-href="https://people.eecs.berkeley.edu/~necula/Papers/nelson-thesis.pdf">Ph.D
-thesis of Greg Nelson</a> is an excellent place to learn more about
-these beautiful algorithms.</p>
+valid <em>without enumerating</em> and evaluating all assignments. The
+SMT solver uses a variety of sophisticated <em>symbolic algorithms</em>
+to deduce whether a predicate is valid or not.</p>
 <p><br />
 <strong>We Restrict the Logic</strong> to ensure that all our VC queries
 fall within the <em>decidable fragment</em>. This makes LiquidHaskell
@@ -507,8 +436,8 @@ proofs, just the specification of properties via types and of course,
 the implementation via Haskell code! This automation comes at a price:
 all our refinements <em>must</em> belong to the logic above.
 Fortunately, with a bit of creativity, we can say a <em>lot</em> in this
-logic. <a href="#fn7" class="footnote-ref" id="fnref7"
-role="doc-noteref"><sup>7</sup></a></p>
+logic. <a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></p>
 </section>
 <section id="examples-propositions" class="level2">
 <h2>Examples: Propositions</h2>
@@ -523,8 +452,36 @@ to determine whether a predicate is indeed valid or not.</p>
 valued expressions that <em>always</em> evaluate to <code>True</code>.
 Similarly, we can define <code>FALSE</code> for <code>Bool</code> valued
 expressions that <em>always</em> evaluate to <code>False</code>:<a
-href="#fn8" class="footnote-ref" id="fnref8"
-role="doc-noteref"><sup>8</sup></a></p>
+href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">{-@ type TRUE  = {v:Bool | v    } @-}
+{-@ type FALSE = {v:Bool | not v} @-}</div>
+</div>
+
+<p> Thus, a <em>valid predicate</em> is one that has the type
+<code>TRUE</code>. The simplest example of a valid predicate is just
+<code>True</code>:</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ ex0 :: TRUE @-}
+ex0 = True</div>
+</div>
+
+<p>of course, <code>False</code> is <em>not valid</em></p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -533,13 +490,13 @@ role="doc-noteref"><sup>8</sup></a></p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">{-@ type TRUE  = {v:Bool | v    } @-}
-{-@ type FALSE = {v:Bool | not v} @-}</div>
+  <div id="program-3" class="programbox">{-@ ex0' :: FALSE @-}
+ex0' = False</div>
 </div>
 
-<p> Thus, a <em>valid predicate</em> is one that has the type
-<code>TRUE</code>. The simplest example of a valid predicate is just
-<code>True</code>:</p>
+<p>We can get more interesting predicates if we use variables. For
+example, the following is valid predicate says that a <code>Bool</code>
+variable is either <code>True</code> or <code>False</code>.</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -548,11 +505,12 @@ role="doc-noteref"><sup>8</sup></a></p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">{-@ ex0 :: TRUE @-}
-ex0 = True</div>
+  <div id="program-4" class="programbox">{-@ ex1 :: Bool -> TRUE @-}
+ex1 b = b || not b</div>
 </div>
 
-<p>of course, <code>False</code> is <em>not valid</em></p>
+<p>Of course, a variable cannot be both <code>True</code> and
+<code>False</code>. Write a predicate for ex2 with that meaning:</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -561,13 +519,15 @@ ex0 = True</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ ex0' :: TRUE @-}
-ex0' = False</div>
+  <div id="program-5" class="programbox">ex2 b = b && not b</div>
 </div>
 
-<p>We can get more interesting predicates if we use variables. For
-example, the following is valid predicate says that a <code>Bool</code>
-variable is either <code>True</code> or <code>False</code>.</p>
+<p>!!Exercise</p>
+</section>
+<section id="examples-arithmetic" class="level2">
+<h2>Examples: Arithmetic</h2>
+<p>Next, let’s look at some predicates involving arithmetic. The
+simplest ones don’t have any variables, for example:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -576,12 +536,12 @@ variable is either <code>True</code> or <code>False</code>.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">{-@ ex1 :: Bool -> TRUE @-}
-ex1 b = b || not b</div>
+  <div id="program-6" class="programbox">{-@ ax0 :: TRUE @-}
+ax0 = 1 + 1 == 2</div>
 </div>
 
-<p>Of course, a variable cannot be both <code>True</code> and
-<code>False</code>, and so the below predicate is valid:</p>
+<p>Again, a predicate that evaluates to <code>False</code> is
+<em>not</em> valid. Run the example and change it to be correct:</p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -590,15 +550,13 @@ ex1 b = b || not b</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ ex2 :: Bool -> FALSE @-}
-ex2 b = b && not b</div>
+  <div id="program-7" class="programbox">{-@ ax0' :: TRUE @-}
+ax0' = 1 + 1 == 3</div>
 </div>
 
-<p>The next few examples illustrate the <code>==&gt;</code> operator.
-You should read <code>p ==&gt; q</code> as <em>if</em> <code>p</code> is
-true <em>then</em> <code>q</code> must also be true. Thus, the below
-predicates are valid as if both <code>a</code> and <code>b</code> are
-true, then well, <code>a</code> is true, and <code>b</code> is true.</p>
+<p><br />
+<strong>SMT Solvers determine Validity</strong> <em>without</em>
+enumerating assignments. For example, consider the predicate:</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -607,137 +565,7 @@ true, then well, <code>a</code> is true, and <code>b</code> is true.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">{-@ ex3 :: Bool -> Bool -> TRUE @-}
-ex3 a b = (a && b) ==> a
-
-{-@ ex4 :: Bool -> Bool -> TRUE @-}
-ex4 a b = (a && b) ==> b</div>
-</div>
-
-<div id="Implications and Or" class="hwex">
-<p><br />
-<strong>Exercise: (Implications and Or): </strong>Of course, if we
-replace the <code>&amp;&amp;</code> with <code>||</code> the result is
-<em>not valid</em>. Can you shuffle the variables around – <em>without
-changing the operators</em> – to make the formula valid?</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-9" class="programbox">{-@ ex3' :: Bool -> Bool -> TRUE @-}
-ex3' a b = (a || b) ==> a</div>
-</div>
-
-<p>The following predicates are valid because they encode <a
-href="http://en.wikipedia.org/wiki/Modus_ponens">modus ponens</a>: if
-you know that <code>a</code> implies <code>b</code> and you know that
-<code>a</code> is true, then it must be the case that <code>b</code> is
-also true:</p>
-<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-10" class="programbox">{-@ ex6 :: Bool -> Bool -> TRUE @-}
-ex6 a b = (a && (a ==> b)) ==> b
-
-{-@ ex7 :: Bool -> Bool -> TRUE @-}
-ex7 a b = a ==> (a ==> b) ==> b</div>
-</div>
-
-<p>Recall that <code>p &lt;=&gt; q</code> (read <code>p</code> if and
-only if <code>q</code>) evaluates to <code>True</code> exactly when
-<code>p</code> and <code>q</code> evaluate to the <em>same</em> values
-(<code>True</code> or <code>False</code>). It is used to encode
-<em>equalities</em> between predicates. For example, we can write down
-<a href="http://en.wikipedia.org/wiki/De_Morgan%27s_laws">De Morgan’s
-laws</a> as the valid predicates:</p>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-11" class="programbox">{-@ exDeMorgan1 :: Bool -> Bool -> TRUE @-}
-exDeMorgan1 a b = not (a || b) <=> (not a && not b)</div>
-</div>
-
-<div id="DeMorgan&#39;s Law" class="hwex">
-<p><br />
-<strong>Exercise: (DeMorgan's Law): </strong>The following version of
-DeMorgan’s law is wrong. Can you fix it to get a valid formula?</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-12" class="programbox">{-@ exDeMorgan2 :: Bool -> Bool -> TRUE @-}
-exDeMorgan2 a b = not (a && b) <=> (not a && not b)</div>
-</div>
-
-</section>
-<section id="examples-arithmetic" class="level2">
-<h2>Examples: Arithmetic</h2>
-<p>Next, let’s look at some predicates involving arithmetic. The
-simplest ones don’t have any variables, for example:</p>
-<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-13" class="programbox">{-@ ax0 :: TRUE @-}
-ax0 = 1 + 1 == 2</div>
-</div>
-
-<p>Again, a predicate that evaluates to <code>False</code> is
-<em>not</em> valid:</p>
-<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-14" class="programbox">{-@ ax0' :: TRUE @-}
-ax0' = 1 + 1 == 3</div>
-</div>
-
-<p><br />
-<strong>SMT Solvers determine Validity</strong> <em>without</em>
-enumerating assignments. For example, consider the predicate:</p>
-<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-15" class="programbox">{-@ ax1 :: Int -> TRUE @-}
+  <div id="program-8" class="programbox">{-@ ax1 :: Int -> TRUE @-}
 ax1 x = x < x + 1</div>
 </div>
 
@@ -747,52 +575,6 @@ independent of the value of <code>x</code>. The SMT solver is able to
 determine this validity without enumerating the infinitely many possible
 values for <code>x</code>. This kind of validity checking lies at the
 heart of LiquidHaskell.</p>
-<p>operators, as shown in the following examples:</p>
-<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-16" class="programbox">{-@ ax2 :: Int -> TRUE @-}
-ax2 x = (x < 0) ==> (0 <= 0 - x)
-
-{-@ ax3 :: Int -> Int -> TRUE @-}
-ax3 x y = (0 <= x) ==> (0 <= y) ==> (0 <= x + y)
-
-{-@ ax4 :: Int -> Int -> TRUE @-}
-ax4 x y = (x == y - 1) ==> (x + 2 == y + 1)
-
-{-@ ax5 :: Int -> Int -> Int -> TRUE @-}
-ax5 x y z =   (x <= 0 && x >= 0)
-          ==> (y == x + z)
-          ==> (y == z)</div>
-</div>
-
-<div id="Addition and Order" class="hwex">
-<p><br />
-<strong>Exercise: (Addition and Order): </strong>The formula below is
-<em>not</em> valid. Do you know why? Change the <em>hypothesis</em>
-i.e. the thing to the left of the <code>==&gt;</code> to make it a valid
-formula.</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-17" class="programbox">{-@ ax6 :: Int -> Int -> TRUE @-}
-ax6 x y = True ==> (x <= x + y)</div>
-</div>
-
 </section>
 <section id="examples-uninterpreted-function" class="level2">
 <h2>Examples: Uninterpreted Function</h2>
@@ -801,44 +583,9 @@ refinement logic, because the SMT solver does not “know” how functions
 are defined. Instead, the only thing that the solver knows is the
 <em>axiom of congruence</em> which states that any function
 <code>f</code>, returns equal outputs when invoked on equal inputs.</p>
-<p><br />
-<strong>We Test the Axiom of Congruence</strong> by checking that the
-following predicate is valid:</p>
-<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-18" class="programbox">{-@ congruence :: (Int -> Int) -> Int -> Int -> TRUE @-}
-congruence f x y = (x == y) ==> (f x == f y)</div>
-</div>
-
-<p>Again, remember we are <em>not evaluating</em> the code above; indeed
-we <em>cannot</em> evaluate the code above because we have no definition
-of <code>f</code>. Still, the predicate is valid as the congruence axiom
-holds for any possible interpretation of <code>f</code>.</p>
-<p>Here is a fun example; can you figure out why this predicate is
-indeed valid? (The SMT solver can…)</p>
-<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-19" class="programbox">{-@ fx1 :: (Int -> Int) -> Int -> TRUE @-}
-fx1 f x =   (x == f (f (f x)))
-        ==> (x == f (f (f (f (f x)))))
-        ==> (x == f x)</div>
-</div>
-
 <p>To get a taste of why uninterpreted functions will prove useful,
 let’s write a function to compute the <code>size</code> of a list:</p>
-<div id="program-pane-20" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -846,7 +593,7 @@ let’s write a function to compute the <code>size</code> of a list:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-20" class="programbox">{-@ measure size @-}
+  <div id="program-9" class="programbox">{-@ measure size @-}
 {-@ size :: [a] -> Nat @-}
 size        :: [a] -> Int
 size []     = 0
@@ -855,7 +602,7 @@ size (x:xs) = 1 + size xs</div>
 
 <p>We can now verify that the following predicates are
 <em>valid</em>:</p>
-<div id="program-pane-21" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -863,7 +610,7 @@ size (x:xs) = 1 + size xs</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-21" class="programbox">{-@ fx0 :: [a] -> [a] -> TRUE @-}
+  <div id="program-10" class="programbox">{-@ fx0 :: [a] -> [a] -> TRUE @-}
 fx0 xs ys = (xs == ys) ==> (size xs == size ys)</div>
 </div>
 
@@ -873,7 +620,7 @@ not need to know the <em>meaning</em> or <em>interpretation</em> of
 information about the definition, of <code>size</code> we will put it
 inside the predicate. For example, in order to prove that the following
 is valid:</p>
-<div id="program-pane-22" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -881,7 +628,7 @@ is valid:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-22" class="programbox">{-@ fx2 :: a -> [a] -> TRUE @-}
+  <div id="program-11" class="programbox">{-@ fx2 :: a -> [a] -> TRUE @-}
 fx2 x xs = 0 < size ys
   where
     ys   = x : xs</div>
@@ -890,9 +637,9 @@ fx2 x xs = 0 < size ys
 <p>LiquidHaskell actually asks the SMT solver to prove the validity of a
 VC predicate which states that sizes are non-negative and that since
 <code>ys</code> equals <code>x:xs</code>, the size of <code>ys</code> is
-one more than <code>xs</code>. <a href="#fn9" class="footnote-ref"
-id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
-<div id="program-pane-23" class="welleditor" style="background:#fff; position:relative">
+one more than <code>xs</code>. <a href="#fn7" class="footnote-ref"
+id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -900,27 +647,12 @@ id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-23" class="programbox">{-@ fx2VC :: _ -> _ -> _ -> TRUE @-}
+  <div id="program-12" class="programbox">{-@ fx2VC :: _ -> _ -> _ -> TRUE @-}
 fx2VC x xs ys =   (0 <= size xs)
               ==> (size ys == 1 + size xs)
               ==> (0 < size ys)</div>
 </div>
 
-</section>
-<section id="recap" class="level2">
-<h2>Recap</h2>
-<p>This chapter describes exactly what we, for the purposes of this
-book, mean by the term <em>logical predicate</em>.</p>
-<ol type="1">
-<li>We defined a grammar – a restricted subset of Haskell corresponding
-to <code>Bool</code> valued expressions.</li>
-<li>The restricted grammar lets us use SMT solvers to decide whether a
-predicate is <em>valid</em> that is, evaluates to <code>True</code> for
-<em>all</em> values of the variables.</li>
-<li>Crucially, the SMT solver determines validity <em>without
-enumerating</em> and evaluating the predicates (which would take
-forever!) but instead by using clever symbolic algorithms.</li>
-</ol>
 <p>Next, let’s see how we can use logical predicates to <em>specify</em>
 and <em>verify</em> properties of real programs.</p>
 </section>
@@ -944,21 +676,14 @@ role="doc-backlink">↩︎</a></p></li>
 then <code>q</code> <strong>and</strong> if <code>q</code> then
 <code>p</code>”<a href="#fnref4" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>An observant reader may notice that &lt;=&gt; is the
-same as == if the arguments are of type Bool<a href="#fnref5"
+<li id="fn5"><p>In particular, we will use the uninterpreted functions
+to create many sophisticated abstractions.<a href="#fnref5"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The process is described at length in <a
-href="http://goto.ucsd.edu/~rjhala/liquid/liquid_types.pdf">this
-paper</a><a href="#fnref6" class="footnote-back"
+<li id="fn6"><p>This syntax will be discussed in greater detail <a
+href="#propositions">soon</a><a href="#fnref6" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>In particular, we will use the uninterpreted functions
-to create many sophisticated abstractions.<a href="#fnref7"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>This syntax will be discussed in greater detail <a
-href="#propositions">soon</a><a href="#fnref8" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>Fear not! We will describe how this works <a
-href="#autosmart">soon</a><a href="#fnref9" class="footnote-back"
+<li id="fn7"><p>Fear not! We will describe how this works <a
+href="#autosmart">soon</a><a href="#fnref7" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
