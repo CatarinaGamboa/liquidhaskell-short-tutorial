@@ -293,10 +293,6 @@ the calls to `hd` and `tl` are safe.
 remove (Q f b)   = (hd f, makeq (tl f) b)
 \end{code}
 
-<div class="hwex" id="Whither pattern matching?">
-Can you explain why we (or Okasaki) didn't use pattern matching here, and have
-instead opted for the explicit `hd` and `tl`?
-</div>
 
 <div class="hwex" id="Queue Sizes">
 If you did the *List Destructing* exercise above, then you will notice that

@@ -119,15 +119,6 @@ assume (!) :: x:Vector a -> {v:Nat | v < vlen x} -> a
 ~~~~~
 </div>
 
-Using this new specification is now a simple matter of telling LiquidHaskell
-to include this file:
-
-~~~~~{.sh}
-$ liquid -i include/ target.hs
-~~~~~
-
-LiquidHaskell ships with specifications for `Prelude`, `Data.List`,
-and `Data.Vector` which it includes by default.
 
 \newthought{Measures} are used to define *properties* of
 Haskell data values that are useful for specification and
@@ -404,77 +395,6 @@ dotProduct x y = loop 0 sz 0 body
     body i acc = acc + (x ! i)  *  (y ! i)
     sz         = length x
 \end{code}
-
-Refinements and Polymorphism {#sparsetype}
-----------------------------------------
-
-While the standard `Vector` is great for *dense* arrays,
-often we have to manipulate *sparse* vectors where most
-elements are just `0`. We might represent such vectors
-as a list of index-value tuples:
-
-\begin{code}
-{-@ type SparseN a N = [(Btwn 0 N, a)] @-}
-\end{code}
-
-\noindent Implicitly, all indices *other* than those in the list
-have the value `0` (or the equivalent value for the type `a`).
-
-\newthought{The Alias} `SparseN` is just a
-shorthand for the (longer) type on the right, it does not
-*define* a new type. If you are familiar with the *index-style*
-length encoding e.g. as found in [DML][dml] or [Agda][agdavec],
-then note that despite  appearances, our `Sparse` definition
-is *not* indexed.
-
-\newthought{Sparse Products}
-Let's write a function to compute a sparse product
-
-\begin{code}
-{-@ sparseProduct  :: x:Vector _ -> SparseN _ (vlen x) -> _ @-}
-sparseProduct x y   = go 0 y
-  where
-    go n []         = n
-    go n ((i,v):y') = go (n + (x!i) * v) y'
-\end{code}
-
-LiquidHaskell verifies the above by using the specification
-to conclude that for each tuple `(i, v)` in the list `y`, the
-value of `i` is within the bounds of the vector `x`, thereby
-proving `x ! i` safe.
-
-\newthought{Folds}
-The sharp reader will have undoubtedly noticed that the sparse product
-can be more cleanly expressed as a [fold][foldl]:
-
-~~~~~{.spec}
-foldl' :: (a -> b -> a) -> a -> [b] -> a
-~~~~~
-
-\noindent We can simply fold over the sparse vector, accumulating the `sum`
-as we go along
-
-\begin{code}
-{-@ sparseProduct'  :: x:Vector _ -> SparseN _ (vlen x) -> _ @-}
-sparseProduct' x y  = foldl' body 0 y
-  where
-    body sum (i, v) = sum + (x ! i) * v
-\end{code}
-
-\noindent
-LiquidHaskell digests this without difficulty.
-The main trick is in how the polymorphism of
-`foldl'` is instantiated.
-
-1. GHC infers that at this site, the type variable `b` from the
-   signature of `foldl'` is instantiated to the Haskell type `(Int, a)`.
-
-2. Correspondingly, LiquidHaskell infers that in fact `b`
-   can be instantiated to the *refined* `(Btwn 0 (vlen x), a)`.
-
-Thus, the inference mechanism saves us a fair bit of typing and
-allows us to reuse existing polymorphic functions over containers
-and such without ceremony.
 
 Recap
 -----
