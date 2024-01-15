@@ -43,13 +43,78 @@ ghci> average [10, 20, 30, 40]
 
 
 <style>
-        /* Add some basic styling */
-        #collapsibleDiv {
-            display: none;
-            padding: 20px;
-            border: 1px solid #ddd;
-            margin-top: 10px;
-        }
+/* Add some basic styling */
+#collapsibleDiv {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+
+        
 </style>
 
 <script>
@@ -71,52 +136,31 @@ ghci> average [10, 20, 30, 40]
  </script>
 
 
+
+
  <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What should be the predicate of div to make it impossible to divide by zero?</p>
-   <label stylr><input type="radio" name="q2" value="3"> Yes, e.g., the list [1]</label><br>
-
-   <label><input type="radio" name="q2" value="4"> Yes, e.g., the list []</label><br>
-   <button onclick="checkAnswer(2)">Submit</button>
-
-   <label><input type="radio" name="q2" value="4"> No, it should not crash. </label><br>
+   <label class="container"> Yes, e.g., the list [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+   <label class="container"><input type="radio" name="q1" value="2"> Yes, e.g., the list []</label><br>
+   <label class="container"><input type="radio" name="q1" value="3"> No, it should not crash. </label><br>
    <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(2)">Submit</button>
-   <p id="result2"></p>
-   <input type="hidden" id="correctAnswer2" value="3">
-</div>
- 
- 
-<div id="question1" style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">
-    <p style="color: #2c3e50; font-size: 16px;"> But, are there any inputs for which it crashes?</p>
-    <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
-        <input type="radio" name="q1" value="3"> Yes, e.g., the list [1]
-    </label>
-    <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
-        <input type="radio" name="q1" value="4"> Yes, e.g., the list []
-    </label>
-    <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
-        <input type="radio" name="q1" value="5"> No, it should not crash
-    </label>
-    <button onclick="checkAnswer(1)" style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
-    <p id="result1" style="margin-top: 10px; font-weight: bold; color: #3498db;"></p>
-    <input type="hidden" id="correctAnswer1" value="4">
+   <p id="result1"></p>
+   <input type="hidden" id="correctAnswer1" value="2">
 </div>
 
 
 <div>
    <button onclick="toggleCollapsibleDiv()" style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">Answer</button>
     <div id="collapsibleDiv">
-      <p>
-        If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning a `Maybe` or `Either` value. However, this merely kicks the can down the road. Ultimately, we will want to extract the `Int` from the `Maybe` and if the inputs were invalid to start with, then at that point we'd be stuck.
-      </p>
+If we call it with an empty list, we get a rather unpleasant crash: 
+*** Exception: divide by zero. We could write `average` more *defensively*, 
+returning a `Maybe` or `Either` value. However, this merely kicks
+the can down the road. Ultimately, we will want to extract
+the `Int` from the `Maybe` and if the inputs were invalid
+to start with, then at that point we'd be stuck.    
     </div>
 </div>
 
-
-^[If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning
-a `Maybe` or `Either` value. However, this merely kicks
-the can down the road. Ultimately, we will want to extract
-the `Int` from the `Maybe` and if the inputs were invalid
-to start with, then at that point we'd be stuck.]
 
 
 
