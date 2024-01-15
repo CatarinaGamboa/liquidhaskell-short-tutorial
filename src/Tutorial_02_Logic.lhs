@@ -453,31 +453,5 @@ We can now verify that the following predicates are *valid*:
 fx0 xs ys = (xs == ys) ==> (size xs == size ys)
 \end{code}
 
-\noindent Note that to determine that the above is valid, the SMT
-solver does not need to know the *meaning* or *interpretation* of
-`size` -- merely that it is a function. When we need some information
-about the definition, of `size` we will put it inside the predicate.
-For example, in order to prove that the following is valid:
-
-\begin{code}
-{-@ fx2 :: a -> [a] -> TRUE @-}
-fx2 x xs = 0 < size ys
-  where
-    ys   = x : xs
-\end{code}
-
-\noindent LiquidHaskell actually asks the SMT solver to
-prove the validity of a VC predicate which states that
-sizes are non-negative and that since `ys` equals `x:xs`,
-the size of `ys` is one more than `xs`. ^[Fear not! We
-will describe how this works [soon](#autosmart)]
-
-\begin{code}
-{-@ fx2VC :: _ -> _ -> _ -> TRUE @-}
-fx2VC x xs ys =   (0 <= size xs)
-              ==> (size ys == 1 + size xs)
-              ==> (0 < size ys)
-\end{code}
-
 Next, let's see how we can use logical predicates to *specify* and
 *verify* properties of real programs.

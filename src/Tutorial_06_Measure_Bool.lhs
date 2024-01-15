@@ -160,7 +160,7 @@ in the output refinement.
 \end{code}
 
 \newthought{Average} is only sensible for non-empty lists.
-Happily, we can specify this using the refined `NEList` type:
+Add a specification to average using the type NEList.
 
 \begin{code}
 {-@ average :: NEList Int -> Int @-}
@@ -170,20 +170,104 @@ average xs = divide total elems
     elems  = size xs
 \end{code}
 
-<div class="hwex" id="Average, Maybe">
-Fix the code below to obtain an alternate variant
-`average'` that returns `Nothing` for empty lists:
-</div>
 
-\begin{code}
-average'      :: [Int] -> Maybe Int
-average' xs
-  | ok        = Just $ divide (sum xs) elems
-  | otherwise = Nothing
-  where
-    elems     = size xs
-    ok        = True   -- What expression goes here?
-\end{code}
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+  
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div id="collapsibleDiv">
+`{-@ average :: NEList Int -> Int @-}`
+</div>
 
 <div class="hwex" id="Debugging Specifications">
 An important aspect of formal verifiers like LiquidHaskell
@@ -203,188 +287,6 @@ size2 []     =  0
 size2 (_:xs) =  1 + size2 xs
 \end{code}
 
-
-A Safe List API
----------------
-
-Now that we can talk about non-empty lists, we can ensure
-the safety of various list-manipulating functions which
-are only well-defined on non-empty lists and crash otherwise.
-
-\newthought{Head and Tail} are two of the canonical *dangerous*
-functions, that only work on non-empty lists, and burn horribly
-otherwise. We can type them simple as:
-
-
-\begin{code}
-{-@ head    :: NEList a -> a @-}
-head (x:_)  = x
-head []     = die "Fear not! 'twill ne'er come to pass"
-
-{-@ tail    :: NEList a -> [a] @-}
-tail (_:xs) = xs
-tail []     = die "Relaxeth! this too shall ne'er be"
-\end{code}
-
-LiquidHaskell uses the precondition to deduce that
-the second equations are *dead code*. Of course, this
-requires us to establish that *callers* of `head` and `tail`
-only invoke the respective functions with non-empty lists.
-
-<div class="hwex" id="Safe Head">
-Write down a specification for `null` such that `safeHead`
-is verified. Do *not* force `null` to only take non-empty inputs,
-that defeats the purpose. Instead, its type should say that it
-works on *all* lists and returns `False` *if and only if* the input
-is non-empty.
-</div>
-
-\hint You may want to refresh your memory about implies `==>`
-and `<=>` from the [chapter on logic](#semantics).
-
-\begin{code}
-safeHead      :: [a] -> Maybe a
-safeHead xs
-  | null xs   = Nothing
-  | otherwise = Just $ head xs
-
-{-@ null      :: [a] -> Bool @-}
-null []       =  True
-null (_:_)    =  False
-\end{code}
-
-\newthought{Groups}
-Lets use the above to write a function that chunks sequences
-into non-empty groups of equal elements:
-
-\begin{code}
-{-@ groupEq    :: (Eq a) => [a] -> [NEList a] @-}
-groupEq []     = []
-groupEq (x:xs) = (x:ys) : groupEq zs
-  where
-    (ys, zs)   = span (x ==) xs
-\end{code}
-
-\noindent By using the fact that *each element* in the
-output returned by `groupEq` is in fact of the form `x:ys`,
-LiquidHaskell infers that `groupEq` returns a `[NEList a]`
-that is, a list of *non-empty lists*.
-
-\newthought{To Eliminate Stuttering} from a string, we can use `groupEq`
-to split the string into blocks of repeating `Char`s, and then just
-extract the first `Char` from each block:
-
-\begin{code}
--- >>> eliminateStutter "ssstringssss liiiiiike thisss"
--- "strings like this"
-eliminateStutter xs = map head $ groupEq xs
-\end{code}
-
-\noindent
-LiquidHaskell automatically instantiates the type parameter
-for `map` in `eliminateStutter` to `notEmpty v` to deduce that
-`head` is only called on non-empty lists.
-
-\newthought{Foldl1} is one of my favorite folds; it uses
-the first element of the sequence as the initial value.
-Of course, it should only be called with non-empty sequences!
-
-\begin{code}
-{-@ foldl1         :: (a -> a -> a) -> NEList a -> a @-}
-foldl1 f (x:xs)    = foldl f x xs
-foldl1 _ []        = die "foldl1"
-
-foldl              :: (a -> b -> a) -> a -> [b] -> a
-foldl _ acc []     = acc
-foldl f acc (x:xs) = foldl f (f acc x) xs
-\end{code}
-
-\newthought{To Sum} a non-empty list of numbers, we can just
-perform a `foldl1` with the `+` operator:
-Thanks to the precondition, LiquidHaskell will prove that
-the `die` code is indeed dead. Thus, we can write
-
-\begin{code}
-{-@ sum :: (Num a) => NEList a -> a  @-}
-sum []  = die "cannot add up empty list"
-sum xs  = foldl1 (+) xs
-\end{code}
-
-\noindent Consequently, we can only invoke `sum` on non-empty lists, so:
-
-\begin{code}
-sumOk  = sum [1,2,3,4,5]    -- is accepted by LH, but
-
-sumBad = sum []             -- is rejected by LH
-\end{code}
-
-<div class="hwex" id="Weighted Average">
-The function below computes a weighted average of its input.
-Unfortunately, LiquidHaskell is not very happy about it. Can you figure out
-why, and fix the code or specification appropriately?
-</div>
-
-\begin{code}
-{-@ wtAverage :: NEList (Pos, Pos) -> Int @-}
-wtAverage wxs = divide totElems totWeight
-  where
-    elems     = map (\(w, x) -> w * x) wxs
-    weights   = map (\(w, _) -> w    ) wxs
-    totElems  = sum elems
-    totWeight = sum weights
-    sum       = foldl1 (+)
-
-map           :: (a -> b) -> [a] -> [b]
-map _ []      =  []
-map f (x:xs)  =  f x : map f xs
-\end{code}
-
-\hint On what variables are the errors? How are those variables' values computed?
-Can you think of a better specification for the function(s) doing those computations?
-
-<div class="hwex" id="Mitchell's Risers">
-Non-empty lists pop up in many places, and it is rather convenient
-to have the type system track non-emptiness without having to make
-up special types. Consider the `risers` function, popularized
-by [Neil Mitchell][mitchell-riser]. `safeSplit` requires
-its input be non-empty; but LiquidHaskell believes that the
-call inside `risers` fails this requirement. Fix the
-specification for `risers` so that it is verified.
-</div>
-
-\begin{code}
-{-@ risers       :: (Ord a) => [a] -> [[a]] @-}
-risers           :: (Ord a) => [a] -> [[a]]
-risers []        = []
-risers [x]       = [[x]]
-risers (x:y:etc)
-  | x <= y       = (x:s) : ss
-  | otherwise    = [x] : (s : ss)
-    where
-      (s, ss)    = safeSplit $ risers (y:etc)
-
-{-@ safeSplit    :: NEList a -> (a, [a]) @-}
-safeSplit (x:xs) = (x, xs)
-safeSplit _      = die "don't worry, be happy"
-\end{code}
-
-Recap
------
-
-In this chapter we saw how LiquidHaskell lets you
-
-1. *Define* structural properties of data types,
-
-2. *Use refinements* over these properties to describe key
-   invariants that establish, at compile-time, the safety
-   of operations that might otherwise fail on unexpected
-   values at run-time, all while,
-
-3. *Working with plain Haskell types*, here, Lists,
-   without having to [make up new types][apple-riser]
-   which can have the unfortunate effect of adding
-   a multitude of constructors and conversions which
-   often clutter implementations and specifications.
 
 \noindent
 Of course, we can do a lot more with measures, so let's press on!

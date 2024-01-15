@@ -72,15 +72,16 @@ certain invariants. In these cases, it is handy to be able to directly
 refine the `data` definition, making it impossible to create
 illegal inhabitants.
 
-Sparse Vectors Revisited {#autosmart}
+Sparse Vectors {#autosmart}
 -------------------------------------
 
-As our first example of a refined datatype, let's revisit the
-sparse vector representation that we [saw earlier](#sparsetype).
-The `SparseN` type alias we used got the job done, but is not
-pleasant to work with because we have no way of determining
-the *dimension* of the sparse vector. Instead, let's create a new
-datatype to represent such vectors:
+As our first example of a refined datatype, let's see 
+Sparse Vectors.
+While the standard Vector is great for dense arrays, often we have to 
+manipulate sparse vectors where most elements are just 0. We might represent 
+such vectors as a list of index-value tuples `[(Int, a)]`.
+
+Let's create a new datatype to represent such vectors:
 
 \begin{code}
 data Sparse a = SP { spDim   :: Int
@@ -193,72 +194,3 @@ dotProd' x (SP _ y) = foldl' body 0 y
 for the type parameters of `foldl'`, saving us a fair
 bit of typing and enabling the use of the elegant
 polymorphic, higher-order combinators we know and love.
-
-<div class="hwex" id="Sanitization"> \singlestar
-Invariants are all well and good for data computed
-*inside* our programs. The only way to ensure the
-legality of data coming from *outside*, i.e. from
-the "real world", is to write a sanitizer that will
-check the appropriate invariants before constructing
-a `Sparse` vector. Write the specification and
-implementation of a sanitizer `fromList`, so that
-the following typechecks:
-</div>
-
-\hint You need to check that *all* the indices in
-`elts` are less than `dim`; the easiest way is to
-compute a new `Maybe [(Int, a)]` which is `Just`
-the original pairs if they are valid, and `Nothing`
-otherwise.
-
-\begin{code}
-fromList          :: Int   -> [(Int, a)] -> Maybe (Sparse a)
-fromList dim elts = undefined
-
-{-@ test1 :: SparseN String 3 @-}
-test1     = fromJust $ fromList 3 [(0, "cat"), (2, "mouse")]
-\end{code}
-
-<div class="hwex" id="Addition">
-Write the specification and implementation
-of a function `plus` that performs the addition of two `Sparse`
-vectors of the *same* dimension, yielding an output of that dimension.
-When you are done, the following code should typecheck:
-</div>
-
-\begin{code}
-plus     :: (Num a) => Sparse a -> Sparse a -> Sparse a
-plus x y = undefined
-
-{-@ test2 :: SparseN Int 3 @-}
-test2    = plus vec1 vec2
-  where
-    vec1 = SP 3 [(0, 12), (2, 9)]
-    vec2 = SP 3 [(0, 8),  (1, 100)]
-\end{code}
-
-
-Recap
------
-
-In this chapter we saw how LiquidHaskell lets you refine data
-type definitions to capture sophisticated invariants. These
-definitions are internally represented by refining the types
-of the data constructors, automatically making them "smart"  in
-that they preclude the creation of illegal values that violate
-the invariants. We will see much more of this handy technique
-in future chapters.
-
-One recurring theme in this chapter was that we had to create new
-versions of standard datatypes, just in order to specify certain
-invariants.  For example, we had to write a special list type, with
-its own *copies* of nil and cons. Similarly, to implement `delMin` we
-had to create our own pair type.
-
-\newthought{This duplication} of types is quite tedious.
-There should be a way to just slap the desired invariants
-on to *existing* types, thereby facilitating their reuse.
-In a few chapters, we will see how to achieve this reuse
-by [abstracting refinements][vazou13] from the definitions of
-datatypes or functions in the same way we abstract
-the element type `a` from containers like `[a]` or `BST a`.
