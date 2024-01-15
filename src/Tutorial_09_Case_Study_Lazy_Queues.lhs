@@ -145,9 +145,11 @@ Write a function to *measure* the real size:
 
 \end{code}
 
+
+
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
-    <div class="collapsibleDiv">
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv1()"> Answer</button>
+    <div id="collapsibleDiv1">
 {-@ measure realSize @-}
 realSize      :: [a] -> Int
 realSize []     = 0
@@ -156,29 +158,16 @@ realSize (_:xs) = 1 + realSize xs
 </div>
 
 
-Now, specify a *refined* type for `SList` that ensures
+Now, we can specify a *refined* type for `SList` that ensures
 that the *real* size is saved in the `size` field.
-Do it by replacing the questions marks below.
 
 \begin{code}
-{-@ data SList a = SL {
-      size  :: Nat
-    , elems :: ??
-    }
-@-}
-\end{code}
-
-
-<div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
-    <div class="collapsibleDiv">
 {-@ data SList a = SL {
       size  :: Nat
     , elems :: {v:[a] | realSize v = size}
     }
 @-}
-    </div>
-</div>
+\end{code}
 
 
 
@@ -196,6 +185,20 @@ badList = SL 1 []         -- rejected
 {-@ type SListN a N = {v:SList a | size v = N} @-}
 \end{code}
 
+\newthought{Now define an alias} for lists that are not empty:
+
+\begin{code}
+{-@ type NEList a = ?? @-}
+\end{code}
+
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv3()"> Answer</button>
+    <div id="collapsibleDiv3">
+{-@ type NEList a = {v:SList a | size v > 0} @-}
+    </div>
+</div>
+
+
 \noindent
 Finally, we can define a basic API for `SList`.
 
@@ -211,7 +214,7 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 
 <div class="hwex" id="Destructing Lists">We can destruct lists by writing a `hd` and `tl`
 function as shown below. 
-Fix the specification on both functions so the definitions typecheck.
+Now, fix the specification on both functions so the definitions typecheck.
 </div>
 
 \begin{code}
@@ -233,6 +236,18 @@ okHd  = hd okList       -- accepted
 
 badHd = hd (tl okList)  -- rejected
 \end{code}
+
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv2()"> Answer</button>
+    <div id="collapsibleDiv2">
+{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}
+tl (SL n (_:xs)) = SL (n-1) xs
+
+{-@ hd           :: xs:NEList a -> a @-}
+hd (SL _ (x:_))  = x 
+    </div>
+</div>
+
 
 
 Queue Type
@@ -320,20 +335,35 @@ the calls to `hd` and `tl` are safe.
 \begin{code}
 remove (Q f b)   = (hd f, makeq (tl f) b)
 
+{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}
+
+
 okRemove  = remove example2Q   -- accept
 badRemove = remove example0Q   -- reject
 \end{code}
 
 
 \hint When you are done, `okRemove` should be accepted, `badRemove`
-should be rejected, and `emp` should have the type shown below:
+should be rejected.
+
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv4()"> Answer</button>
+    <div id="collapsibleDiv4">
+{-@ measure qsize @-}
+qsize         :: Queue a -> Int
+qsize (Q l r) = size l + size r
+
+{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}
+
+{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}
+remove (Q f b)   = (hd f, makeq (tl f) b)
+    </div>
+</div>
+
+
 
 \newthought{To Insert} an element we just `cons` it to the `back` list, and call
 the *smart constructor* `makeq` to ensure that the balance invariant holds:
-
-\begin{code}
-insert e (Q f b) = makeq f (e `cons` b)
-\end{code}
 
 <div class="hwex" id="Insert">Write down a type for `insert` such
 that `replicate` and `okReplicate` are accepted by LiquidHaskell, but `badReplicate`
@@ -341,6 +371,8 @@ is rejected.
 </div>
 
 \begin{code}
+insert e (Q f b) = makeq f (e `cons` b)
+
 {-@ replicate :: n:Nat -> a -> QueueN a n @-}
 replicate 0 _ = emp
 replicate n x = insert x (replicate (n-1) x)
@@ -352,6 +384,14 @@ okReplicate = replicate 3 "Yeah!"  -- accept
 badReplicate = replicate 1 "No!"   -- reject
 \end{code}
 
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv5()"> Answer</button>
+    <div id="collapsibleDiv5">
+{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}
+insert e (Q f b) = makeq f (e `cons` b)
+    </div>
+</div>
+
 
 \newthought{To Ensure the Invariant} we use the smart constructor
 `makeq`, which is where the heavy lifting happens.  The constructor
@@ -360,7 +400,7 @@ directly returns the `Queue`, and otherwise transfers the elements
 from `b` over using the rotate function `rot` described next.
 
 \begin{code}
-{-@ makeq :: f:SList a -> b:SList a -> QueueN a {size f + size b} @-}
+{-@ makeq :: f:SList a -> b:SListLE a {size f + 1 } -> QueueN a {size f + size b} @-}
 makeq f b
   | size b <= size f = Q f b
   | otherwise        = Q (rot f b nil) nil
@@ -375,37 +415,22 @@ efficient worst-case guarantee. Write down a type for `rot` so
 that it typechecks and verifies the type for `makeq`.
 </div>
 
-\hint You may have to modify a precondition in `makeq` to capture the
-relationship between `f` and `b`.
-
 \begin{code}
 rot f b acc
   | size f == 0 = hd b `cons` acc
   | otherwise   = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)
 \end{code}
 
-
-<div class="hwex" id="Transfer">
-Write down a signature for `take` which extracts `n` elements from
-its input `q` and puts them into a new output Queue. When you are
-done, `okTake` should be accepted, but `badTake` should be rejected.
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv6()"> Answer</button>
+    <div id="collapsibleDiv6">
+{-@ rot :: f:SList a
+        -> b:SListN _ {1 + size f}
+        -> a:SList _
+        -> SListN _ {size f + size b + size a}
+@-}
+    </div>
 </div>
-
-\begin{code}
-take           :: Int -> Queue a -> (Queue a, Queue a)
-take 0 q       = (emp          , q)
-take n q       = (insert x out , q'')
-  where
-    (x  , q')  = remove q
-    (out, q'') = take (n-1) q'
-
-{-@ okTake :: (QueueN _ 2, QueueN _ 1) @-}
-okTake   = take 2 exampleQ  -- accept
-
-badTake  = take 10 exampleQ -- reject
-
-exampleQ = insert "nal" $ insert "bob" $ insert "alice" $ emp
-\end{code}
 
 
 Recap
@@ -418,4 +443,10 @@ This example is particularly interesting because
 1. The refinements express invariants that are critical for efficiency,
 2. The code introspects on the `size` to guarantee the invariants, and
 3. The code is quite simple and we hope, easy to follow!
+
+
+This exercise concludes the Short Tutorial of LiquidHaskell. 
+Thank you for tagging along!
+
+
 \end{comment}
