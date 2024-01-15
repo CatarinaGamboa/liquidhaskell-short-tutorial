@@ -153,7 +153,6 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_03_Basic.html#'><b>4.6.</b> Refining Function Types: Post-conditions</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>4.7.</b> Testing Values: Booleans and Propositions {#propositions}</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>4.8.</b> Putting It All Together</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>4.9.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_04_Polymorphism.html'><b>5.</b>Polymorphism {#polymorphism}</a></li>
 <ul class='section'>
@@ -406,8 +405,8 @@ careful analysis. (Actually, he presents a variant which does
 <em>not</em> require saving the size as well, but that’s for another
 day.)</p>
 <p>How can we be sure that <code>size</code> is indeed the <em>real
-size</em> of <code>elems</code>? Let’s write a function to
-<em>measure</em> the real size:</p>
+size</em> of <code>elems</code>? Write a function to <em>measure</em>
+the real size:</p>
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -416,15 +415,21 @@ size</em> of <code>elems</code>? Let’s write a function to
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">{-@ measure realSize @-}
-realSize      :: [a] -> Int
-realSize []     = 0
-realSize (_:xs) = 1 + realSize xs</div>
+  <div id="program-2" class="programbox">{-@ measure realSize @-}</div>
 </div>
 
-<p>Now, we can simply specify a <em>refined</em> type for
-<code>SList</code> that ensures that the <em>real</em> size is saved in
-the <code>size</code> field:</p>
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+Answer</button>
+<div class="collapsibleDiv">
+{-@ measure realSize @-} realSize :: [a] -&gt; Int realSize [] = 0
+realSize (_:xs) = 1 + realSize xs<br />
+
+</div>
+</div>
+<p>Now, specify a <em>refined</em> type for <code>SList</code> that
+ensures that the <em>real</em> size is saved in the <code>size</code>
+field. Do it by replacing the questions marks below.</p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -435,11 +440,19 @@ the <code>size</code> field:</p>
  
   <div id="program-3" class="programbox">{-@ data SList a = SL {
       size  :: Nat
-    , elems :: {v:[a] | realSize v = size}
+    , elems :: ??
     }
 @-}</div>
 </div>
 
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+Answer</button>
+<div class="collapsibleDiv">
+{-@ data SList a = SL { size :: Nat , elems :: {v:[a] | realSize v =
+size} } @-}
+</div>
+</div>
 <p>As a sanity check, consider this:</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
