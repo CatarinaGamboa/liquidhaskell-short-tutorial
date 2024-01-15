@@ -245,6 +245,58 @@ MathJax.Hub.Config({
 
 <section id="intro" class="level1">
 <h1>Introduction</h1>
+<div class="hidden">
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{-# LANGUAGE CPP #-}
+
+module Tutorial_01_Introduction where
+main = putStrLn "Intro"
+
+-- {-@ ignore average @-}
+
+</div>
+</div>
+
+</div>
+
+<p>Welcome to the LiquidHaskell Short Tutorial, where you will learn the
+basic workings of LiquidHaskell and complete some exercises. The full
+version of the tutorial can be found in the <a
+href="https://ucsd-progsys.github.io/liquidhaskell-tutorial/Tutorial_01_Introduction.html">project’s
+website</a>.</p>
+<p>One of the great things about Haskell is its brainy type system that
+allows one to enforce a variety of invariants at compile time, thereby
+nipping in the bud a large swathe of run-time <a
+href="#getting-started">errors</a>.</p>
+<section id="gowrong" class="level2">
+<h2>Well-Typed Programs Do Go Wrong</h2>
+<p>Alas, well-typed programs <em>do</em> go quite wrong, in a variety of
+ways.</p>
+<p><br />
+<strong>Division by Zero</strong> This innocuous function computes the
+average of a list of integers:</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">average    :: [Int] -> Int
+average xs = sum xs `div` length xs</div>
+</div>
+
+<p>We get the desired result on a non-empty list of numbers:</p>
+<pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
+25</code></pre>
 <style>
 /* Add some basic styling */
 .collapsibleDiv {
@@ -335,58 +387,6 @@ function toggleCollapsibleDiv() {
     div.style.display = (div.style.display === 'none') ? 'block' : 'none';
 }
 </script>
-<div class="hidden">
-<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-0" class="programbox">{-# LANGUAGE CPP #-}
-
-module Tutorial_01_Introduction where
-main = putStrLn "Intro"
-
--- {-@ ignore average @-}
-
-</div>
-</div>
-
-</div>
-
-<p>Welcome to the LiquidHaskell Short Tutorial, where you will learn the
-basic workings of LiquidHaskell and complete some exercises. The full
-version of the tutorial can be found in the <a
-href="https://ucsd-progsys.github.io/liquidhaskell-tutorial/Tutorial_01_Introduction.html">project’s
-website</a>.</p>
-<p>One of the great things about Haskell is its brainy type system that
-allows one to enforce a variety of invariants at compile time, thereby
-nipping in the bud a large swathe of run-time <a
-href="#getting-started">errors</a>.</p>
-<section id="gowrong" class="level2">
-<h2>Well-Typed Programs Do Go Wrong</h2>
-<p>Alas, well-typed programs <em>do</em> go quite wrong, in a variety of
-ways.</p>
-<p><br />
-<strong>Division by Zero</strong> This innocuous function computes the
-average of a list of integers:</p>
-<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-1" class="programbox">average    :: [Int] -> Int
-average xs = sum xs `div` length xs</div>
-</div>
-
-<p>We get the desired result on a non-empty list of numbers:</p>
-<pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
-25</code></pre>
 <div id="question1"
 style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <p>
