@@ -299,12 +299,56 @@ average xs = sum xs `div` length xs</div>
 <p>We get the desired result on a non-empty list of numbers:</p>
 <pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
 25</code></pre>
-<ol type="a">
-<li>Yes, e.g., the list [1]</li>
-<li>Yes, e.g., the list []</li>
-<li>No, it should not crash</li>
-</ol>
-<p>– html_quizzes/intro_1.html</p>
+<style>
+        /* Add some basic styling */
+        #collapsibleDiv {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+        }
+</style>
+<script>
+    function checkAnswer(questionNumber) {
+       const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+       const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+       const resultElement = document.getElementById(`result${questionNumber}`);
+ 
+       if (selectedAnswer === correctAnswer) {
+          resultElement.textContent = 'Correct!';
+       } else {
+          resultElement.textContent = 'Incorrect. Please try again.';
+       }
+    }
+    function toggleCollapsibleDiv() {
+            var div = document.getElementById('collapsibleDiv');
+            div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+      }
+ </script>
+<div id="question1"
+style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; border-radius: 10px; background-color: #ecf0f1;">
+<pre><code>&lt;h2 style=&quot;color: #2980b9;&quot;&gt;Question 1:&lt;/h2&gt;
+&lt;p style=&quot;color: #2c3e50; font-size: 16px;&quot;&gt;But, are there any inputs for which it crashes?&lt;/p&gt;
+&lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;3&quot;&gt; Yes, e.g., the list [1]
+&lt;/label&gt;
+&lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;4&quot;&gt; Yes, e.g., the list []
+&lt;/label&gt;
+&lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;5&quot;&gt; No, it should not crash
+&lt;/label&gt;
+&lt;button onclick=&quot;checkAnswer(1)&quot; style=&quot;padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;&quot;&gt;Submit&lt;/button&gt;
+&lt;p id=&quot;result1&quot; style=&quot;margin-top: 10px; font-weight: bold; color: #3498db;&quot;&gt;&lt;/p&gt;
+&lt;input type=&quot;hidden&quot; id=&quot;correctAnswer1&quot; value=&quot;4&quot;&gt;</code></pre>
+</div>
+<div>
+<button onclick="toggleCollapsibleDiv()">Toggle Collapsible Div</button>
+<div id="collapsibleDiv">
+<pre><code>    &lt;h2&gt;Collapsible Content&lt;/h2&gt;
+    &lt;p&gt;This is the content of the collapsible div. You can add any content here.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+</div>
 <p><a href="#fn1" class="footnote-ref" id="fnref1"
 role="doc-noteref"><sup>1</sup></a></p>
 <p>For certain kinds of programs, there is a fate worse than death.
