@@ -325,27 +325,26 @@ average xs = sum xs `div` length xs</div>
             div.style.display = (div.style.display === 'none') ? 'block' : 'none';
       }
  </script>
-<div id="question1" style="width=640px;">
-<h2>
-Question 1:
-</h2>
+<div id="question1"
+style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <p>
 What should be the predicate of div to make it impossible to divide by
 zero?
 </p>
-<label><input type="radio" name="q2" value="3"> <code>{-@ div :: Int
--&gt; {v:Int | v &gt; 0} -&gt; Int @-}</code></label><br>
-<label><input type="radio" name="q2" value="4"> <code>{-@ div :: Int
--&gt; {v:Int | v /= 0} -&gt; Int @-}</code></label><br>
-<button onclick="checkAnswer(2)">Submit</button>
-<p id="result1">
+<p><label stylr><input type="radio" name="q2" value="3"> Yes, e.g., the
+list [1]</label><br></p>
+<p><label><input type="radio" name="q2" value="4"> Yes, e.g., the list
+[]</label><br> <button onclick="checkAnswer(2)">Submit</button></p>
+<label><input type="radio" name="q2" value="4"> No, it should not crash.
+</label><br>
+<button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(2)">Submit</button>
+<p id="result2">
 </p>
 <p><input type="hidden" id="correctAnswer2" value="3"></p>
 </div>
 <div id="question1"
-style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; border-radius: 10px; background-color: #ecf0f1;">
-<pre><code>&lt;h2 style=&quot;color: #2980b9;&quot;&gt;Question 1:&lt;/h2&gt;
-&lt;p style=&quot;color: #2c3e50; font-size: 16px;&quot;&gt;But, are there any inputs for which it crashes?&lt;/p&gt;
+style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">
+<pre><code>&lt;p style=&quot;color: #2c3e50; font-size: 16px;&quot;&gt; But, are there any inputs for which it crashes?&lt;/p&gt;
 &lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
     &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;3&quot;&gt; Yes, e.g., the list [1]
 &lt;/label&gt;
@@ -360,10 +359,11 @@ style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; bor
 &lt;input type=&quot;hidden&quot; id=&quot;correctAnswer1&quot; value=&quot;4&quot;&gt;</code></pre>
 </div>
 <div>
-<button onclick="toggleCollapsibleDiv()">Toggle Collapsible Div</button>
+<button onclick="toggleCollapsibleDiv()" style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">Answer</button>
 <div id="collapsibleDiv">
-<pre><code>    &lt;h2&gt;Collapsible Content&lt;/h2&gt;
-    &lt;p&gt;This is the content of the collapsible div. You can add any content here.&lt;/p&gt;
+<pre><code>  &lt;p&gt;
+    If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning a `Maybe` or `Either` value. However, this merely kicks the can down the road. Ultimately, we will want to extract the `Int` from the `Maybe` and if the inputs were invalid to start with, then at that point we&#39;d be stuck.
+  &lt;/p&gt;
 &lt;/div&gt;</code></pre>
 </div>
 <p><a href="#fn1" class="footnote-ref" id="fnref1"
