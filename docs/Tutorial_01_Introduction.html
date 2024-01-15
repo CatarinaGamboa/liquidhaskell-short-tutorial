@@ -325,6 +325,23 @@ average xs = sum xs `div` length xs</div>
             div.style.display = (div.style.display === 'none') ? 'block' : 'none';
       }
  </script>
+<div id="question1" style="width=640px;">
+<h2>
+Question 1:
+</h2>
+<p>
+What should be the predicate of div to make it impossible to divide by
+zero?
+</p>
+<label><input type="radio" name="q2" value="3"> <code>{-@ div :: Int
+-&gt; {v:Int | v &gt; 0} -&gt; Int @-}</code></label><br>
+<label><input type="radio" name="q2" value="4"> <code>{-@ div :: Int
+-&gt; {v:Int | v /= 0} -&gt; Int @-}</code></label><br>
+<button onclick="checkAnswer(2)">Submit</button>
+<p id="result1">
+</p>
+<p><input type="hidden" id="correctAnswer2" value="3"></p>
+</div>
 <div id="question1"
 style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; border-radius: 10px; background-color: #ecf0f1;">
 <pre><code>&lt;h2 style=&quot;color: #2980b9;&quot;&gt;Question 1:&lt;/h2&gt;
