@@ -211,7 +211,7 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 
 <div class="hwex" id="Destructing Lists">We can destruct lists by writing a `hd` and `tl`
 function as shown below. 
-Fix the specification or implementation such that the definitions typecheck.
+Fix the specification on both functions so the definitions typecheck.
 </div>
 
 \begin{code}
@@ -284,37 +284,21 @@ and `back` to his `left` and `right`.)
 emp = Q nil nil
 \end{code}
 
-\newthought{To Remove} an element we pop it off the `front` by using
-`hd` and `tl`.  Notice that the `remove` is only called on non-empty
-`Queue`s, which together with the key balance invariant, ensures that
-the calls to `hd` and `tl` are safe.
-
-\begin{code}
-remove (Q f b)   = (hd f, makeq (tl f) b)
-\end{code}
-
-
 <div class="hwex" id="Queue Sizes">
-If you did the *List Destructing* exercise above, then you will notice that
-the code for `remove` has a type error: namely, the calls to `hd` and `tl` may
-fail if the `f` list is empty.
+For the remaining operations we need some more information.
+Do the following steps:
 
-1. Write a *measure* to describe the queue size,
+1. Write a *measure* qsize to describe the queue size,
 2. Use it to complete the definition of `QueueN` below, and
 3. Use it to give `remove` a type that verifies the safety of the
    calls made to `hd` and `tl`.
 </div>
 
-\hint When you are done, `okRemove` should be accepted, `badRemove`
-should be rejected, and `emp` should have the type shown below:
-
-
 \begin{code}
+-- | create measuere qsize here
+
 -- | Queues of size `N`
 {-@ type QueueN a N = {v:Queue a | true} @-}
-
-okRemove  = remove example2Q   -- accept
-badRemove = remove example0Q   -- reject
 
 {-@ emp :: QueueN _ 0 @-}
 
@@ -326,6 +310,26 @@ example0Q = Q nil nil
 \end{code}
 
 
+
+
+
+
+\newthought{To Remove} an element we pop it off the `front` by using
+`hd` and `tl`.  Notice that the `remove` is only called on non-empty
+`Queue`s, which together with the key balance invariant, ensures that
+the calls to `hd` and `tl` are safe.
+
+
+\begin{code}
+remove (Q f b)   = (hd f, makeq (tl f) b)
+
+okRemove  = remove example2Q   -- accept
+badRemove = remove example0Q   -- reject
+\end{code}
+
+
+\hint When you are done, `okRemove` should be accepted, `badRemove`
+should be rejected, and `emp` should have the type shown below:
 
 \newthought{To Insert} an element we just `cons` it to the `back` list, and call
 the *smart constructor* `makeq` to ensure that the balance invariant holds:

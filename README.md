@@ -94,6 +94,9 @@ $ evince dist/pbook.pdf
 
 Solutions are in *separate* [private repo](https://github.com/ucsd-progsys/liquidhaskell-tutorial-solutions)
 
+
+Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/
+
 ## TODO
 
 A work list of TODO items can be found in the [bug tracker](https://github.com/ucsd-progsys/liquidhaskell-tutorial/issues/19)

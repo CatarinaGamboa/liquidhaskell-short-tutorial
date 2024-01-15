@@ -225,8 +225,6 @@ canDie = if 1 + 1 == 2
 as the branch may (will!) be `True` and so `die` can be called.
 
 
-
-
 Refining Function Types: Pre-conditions
 --------------------------------------
 
