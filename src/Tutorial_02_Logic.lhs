@@ -123,12 +123,108 @@ if ^[Read `p <=> q` as "if `p` then `q` **and** if `q` then `p`"]), and `not`.
 ~~~~~
 
 
-\newthought{Examples of Predicates} include the following:
+
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+  
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv1() {
+    var div = document.getElementById('collapsibleDiv1');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+
+function toggleCollapsibleDiv2() {
+    var div = document.getElementById('collapsibleDiv2');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
 
 
-
+\newthought{Examples of Predicates}
 Can you select which of the following ones is not a valid predicate?
-!!Exercise
+
  <div id="question2" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What should be the predicate of div to make it impossible to divide by zero?</p>
    <label class="container"> `x /= 3`                               <input type="radio" name="q2" value="1"> <span class="checkmark"></span> </label><br>
@@ -141,23 +237,12 @@ Can you select which of the following ones is not a valid predicate?
    <p id="result2"></p>
    <input type="hidden" id="correctAnswer2" value="4">
 
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
-    <div class="collapsibleDiv">
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv2()"> Answer</button>
+    <div id="collapsibleDiv2">
 All of them are valid syntatic expressions, except for `x ** y > 0 ` since 
 the operator ** is not part of the language.   
     </div>
 </div>
-
-
-
-+ `x /= 3`
-+ `x + y <= 3 && y < 1`
-+ `x < 10 ==> y < 10 ==> x + y < 20`
-+ `x ** y > 0 ` <----  
-+ `0 < x + y <=> 0 < y + x`
-
-
-
 
 
 
@@ -280,16 +365,17 @@ For example, the following is valid predicate says that a
 ex1 b = b || not b
 \end{code}
 
+
+
 \noindent Of course, a variable cannot be both `True`
 and `False`. Write a predicate for ex2 with that meaning:
 
 \begin{code}
 ex2 b = b && not b
 \end{code}
-!!Exercise
 <div>
- <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
-    <div class="collapsibleDiv">
+ <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv1()"> Answer</button>
+    <div id="collapsibleDiv1">
 The correct answer would be: {-@ ex2 :: Bool -> FALSE @-}
     </div>
 </div>
