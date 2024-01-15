@@ -132,7 +132,8 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_01_Introduction.html'><b>2.</b>Introduction {#intro}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_01_Introduction.html#'><b>2.1.</b> Well-Typed Programs Do Go Wrong {#gowrong}</a></li>
-<li><a href='Tutorial_01_Introduction.html#'><b>2.2.</b> Refinement Types</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>2.2.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>2.3.</b> Refinement Types</a></li>
 </ul>
 <li><a href='Tutorial_02_Logic.html'><b>3.</b>Logic &amp; SMT</a></li>
 <ul class='section'>
@@ -300,13 +301,78 @@ average xs = sum xs `div` length xs</div>
 <pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
 25</code></pre>
 <style>
-        /* Add some basic styling */
-        #collapsibleDiv {
-            display: none;
-            padding: 20px;
-            border: 1px solid #ddd;
-            margin-top: 10px;
-        }
+/* Add some basic styling */
+#collapsibleDiv {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+
+        
 </style>
 <script>
     function checkAnswer(questionNumber) {
@@ -331,43 +397,31 @@ style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 What should be the predicate of div to make it impossible to divide by
 zero?
 </p>
-<p><label stylr><input type="radio" name="q2" value="3"> Yes, e.g., the
-list [1]</label><br></p>
-<p><label><input type="radio" name="q2" value="4"> Yes, e.g., the list
-[]</label><br> <button onclick="checkAnswer(2)">Submit</button></p>
-<label><input type="radio" name="q2" value="4"> No, it should not crash.
+<label class="container"> Yes, e.g., the list [1]
+<input type="radio" name="q1" value="1"> <span class="checkmark"></span>
 </label><br>
+<label class="container"><input type="radio" name="q1" value="2"> Yes,
+e.g., the list []</label><br>
+<label class="container"><input type="radio" name="q1" value="3"> No, it
+should not crash. </label><br>
 <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(2)">Submit</button>
-<p id="result2">
+<p id="result1">
 </p>
-<p><input type="hidden" id="correctAnswer2" value="3"></p>
-</div>
-<div id="question1"
-style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">
-<pre><code>&lt;p style=&quot;color: #2c3e50; font-size: 16px;&quot;&gt; But, are there any inputs for which it crashes?&lt;/p&gt;
-&lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
-    &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;3&quot;&gt; Yes, e.g., the list [1]
-&lt;/label&gt;
-&lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
-    &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;4&quot;&gt; Yes, e.g., the list []
-&lt;/label&gt;
-&lt;label style=&quot;display: block; margin-bottom: 10px; color: #2c3e50;&quot;&gt;
-    &lt;input type=&quot;radio&quot; name=&quot;q1&quot; value=&quot;5&quot;&gt; No, it should not crash
-&lt;/label&gt;
-&lt;button onclick=&quot;checkAnswer(1)&quot; style=&quot;padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;&quot;&gt;Submit&lt;/button&gt;
-&lt;p id=&quot;result1&quot; style=&quot;margin-top: 10px; font-weight: bold; color: #3498db;&quot;&gt;&lt;/p&gt;
-&lt;input type=&quot;hidden&quot; id=&quot;correctAnswer1&quot; value=&quot;4&quot;&gt;</code></pre>
+<p><input type="hidden" id="correctAnswer1" value="2"></p>
 </div>
 <div>
 <button onclick="toggleCollapsibleDiv()" style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">Answer</button>
 <div id="collapsibleDiv">
-<pre><code>  &lt;p&gt;
-    If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning a `Maybe` or `Either` value. However, this merely kicks the can down the road. Ultimately, we will want to extract the `Int` from the `Maybe` and if the inputs were invalid to start with, then at that point we&#39;d be stuck.
-  &lt;/p&gt;
-&lt;/div&gt;</code></pre>
+If we call it with an empty list, we get a rather unpleasant crash: ***
+Exception: divide by zero. We could write <code>average</code> more
+<em>defensively</em>, returning a <code>Maybe</code> or
+<code>Either</code> value. However, this merely kicks the can down the
+road. Ultimately, we will want to extract the <code>Int</code> from the
+<code>Maybe</code> and if the inputs were invalid to start with, then at
+that point we’d be stuck.<br />
+
 </div>
-<p><a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a></p>
+</div>
 <p>For certain kinds of programs, there is a fate worse than death.
 <code>text</code> is a high-performance string processing library for
 Haskell, that is used, for example, to build web services.</p>
@@ -428,20 +482,6 @@ href="http://goto.ucsd.edu:8090/index.html#?demo=blank.hs">Web Demo</a>
 and see what is the result when you <code>Check</code> the code from the
 first example.</p>
 </section>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>If we call it with an empty list, we get a rather
-unpleasant crash: *** Exception: divide by zero. We could write
-<code>average</code> more <em>defensively</em>, returning a
-<code>Maybe</code> or <code>Either</code> value. However, this merely
-kicks the can down the road. Ultimately, we will want to extract the
-<code>Int</code> from the <code>Maybe</code> and if the inputs were
-invalid to start with, then at that point we’d be stuck.<a
-href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
 </section>
 
 </div>
