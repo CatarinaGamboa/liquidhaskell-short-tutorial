@@ -191,6 +191,120 @@ badList = SL 1 []         -- rejected
 {-@ type NEList a = ?? @-}
 \end{code}
 
+
+<style>
+/* Add some basic styling */
+#collapsibleDiv1, #collapsibleDiv2, #collapsibleDiv3, #collapsibleDiv4, #collapsibleDiv5, #collapsibleDiv6  {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+  
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv1() {
+    var div = document.getElementById('collapsibleDiv1');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+function toggleCollapsibleDiv2() {
+    var div = document.getElementById('collapsibleDiv2');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+function toggleCollapsibleDiv3() {
+    var div = document.getElementById('collapsibleDiv3');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+function toggleCollapsibleDiv4() {
+    var div = document.getElementById('collapsibleDiv4');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+function toggleCollapsibleDiv5() {
+    var div = document.getElementById('collapsibleDiv5');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+function toggleCollapsibleDiv6() {
+    var div = document.getElementById('collapsibleDiv6');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+
+</script>
+
 <div>
    <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv3()"> Answer</button>
     <div id="collapsibleDiv3">
