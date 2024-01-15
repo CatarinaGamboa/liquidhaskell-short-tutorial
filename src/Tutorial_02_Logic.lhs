@@ -382,7 +382,7 @@ ex2 b = b && not b
 <div>
  <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv1()"> Answer</button>
     <div id="collapsibleDiv1">
-The correct answer would be: {-@ ex2 :: Bool -> FALSE @-}
+The correct answer would be: `{-@ ex2 :: Bool -> FALSE @-}`
     </div>
 </div>
 
