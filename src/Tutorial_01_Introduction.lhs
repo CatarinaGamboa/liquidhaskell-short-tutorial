@@ -71,20 +71,22 @@ ghci> average [10, 20, 30, 40]
  </script>
 
 
- <div id="question1" style="width=640px;">
-   <h2>Question 1:</h2>
+ <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What should be the predicate of div to make it impossible to divide by zero?</p>
-   <label><input type="radio" name="q2" value="3"> <code>{-@ div :: Int -> {v:Int | v > 0} -> Int @-}</code></label><br>
-   <label><input type="radio" name="q2" value="4"> <code>{-@ div :: Int -> {v:Int | v /= 0} -> Int @-}</code></label><br>
+   <label stylr><input type="radio" name="q2" value="3"> Yes, e.g., the list [1]</label><br>
+
+   <label><input type="radio" name="q2" value="4"> Yes, e.g., the list []</label><br>
    <button onclick="checkAnswer(2)">Submit</button>
-   <p id="result1"></p>
+
+   <label><input type="radio" name="q2" value="4"> No, it should not crash. </label><br>
+   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(2)">Submit</button>
+   <p id="result2"></p>
    <input type="hidden" id="correctAnswer2" value="3">
 </div>
  
  
-<div id="question1" style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; border-radius: 10px; background-color: #ecf0f1;">
-    <h2 style="color: #2980b9;">Question 1:</h2>
-    <p style="color: #2c3e50; font-size: 16px;">But, are there any inputs for which it crashes?</p>
+<div id="question1" style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">
+    <p style="color: #2c3e50; font-size: 16px;"> But, are there any inputs for which it crashes?</p>
     <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
         <input type="radio" name="q1" value="3"> Yes, e.g., the list [1]
     </label>
@@ -98,11 +100,14 @@ ghci> average [10, 20, 30, 40]
     <p id="result1" style="margin-top: 10px; font-weight: bold; color: #3498db;"></p>
     <input type="hidden" id="correctAnswer1" value="4">
 </div>
+
+
 <div>
-   <button onclick="toggleCollapsibleDiv()">Toggle Collapsible Div</button>
+   <button onclick="toggleCollapsibleDiv()" style="width= 640px; margin= 20px; padding= 15px; border= 2px solid #3498db; border-radius= 10px; background-color= #ecf0f1;">Answer</button>
     <div id="collapsibleDiv">
-        <h2>Collapsible Content</h2>
-        <p>This is the content of the collapsible div. You can add any content here.</p>
+      <p>
+        If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning a `Maybe` or `Either` value. However, this merely kicks the can down the road. Ultimately, we will want to extract the `Int` from the `Maybe` and if the inputs were invalid to start with, then at that point we'd be stuck.
+      </p>
     </div>
 </div>
 
