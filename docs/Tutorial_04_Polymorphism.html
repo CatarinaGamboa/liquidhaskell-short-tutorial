@@ -149,17 +149,15 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_03_Basic.html#'><b>3.3.</b> Subtyping</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>3.4.</b> Writing Specifications</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>3.5.</b> Refining Function Types: Pre-conditions</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>3.6.</b> Refining Function Types: Post-conditions</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>3.7.</b> Testing Values: Booleans and Propositions {#propositions}</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>3.8.</b> Putting It All Together</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.6.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.7.</b> Refining Function Types: Post-conditions</a></li>
 </ul>
 <li><a href='Tutorial_04_Polymorphism.html'><b>4.</b>Polymorphism {#polymorphism}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_04_Polymorphism.html#'><b>4.1.</b> Specification: Vector Bounds {#vectorbounds}</a></li>
 <li><a href='Tutorial_04_Polymorphism.html#'><b>4.2.</b> Verification: Vector Lookup</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>4.3.</b> Inference: Our First Recursive Function</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>4.4.</b> Higher-Order Functions: Bottling Recursion in a <code>loop</code></a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>4.5.</b> Recap</a></li>
+<li><a href='Tutorial_04_Polymorphism.html#'><b>4.3.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_04_Polymorphism.html#'><b>4.4.</b> Inference: Our First Recursive Function</a></li>
 </ul>
 <li><a href='Tutorial_05_Datatypes.html'><b>5.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
@@ -314,14 +312,6 @@ index <code>3</code> whereas the size of <code>twoLangs</code> is just
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">*VectorBounds</span><span class="op">&gt;</span> eeks</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Loading</span> package ... done.</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;*** Exception: ./Data/Vector/Generic.hs:249 ((!)): index out of bounds (3,2)</span></span></code></pre></div>
-<p><br />
-<strong>In a suitable Editor</strong> e.g. Vim or Emacs, or if you push
-the “play” button in the online demo, you will literally see the error
-<em>without</em> running the code. Lets see how LiquidHaskell checks
-<code>ok</code> and <code>yup</code> but flags <code>nono</code>, and
-along the way, learn how it reasons about <em>recursion</em>,
-<em>higher-order functions</em>, <em>data types</em> and
-<em>polymorphism</em>.</p>
 <section id="vectorbounds" class="level2">
 <h2>Specification: Vector Bounds</h2>
 <p>First, let’s see how to <em>specify</em> array bounds safety by
@@ -339,12 +329,6 @@ size.</li>
 <em>lack</em> the code – either directly in the client’s source file or
 better, in <code>.spec</code> files which can be reused across multiple
 client modules.</p>
-<p><br />
-<strong>Include</strong> directories can be specified when checking a
-file. Suppose we want to check some file <code>target.hs</code> that
-imports an external dependency <code>Data.Vector</code>. We can write
-specifications for <code>Data.Vector</code> inside
-<code>include/Data/Vector.spec</code> which contains:</p>
 <pre class="spec"><code>-- | Define the size
 measure vlen :: Vector a -&gt; Int
 
@@ -453,10 +437,122 @@ head vec = vec ! 0</div>
          VV  : Int | VV == ?a &amp;&amp; VV == 0
          vec : Vector a | 0 &lt;= vlen vec
          ?a  : Int | ?a == (0  :  int)</code></pre>
-<p>LiquidHaskell is saying that <code>0</code> is <em>not</em> a valid
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+<div id="question1"
+style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<p>
+What is the problem that the message is describing?
+</p>
+<label class="container"> It does not know what is the <code>!</code>
+operator <input type="radio" name="q1" value="1"> <span
+class="checkmark"></span> </label><br> <label class="container"> The
+index should be greater than 0 because the head is not accessible
+<input type="radio" name="q1" value="2"><span class="checkmark"></span>
+</label><br> <label class="container"> Zero is not a valid index if the
+list is empty. <input type="radio" name="q1" value="3"><span
+class="checkmark"></span> </label><br>
+<button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button>
+<p id="result1">
+</p>
+<p><input type="hidden" id="correctAnswer1" value="3"></p>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+Answer</button>
+<div id="collapsibleDiv">
+LiquidHaskell is saying that <code>0</code> is <em>not</em> a valid
 index as it is not between <code>0</code> and <code>vlen vec</code>. Say
 what? Well, what if <code>vec</code> had <em>no</em> elements! A formal
-verifier doesn’t make <em>off by one</em> errors.</p>
+verifier doesn’t make <em>off by one</em> errors.
+</div>
+</div>
 <p><br />
 <strong>To Fix</strong> the problem we can do one of two things.</p>
 <ol type="1">
@@ -576,196 +672,17 @@ vectorSum vec     = go 0 0
     sz            = length vec</div>
 </div>
 
-<div id="Guards" class="hwex">
-<p><br />
-<strong>Exercise: (Guards): </strong>What happens if you
-<em>replace</em> the guard with <code>i &lt;= sz</code>?</p>
-<br />
-<br />
-
-</div>
-<div id="Absolute Sum" class="hwex">
-<p><br />
-<strong>Exercise: (Absolute Sum): </strong>Write a variant of the above
-function that computes the <code>absoluteSum</code> of the elements of
-the vector.</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-11" class="programbox">-- >>> absoluteSum (fromList [1, -2, 3])
--- 6
-{-@ absoluteSum :: Vector Int -> Nat @-}
-absoluteSum     = undefined</div>
-</div>
-
 <p>LiquidHaskell verifies <code>vectorSum</code> – or, to be precise,
 the safety of the vector accesses <code>vec ! i</code>. The verification
-works out because LiquidHaskell is able to <em>automatically infer</em>
-<a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a></p>
+works out because LiquidHaskell is able to <em>automatically
+infer</em></p>
 <pre class="spec"><code>go :: Int -&gt; {v:Int | 0 &lt;= v &amp;&amp; v &lt;= sz} -&gt; Int</code></pre>
 <p>which states that the second parameter <code>i</code> is between
 <code>0</code> and the length of <code>vec</code> (inclusive).
 LiquidHaskell uses this and the test that <code>i &lt; sz</code> to
 establish that <code>i</code> is between <code>0</code> and
 <code>(vlen vec)</code> to prove safety.</p>
-<p><strong>Note</strong> you need to run <code>liquid</code> with the
-option <code>--no-termination</code> or make sure your source file has
-<code>{-@ LIQUID "--no-termination" @-},  otherwise the code for</code>go`
-fails the now default termination check. We will come back to this
-example later to see how to verify termination using metrics.</p>
-<div id="Off by one?" class="hwex">
-<p><br />
-<strong>Exercise: (Off by one?): </strong>Why does the type of
-<code>go</code> have <code>v &lt;= sz</code> and not
-<code>v &lt; sz</code> ?</p>
-<br />
-<br />
-
-</div>
 </section>
-<section id="higher-order-functions-bottling-recursion-in-a-loop"
-class="level2">
-<h2>Higher-Order Functions: Bottling Recursion in a
-<code>loop</code></h2>
-<p>Let’s refactor the above low-level recursive function into a generic
-higher-order <code>loop</code>.</p>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-12" class="programbox">loop :: Int -> Int -> a -> (Int -> a -> a) -> a
-loop lo hi base f =  go base lo
-  where
-    go acc i
-      | i < hi    = go (f i acc) (i + 1)
-      | otherwise = acc</div>
-</div>
-
-<p>We can now use <code>loop</code> to implement
-<code>vectorSum</code>:</p>
-<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-13" class="programbox">vectorSum'      :: Vector Int -> Int
-vectorSum' vec  = loop 0 n 0 body
-  where
-    body i acc  = acc + (vec ! i)
-    n           = length vec</div>
-</div>
-
-<p><br />
-<strong>Inference</strong> is a convenient option. LiquidHaskell
-finds:</p>
-<pre class="spec"><code>loop :: lo:Nat -&gt; hi:{Nat|lo &lt;= hi} -&gt; a -&gt; (Btwn lo hi -&gt; a -&gt; a) -&gt; a</code></pre>
-<p>In English, the above type states that</p>
-<ul>
-<li><code>lo</code> the loop <em>lower</em> bound is a non-negative
-integer</li>
-<li><code>hi</code> the loop <em>upper</em> bound is a greater then or
-equal to <code>lo</code>,</li>
-<li><code>f</code> the loop <em>body</em> is only called with integers
-between <code>lo</code> and <code>hi</code>.</li>
-</ul>
-<p> It can be tedious to have to keep typing things like the above. If
-we wanted to make <code>loop</code> a public or exported function, we
-could use the inferred type to generate an explicit signature.</p>
-<p>At the call <code>loop 0 n 0 body</code> the parameters
-<code>lo</code> and <code>hi</code> are instantiated with <code>0</code>
-and <code>n</code> respectively, which, by the way is where the
-inference engine deduces non-negativity. Thus LiquidHaskell concludes
-that <code>body</code> is only called with values of <code>i</code> that
-are <em>between</em> <code>0</code> and <code>(vlen vec)</code>, which
-verifies the safety of the call <code>vec ! i</code>.</p>
-<div id="Using Higher-Order Loops" class="hwex">
-<p><br />
-<strong>Exercise: (Using Higher-Order Loops): </strong>Complete the
-implementation of <code>absoluteSum'</code> below. When you are done,
-what is the type that is inferred for <code>body</code>?</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-14" class="programbox">-- >>> absoluteSum' (fromList [1, -2, 3])
--- 6
-{-@ absoluteSum' :: Vector Int -> Nat @-}
-absoluteSum' vec = loop 0 n 0 body
-  where
-    body i acc   = undefined
-    n            = length vec</div>
-</div>
-
-<div id="Dot Product" class="hwex">
-<br />
-<strong>Exercise: (Dot Product): </strong>The following uses
-<code>loop</code> to compute <code>dotProduct</code>s. Why does
-LiquidHaskell flag an error? Fix the code or specification so that
-LiquidHaskell accepts it.
-<br />
-<br />
-
-</div>
-<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-15" class="programbox">-- >>> dotProduct (fromList [1,2,3]) (fromList [4,5,6])
--- 32
-{-@ dotProduct :: x:Vector Int -> y:Vector Int -> Int @-}
-dotProduct x y = loop 0 sz 0 body
-  where
-    body i acc = acc + (x ! i)  *  (y ! i)
-    sz         = length x</div>
-</div>
-
-</section>
-<section id="recap" class="level2">
-<h2>Recap</h2>
-<p>This chapter gave you an idea of how one can use refinements to
-verify size related properties, and more generally, to specify and
-verify properties of recursive and polymorphic functions. Next, let’s
-see how we can use LiquidHaskell to prevent the creation of illegal
-values by refining data type definitions.</p>
-</section>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>In your editor, click on <code>go</code> to see the
-inferred type.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-</ol>
 </section>
 
 </div>

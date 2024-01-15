@@ -149,17 +149,15 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_03_Basic.html#'><b>3.3.</b> Subtyping</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>3.4.</b> Writing Specifications</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>3.5.</b> Refining Function Types: Pre-conditions</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>3.6.</b> Refining Function Types: Post-conditions</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>3.7.</b> Testing Values: Booleans and Propositions {#propositions}</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>3.8.</b> Putting It All Together</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.6.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.7.</b> Refining Function Types: Post-conditions</a></li>
 </ul>
 <li><a href='Tutorial_04_Polymorphism.html'><b>4.</b>Polymorphism {#polymorphism}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_04_Polymorphism.html#'><b>4.1.</b> Specification: Vector Bounds {#vectorbounds}</a></li>
 <li><a href='Tutorial_04_Polymorphism.html#'><b>4.2.</b> Verification: Vector Lookup</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>4.3.</b> Inference: Our First Recursive Function</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>4.4.</b> Higher-Order Functions: Bottling Recursion in a <code>loop</code></a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>4.5.</b> Recap</a></li>
+<li><a href='Tutorial_04_Polymorphism.html#'><b>4.3.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_04_Polymorphism.html#'><b>4.4.</b> Inference: Our First Recursive Function</a></li>
 </ul>
 <li><a href='Tutorial_05_Datatypes.html'><b>5.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
@@ -611,6 +609,96 @@ avg xs    = divide total n
     n     = length xs</div>
 </div>
 
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
 <div>
 <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
 Answer</button>
@@ -656,165 +744,6 @@ the above type by deducing that <code>n</code> is trivially non-negative
 when <code>0 &lt; n</code> and that in the <code>otherwise</code> case,
 the value <code>0 - n</code> is indeed non-negative. <a href="#fn5"
 class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-</section>
-<section id="propositions" class="level2">
-<h2>Testing Values: Booleans and Propositions</h2>
-<p>In the above example, we <em>compute</em> a value that is guaranteed
-to be a <code>Nat</code>. Sometimes, we need to <em>test</em> if a value
-satisfies some property, e.g., is <code>NonZero</code>. For example,
-let’s write a command-line <em>calculator</em>:</p>
-<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-18" class="programbox">calc = do putStrLn "Enter numerator"
-          n <- readLn
-          putStrLn "Enter denominator"
-          d <- readLn
-          putStrLn (result n d)
-          calc</div>
-</div>
-
-<p>which takes two numbers and divides them. The function
-<code>result</code> checks if <code>d</code> is strictly positive (and
-hence, non-zero), and does the division, or otherwise complains to the
-user:</p>
-<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-19" class="programbox">result n d
-  | isPositive d = "Result = " ++ show (n `divide` d)
-  | otherwise    = "Humph, please enter positive denominator!"</div>
-</div>
-
-<p>Finally, <code>isPositive</code> is a test that returns a
-<code>True</code> if its input is strictly greater than <code>0</code>
-or <code>False</code> otherwise:</p>
-<div id="program-pane-20" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-20" class="programbox">isPositive :: Int -> Bool
-isPositive x = x > 0</div>
-</div>
-
-<p><br />
-<strong>To verify</strong> the call to <code>divide</code> inside
-<code>result</code> we need to tell LiquidHaskell that the division only
-happens with a <code>NonZero</code> value <code>d</code>. However, the
-non-zero-ness is established via the <em>test</em> that occurs inside
-the guard <code>isPositive d</code>. Hence, we require a
-<em>post-condition</em> that states that <code>isPositive</code> only
-returns <code>True</code> when the argument is positive:</p>
-<div id="program-pane-21" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-21" class="programbox">{-@ isPositive :: x:Int -> {v:Bool | v <=> x > 0} @-}</div>
-</div>
-
-<p>In the above signature, the output type (post-condition) states that
-<code>isPositive x</code> returns <code>True</code> if and only if
-<code>x</code> was in fact strictly greater than <code>0</code>. In
-other words, we can write post-conditions for plain-old
-<code>Bool</code>-valued <em>tests</em> to establish that user-supplied
-values satisfy some desirable property (here, <code>Pos</code> and hence
-<code>NonZero</code>) in order to then safely perform some computation
-on it.</p>
-<div id="Propositions" class="hwex">
-<p><br />
-<strong>Exercise: (Propositions): </strong>What happens if you
-<em>delete</em> the type for <code>isPositive</code> ? Can you
-<em>change</em> the type for <code>isPositive</code> (i.e. write some
-other type) while preserving safety?</p>
-<br />
-<br />
-
-</div>
-<div id="Assertions" class="hwex">
-<p><br />
-<strong>Exercise: (Assertions): </strong>Consider the following <a
-href="https://www.haskell.org/hoogle/?hoogle=assert">assert</a>
-function, and two use sites. Write a suitable refinement type signature
-for <code>lAssert</code> so that <code>lAssert</code> and
-<code>yes</code> are accepted but <code>no</code> is rejected.</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-22" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-22" class="programbox">{-@ lAssert  :: Bool -> a -> a @-}
-lAssert True  x = x
-lAssert False _ = die "yikes, assertion fails!"
-
-yes = lAssert (1 + 1 == 2) ()
-no  = lAssert (1 + 1 == 3) ()</div>
-</div>
-
-<p><strong>Hint: </strong>You need a pre-condition that
-<code>lAssert</code> is only called with <code>True</code>.</p>
-</section>
-<section id="putting-it-all-together" class="level2">
-<h2>Putting It All Together</h2>
-<p>Let’s wrap up this introduction with a simple <code>truncate</code>
-function that connects all the dots.</p>
-<div id="program-pane-23" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-23" class="programbox">truncate :: Int -> Int -> Int
-truncate i max
-  | i' <= max' = i
-  | otherwise  = max' * (i `divide` i')
-    where
-      i'       = abs i
-      max'     = abs max</div>
-</div>
-
-<p> The expression <code>truncate i n</code> evaluates to <code>i</code>
-when the absolute value of <code>i</code> is less than the upper bound
-<code>max</code>, and otherwise <em>truncates</em> the value at the
-maximum <code>n</code>. LiquidHaskell verifies that the use of
-<code>divide</code> is safe by inferring that:</p>
-<ol type="1">
-<li><code>max' &lt; i'</code> from the branch condition,</li>
-<li><code>0 &lt;= i'</code> from the <code>abs</code> post-condition,
-and</li>
-<li><code>0 &lt;= max'</code> from the <code>abs</code>
-post-condition.</li>
-</ol>
-<p>From the above, LiquidHaskell infers that <code>i' /= 0</code>. That
-is, at the call site <code>i' :: NonZero</code>, thereby satisfying the
-pre-condition for <code>divide</code> and verifying that the program has
-no pesky divide-by-zero errors.</p>
 </section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
