@@ -138,11 +138,12 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_02_Logic.html'><b>3.</b>Logic &amp; SMT</a></li>
 <ul class='section'>
 <li><a href='Tutorial_02_Logic.html#'><b>3.1.</b> Syntax</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.2.</b> Semantics {#semantics}</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.3.</b> Verification Conditions</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.4.</b> Examples: Propositions</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.5.</b> Examples: Arithmetic</a></li>
-<li><a href='Tutorial_02_Logic.html#'><b>3.6.</b> Examples: Uninterpreted Function</a></li>
+<li><a href='Tutorial_02_Logic.html#'><b>3.2.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_02_Logic.html#'><b>3.3.</b> Semantics {#semantics}</a></li>
+<li><a href='Tutorial_02_Logic.html#'><b>3.4.</b> Verification Conditions</a></li>
+<li><a href='Tutorial_02_Logic.html#'><b>3.5.</b> Examples: Propositions</a></li>
+<li><a href='Tutorial_02_Logic.html#'><b>3.6.</b> Examples: Arithmetic</a></li>
+<li><a href='Tutorial_02_Logic.html#'><b>3.7.</b> Examples: Uninterpreted Function</a></li>
 </ul>
 <li><a href='Tutorial_03_Basic.html'><b>4.</b>Refinement Types</a></li>
 <ul class='section'>
@@ -362,10 +363,103 @@ role="doc-noteref"><sup>4</sup></a>), and <code>not</code>.</p>
        | (not p)                -- negation
        | true | True
        | false | False</code></pre>
-<p><br />
-<strong>Examples of Predicates</strong> include the following:</p>
-Can you select which of the following ones is not a valid predicate?
-!!Exercise
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv1() {
+    var div = document.getElementById('collapsibleDiv1');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+
+function toggleCollapsibleDiv2() {
+    var div = document.getElementById('collapsibleDiv2');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+<p>Can you select which of the following ones is not a valid
+predicate?</p>
 <div id="question2"
 style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <p>
@@ -389,23 +483,15 @@ zero?
 <p id="result2">
 </p>
 <p><input type="hidden" id="correctAnswer2" value="4"></p>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv2()">
 Answer</button>
-<div class="collapsibleDiv">
+<div id="collapsibleDiv2">
 All of them are valid syntatic expressions, except for
 <code>x ** y &gt; 0</code> since the operator ** is not part of the
 language.<br />
 
 </div>
 </div>
-<ul>
-<li><code>x /= 3</code></li>
-<li><code>x + y &lt;= 3 &amp;&amp; y &lt; 1</code></li>
-<li><code>x &lt; 10 ==&gt; y &lt; 10 ==&gt; x + y &lt; 20</code></li>
-<li><code>x ** y &gt; 0</code> &lt;—-<br />
-</li>
-<li><code>0 &lt; x + y &lt;=&gt; 0 &lt; y + x</code></li>
-</ul>
 </section>
 <section id="semantics" class="level2">
 <h2>Semantics</h2>
@@ -548,11 +634,10 @@ ex1 b = b || not b</div>
   <div id="program-5" class="programbox">ex2 b = b && not b</div>
 </div>
 
-!!Exercise
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv1()">
 Answer</button>
-<div class="collapsibleDiv">
+<div id="collapsibleDiv1">
 The correct answer would be: {-@ ex2 :: Bool -&gt; FALSE @-}
 </div>
 </div>
