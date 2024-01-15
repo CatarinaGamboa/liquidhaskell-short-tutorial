@@ -46,7 +46,7 @@ ghci> average [10, 20, 30, 40]
 
 <style>
 /* Add some basic styling */
-.collapsibleDiv {
+#collapsibleDiv {
   display: none;
   padding: 20px;
   border: 1px solid #ddd;
@@ -59,7 +59,7 @@ position: relative;
 padding-left: 35px;
 margin-bottom: 12px;
 cursor: pointer;
-font-size: 22px;
+font-size: 18px;
 -webkit-user-select: none;
 -moz-user-select: none;
 -ms-user-select: none;
@@ -140,14 +140,13 @@ function toggleCollapsibleDiv() {
  <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What should be the predicate of div to make it impossible to divide by zero?</p>
    <label class="container"> Yes, e.g., the list [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
-   <label class="container"> Yes, e.g., the list []   <input type="radio" name="q1" value="2"> </label><br>
-   <label class="container"> No, it should not crash. <input type="radio" name="q1" value="3"></label><br>
-   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button>
-   <p id="result1"></p>
+   <label class="container"> Yes, e.g., the list []   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
+   <label class="container"> No, it should not crash. <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
+   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
    <input type="hidden" id="correctAnswer1" value="2">
 
    <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
-    <div class="collapsibleDiv">
+    <div id="collapsibleDiv">
 If we call it with an empty list, we get a rather unpleasant crash: 
 *** Exception: divide by zero. We could write `average` more *defensively*, 
 returning a `Maybe` or `Either` value. However, this merely kicks
