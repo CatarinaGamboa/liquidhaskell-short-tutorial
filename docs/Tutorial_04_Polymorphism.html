@@ -132,7 +132,8 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_01_Introduction.html'><b>2.</b>Introduction {#intro}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_01_Introduction.html#'><b>2.1.</b> Well-Typed Programs Do Go Wrong {#gowrong}</a></li>
-<li><a href='Tutorial_01_Introduction.html#'><b>2.2.</b> Refinement Types</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>2.2.</b> collapsibleDiv {</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>2.3.</b> Refinement Types</a></li>
 </ul>
 <li><a href='Tutorial_02_Logic.html'><b>3.</b>Logic &amp; SMT</a></li>
 <ul class='section'>
@@ -160,15 +161,12 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_04_Polymorphism.html#'><b>5.2.</b> Verification: Vector Lookup</a></li>
 <li><a href='Tutorial_04_Polymorphism.html#'><b>5.3.</b> Inference: Our First Recursive Function</a></li>
 <li><a href='Tutorial_04_Polymorphism.html#'><b>5.4.</b> Higher-Order Functions: Bottling Recursion in a <code>loop</code></a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>5.5.</b> Refinements and Polymorphism {#sparsetype}</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>5.6.</b> Recap</a></li>
+<li><a href='Tutorial_04_Polymorphism.html#'><b>5.5.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_05_Datatypes.html'><b>6.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_05_Datatypes.html#'><b>6.1.</b> Sparse Vectors Revisited {#autosmart}</a></li>
-<li><a href='Tutorial_05_Datatypes.html#'><b>6.2.</b> Ordered Lists {#orderedlists}</a></li>
-<li><a href='Tutorial_05_Datatypes.html#'><b>6.3.</b> Ordered Trees {#binarysearchtree}</a></li>
-<li><a href='Tutorial_05_Datatypes.html#'><b>6.4.</b> Recap</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>6.2.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_06_Measure_Bool.html'><b>7.</b>Boolean Measures {#boolmeasures}</a></li>
 <ul class='section'>
@@ -366,12 +364,6 @@ assume length :: x:Vector a -&gt; {v:Int | v = vlen x}
 -- | Lookup at an index
 assume (!) :: x:Vector a -&gt; {v:Nat | v &lt; vlen x} -&gt; a</code></pre>
 </div>
-<p>Using this new specification is now a simple matter of telling
-LiquidHaskell to include this file:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> liquid <span class="at">-i</span> include/ target.hs</span></code></pre></div>
-<p>LiquidHaskell ships with specifications for <code>Prelude</code>,
-<code>Data.List</code>, and <code>Data.Vector</code> which it includes
-by default.</p>
 <p><br />
 <strong>Measures</strong> are used to define <em>properties</em> of
 Haskell data values that are useful for specification and verification.
@@ -766,89 +758,6 @@ dotProduct x y = loop 0 sz 0 body
     sz         = length x</div>
 </div>
 
-</section>
-<section id="sparsetype" class="level2">
-<h2>Refinements and Polymorphism</h2>
-<p>While the standard <code>Vector</code> is great for <em>dense</em>
-arrays, often we have to manipulate <em>sparse</em> vectors where most
-elements are just <code>0</code>. We might represent such vectors as a
-list of index-value tuples:</p>
-<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-16" class="programbox">{-@ type SparseN a N = [(Btwn 0 N, a)] @-}</div>
-</div>
-
-<p>Implicitly, all indices <em>other</em> than those in the list have
-the value <code>0</code> (or the equivalent value for the type
-<code>a</code>).</p>
-<p><br />
-<strong>The Alias</strong> <code>SparseN</code> is just a shorthand for
-the (longer) type on the right, it does not <em>define</em> a new type.
-If you are familiar with the <em>index-style</em> length encoding
-e.g. as found in <a
-href="https://en.wikipedia.org/wiki/Dependent_ML">DML</a> or <a
-href="http://code.haskell.org/Agda/examples/Vec.agda">Agda</a>, then
-note that despite appearances, our <code>Sparse</code> definition is
-<em>not</em> indexed.</p>
-<p>Let’s write a function to compute a sparse product</p>
-<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-17" class="programbox">{-@ sparseProduct  :: x:Vector _ -> SparseN _ (vlen x) -> _ @-}
-sparseProduct x y   = go 0 y
-  where
-    go n []         = n
-    go n ((i,v):y') = go (n + (x!i) * v) y'</div>
-</div>
-
-<p>LiquidHaskell verifies the above by using the specification to
-conclude that for each tuple <code>(i, v)</code> in the list
-<code>y</code>, the value of <code>i</code> is within the bounds of the
-vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
-<p>The sharp reader will have undoubtedly noticed that the sparse
-product can be more cleanly expressed as a <a
-href="https://hackage.haskell.org/package/base-4.18.0.0/docs/Data-List.html#v:foldl">fold</a>:</p>
-<pre class="spec"><code>foldl&#39; :: (a -&gt; b -&gt; a) -&gt; a -&gt; [b] -&gt; a</code></pre>
-<p>We can simply fold over the sparse vector, accumulating the
-<code>sum</code> as we go along</p>
-<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-18" class="programbox">{-@ sparseProduct'  :: x:Vector _ -> SparseN _ (vlen x) -> _ @-}
-sparseProduct' x y  = foldl' body 0 y
-  where
-    body sum (i, v) = sum + (x ! i) * v</div>
-</div>
-
-<p> LiquidHaskell digests this without difficulty. The main trick is in
-how the polymorphism of <code>foldl'</code> is instantiated.</p>
-<ol type="1">
-<li><p>GHC infers that at this site, the type variable <code>b</code>
-from the signature of <code>foldl'</code> is instantiated to the Haskell
-type <code>(Int, a)</code>.</p></li>
-<li><p>Correspondingly, LiquidHaskell infers that in fact <code>b</code>
-can be instantiated to the <em>refined</em>
-<code>(Btwn 0 (vlen x), a)</code>.</p></li>
-</ol>
-<p>Thus, the inference mechanism saves us a fair bit of typing and
-allows us to reuse existing polymorphic functions over containers and
-such without ceremony.</p>
 </section>
 <section id="recap" class="level2">
 <h2>Recap</h2>
