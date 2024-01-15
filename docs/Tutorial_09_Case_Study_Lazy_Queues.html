@@ -183,22 +183,12 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.6.</b> Dimension Safe Matrix API</a></li>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.7.</b> Recap</a></li>
 </ul>
-<li><a href='Tutorial_08_Measure_Set.html'><b>8.</b>Elemental Measures {#setmeasure}</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>8.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.1.</b> Talking about Sets</a></li>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.2.</b> Proving QuickCheck Style Properties {#quickcheck}</a></li>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.3.</b> Content-Aware List API {#listelems}</a></li>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.4.</b> Permutations</a></li>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.5.</b> Uniqueness</a></li>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.6.</b> Unique Zippers</a></li>
-<li><a href='Tutorial_08_Measure_Set.html#'><b>8.7.</b> Recap</a></li>
-</ul>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>9.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
-<ul class='section'>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>9.1.</b> Queues</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>9.2.</b> Sized Lists</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>9.3.</b> Queue Type</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>9.4.</b> Recap</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.1.</b> Queues</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.2.</b> Sized Lists</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.3.</b> Queue Type</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.4.</b> Recap</a></li>
 </ul>
 </ul>
 
@@ -415,17 +405,17 @@ the real size:</p>
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv1()">
 Answer</button>
-<div class="collapsibleDiv">
+<div id="collapsibleDiv1">
 {-@ measure realSize @-} realSize :: [a] -&gt; Int realSize [] = 0
 realSize (_:xs) = 1 + realSize xs<br />
 
 </div>
 </div>
-<p>Now, specify a <em>refined</em> type for <code>SList</code> that
-ensures that the <em>real</em> size is saved in the <code>size</code>
-field. Do it by replacing the questions marks below.</p>
+<p>Now, we can specify a <em>refined</em> type for <code>SList</code>
+that ensures that the <em>real</em> size is saved in the
+<code>size</code> field.</p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -436,19 +426,11 @@ field. Do it by replacing the questions marks below.</p>
  
   <div id="program-3" class="programbox">{-@ data SList a = SL {
       size  :: Nat
-    , elems :: ??
+    , elems :: {v:[a] | realSize v = size}
     }
 @-}</div>
 </div>
 
-<div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
-Answer</button>
-<div class="collapsibleDiv">
-{-@ data SList a = SL { size :: Nat , elems :: {v:[a] | realSize v =
-size} } @-}
-</div>
-</div>
 <p>As a sanity check, consider this:</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
@@ -477,10 +459,8 @@ badList = SL 1 []         -- rejected</div>
   <div id="program-5" class="programbox">{-@ type SListN a N = {v:SList a | size v = N} @-}</div>
 </div>
 
-<p> Finally, we can define a basic API for <code>SList</code>.</p>
 <p><br />
-<strong>To Construct lists</strong>, we use <code>nil</code> and
-<code>cons</code>:</p>
+<strong>Now define an alias</strong> for lists that are not empty:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -489,7 +469,29 @@ badList = SL 1 []         -- rejected</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">{-@ nil :: SListN a 0 @-}
+  <div id="program-6" class="programbox">{-@ type NEList a = ?? @-}</div>
+</div>
+
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv3()">
+Answer</button>
+<div id="collapsibleDiv3">
+{-@ type NEList a = {v:SList a | size v &gt; 0} @-}
+</div>
+</div>
+<p> Finally, we can define a basic API for <code>SList</code>.</p>
+<p><br />
+<strong>To Construct lists</strong>, we use <code>nil</code> and
+<code>cons</code>:</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ nil :: SListN a 0 @-}
 nil = SL 0 []
 
 {-@ cons :: a -> xs:SList a -> SListN a {size xs + 1} @-}
@@ -500,13 +502,13 @@ cons x (SL n xs) = SL (n+1) (x:xs)</div>
 <p><br />
 <strong>Exercise: (Destructing Lists): </strong>We can destruct lists by
 writing a <code>hd</code> and <code>tl</code> function as shown below.
-Fix the specification on both functions so the definitions
+Now, fix the specification on both functions so the definitions
 typecheck.</p>
 <br />
 <br />
 
 </div>
-<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -514,7 +516,7 @@ typecheck.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ tl           :: xs:SList a -> SListN a {size xs - 1}  @-}
+  <div id="program-8" class="programbox">{-@ tl           :: xs:SList a -> SListN a {size xs - 1}  @-}
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
@@ -525,27 +527,6 @@ hd _             = die "empty SList"</div>
 
 <p><strong>Hint: </strong>When you are done, <code>okHd</code> should be
 verified, but <code>badHd</code> should be rejected.</p>
-<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-8" class="programbox">{-@ okList :: SListN String 1 @-}
-
-okHd  = hd okList       -- accepted
-
-badHd = hd (tl okList)  -- rejected</div>
-</div>
-
-</section>
-<section id="queue-type" class="level2">
-<h2>Queue Type</h2>
-<p>It is quite straightforward to define the <code>Queue</code> type, as
-a pair of lists, <code>front</code> and <code>back</code>, such that the
-latter is always smaller than the former:</p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -554,7 +535,37 @@ latter is always smaller than the former:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">{-@ data Queue a = Q {
+  <div id="program-9" class="programbox">{-@ okList :: SListN String 1 @-}
+
+okHd  = hd okList       -- accepted
+
+badHd = hd (tl okList)  -- rejected</div>
+</div>
+
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv2()">
+Answer</button>
+<div id="collapsibleDiv2">
+<p>{-@ tl :: xs:NEList a -&gt; SListN a {size xs - 1} @-} tl (SL n
+(_:xs)) = SL (n-1) xs</p>
+{-@ hd :: xs:NEList a -&gt; a @-} hd (SL _ (x:_)) = x
+</div>
+</div>
+</section>
+<section id="queue-type" class="level2">
+<h2>Queue Type</h2>
+<p>It is quite straightforward to define the <code>Queue</code> type, as
+a pair of lists, <code>front</code> and <code>back</code>, such that the
+latter is always smaller than the former:</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ data Queue a = Q {
       front :: SList a
     , back  :: SListLE a (size front)
     }
@@ -568,19 +579,6 @@ data Queue a = Q
 <p><br />
 <strong>The alias</strong> <code>SListLE a L</code> corresponds to lists
 with at most <code>N</code> elements:</p>
-<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-10" class="programbox">{-@ type SListLE a N = {v:SList a | size v <= N} @-}</div>
-</div>
-
-<p> As a quick check, notice that we <em>cannot represent illegal
-Queues</em>:</p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -589,7 +587,20 @@ Queues</em>:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">okQ  = Q okList nil  -- accepted, |front| > |back|
+  <div id="program-11" class="programbox">{-@ type SListLE a N = {v:SList a | size v <= N} @-}</div>
+</div>
+
+<p> As a quick check, notice that we <em>cannot represent illegal
+Queues</em>:</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">okQ  = Q okList nil  -- accepted, |front| > |back|
 
 badQ = Q nil okList  -- rejected, |front| < |back|</div>
 </div>
