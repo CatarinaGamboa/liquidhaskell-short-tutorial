@@ -1,6 +1,49 @@
 Introduction {#intro}
 ============
 
+
+\begin{comment}
+\begin{code}
+{-# LANGUAGE CPP #-}
+
+module Tutorial_01_Introduction where
+main = putStrLn "Intro"
+
+-- {-@ ignore average @-}
+
+\end{code}
+\end{comment}
+
+Welcome to the LiquidHaskell Short Tutorial, where you will learn the basic workings 
+of LiquidHaskell and complete some exercises.
+The full version of the tutorial can be found in the [project's website](https://ucsd-progsys.github.io/liquidhaskell-tutorial/Tutorial_01_Introduction.html).
+
+One of the great things about Haskell is its brainy type system that
+allows one to enforce a variety of invariants at compile time, thereby
+nipping in the bud a large swathe of run-time [errors](#getting-started).
+
+Well-Typed Programs Do Go Wrong {#gowrong}
+------------------------------------------
+
+Alas, well-typed programs *do* go quite wrong, in a variety of ways.
+
+\newthought{Division by Zero} This innocuous function computes the average
+of a list of integers:
+
+\begin{code}
+average    :: [Int] -> Int
+average xs = sum xs `div` length xs
+\end{code}
+
+We get the desired result on a non-empty list of numbers:
+
+~~~~~{.ghci}
+ghci> average [10, 20, 30, 40]
+25
+~~~~~
+
+
+
 <style>
 /* Add some basic styling */
 .collapsibleDiv {
@@ -93,47 +136,6 @@ function toggleCollapsibleDiv() {
 }
 </script>
 
-
-
-\begin{comment}
-\begin{code}
-{-# LANGUAGE CPP #-}
-
-module Tutorial_01_Introduction where
-main = putStrLn "Intro"
-
--- {-@ ignore average @-}
-
-\end{code}
-\end{comment}
-
-Welcome to the LiquidHaskell Short Tutorial, where you will learn the basic workings 
-of LiquidHaskell and complete some exercises.
-The full version of the tutorial can be found in the [project's website](https://ucsd-progsys.github.io/liquidhaskell-tutorial/Tutorial_01_Introduction.html).
-
-One of the great things about Haskell is its brainy type system that
-allows one to enforce a variety of invariants at compile time, thereby
-nipping in the bud a large swathe of run-time [errors](#getting-started).
-
-Well-Typed Programs Do Go Wrong {#gowrong}
-------------------------------------------
-
-Alas, well-typed programs *do* go quite wrong, in a variety of ways.
-
-\newthought{Division by Zero} This innocuous function computes the average
-of a list of integers:
-
-\begin{code}
-average    :: [Int] -> Int
-average xs = sum xs `div` length xs
-\end{code}
-
-We get the desired result on a non-empty list of numbers:
-
-~~~~~{.ghci}
-ghci> average [10, 20, 30, 40]
-25
-~~~~~
 
  <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What should be the predicate of div to make it impossible to divide by zero?</p>
