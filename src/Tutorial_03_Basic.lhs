@@ -293,6 +293,99 @@ avg xs    = divide total n
     n     = length xs
 \end{code}
 
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+  
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+
 <div>
    <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
     <div class="collapsibleDiv">
@@ -330,113 +423,5 @@ is able to automatically make these arithmetic deductions
 by using an [SMT solver][smt-wiki] which has built-in
 decision procedures for arithmetic, to reason about the
 logical refinements.]
-
-Testing Values: Booleans and Propositions {#propositions}
------------------------------------------
-
-In the above example, we *compute* a value that is guaranteed to be a `Nat`.
-Sometimes, we need to *test* if a value satisfies some property, e.g., is `NonZero`.
-For example, let's write a command-line *calculator*:
-
-\begin{code}
-calc = do putStrLn "Enter numerator"
-          n <- readLn
-          putStrLn "Enter denominator"
-          d <- readLn
-          putStrLn (result n d)
-          calc
-\end{code}
-
-\noindent which takes two numbers and divides them.
-The function `result` checks if `d` is strictly positive
-(and hence, non-zero), and does the division, or otherwise
-complains to the user:
-
-\begin{code}
-result n d
-  | isPositive d = "Result = " ++ show (n `divide` d)
-  | otherwise    = "Humph, please enter positive denominator!"
-\end{code}
-
-Finally, `isPositive` is a test that returns a `True` if
-its input is strictly greater than `0` or `False` otherwise:
-
-\begin{code}
-isPositive :: Int -> Bool
-isPositive x = x > 0
-\end{code}
-
-\newthought{To verify} the call to `divide` inside `result`
-we need to tell LiquidHaskell that the division only happens with a `NonZero`
-value `d`. However, the non-zero-ness is established via the *test*
-that occurs inside the guard `isPositive d`. Hence, we require a
-*post-condition* that states that `isPositive` only returns `True`
-when the argument is positive:
-
-\begin{code}
-{-@ isPositive :: x:Int -> {v:Bool | v <=> x > 0} @-}
-\end{code}
-
-In the above signature, the output type (post-condition)
-states that `isPositive x` returns `True` if and only if
-`x` was in fact strictly greater than `0`. In other words,
-we can write post-conditions for plain-old `Bool`-valued *tests*
-to establish that user-supplied values satisfy some desirable
-property (here, `Pos` and hence `NonZero`) in order to then
-safely perform some computation on it.
-
-<div class="hwex" id="Propositions">
-What happens if you *delete* the type for `isPositive` ?
-Can you *change* the type for `isPositive` (i.e. write some other type)
-while preserving safety?
-</div>
-
-<div class="hwex" id="Assertions">
-Consider the following [assert][hoogle-assert] function, and two use sites.
-Write a suitable refinement type signature for `lAssert` so that
-`lAssert` and `yes` are accepted but `no` is rejected.
-</div>
-
-\begin{code}
-{-@ lAssert  :: Bool -> a -> a @-}
-lAssert True  x = x
-lAssert False _ = die "yikes, assertion fails!"
-
-yes = lAssert (1 + 1 == 2) ()
-no  = lAssert (1 + 1 == 3) ()
-\end{code}
-
-\hint You need a pre-condition that `lAssert` is only called with `True`.
-
-Putting It All Together
------------------------
-
-Let's wrap up this introduction with a simple `truncate` function
-that connects all the dots.
-
-\begin{code}
-truncate :: Int -> Int -> Int
-truncate i max
-  | i' <= max' = i
-  | otherwise  = max' * (i `divide` i')
-    where
-      i'       = abs i
-      max'     = abs max
-\end{code}
-
-\noindent
-The expression `truncate i n` evaluates to `i` when the absolute value
-of `i` is less than the upper bound `max`, and otherwise *truncates* the value
-at the maximum `n`. LiquidHaskell verifies that the use of `divide` is
-safe by inferring that:
-
-1. `max' < i'` from the branch condition,
-2. `0 <= i'`   from the `abs` post-condition, and
-3. `0 <= max'` from the `abs` post-condition.
-
-From the above, LiquidHaskell infers that `i' /= 0`. That is, at the
-call site `i' :: NonZero`, thereby satisfying the pre-condition
-for `divide` and verifying that the program has no pesky
-divide-by-zero errors.
 
 

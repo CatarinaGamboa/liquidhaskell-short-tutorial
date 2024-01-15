@@ -74,15 +74,6 @@ Loading package ... done.
 "*** Exception: ./Data/Vector/Generic.hs:249 ((!)): index out of bounds (3,2)
 ~~~~~
 
-\newthought{In a suitable Editor} e.g. Vim or Emacs,
-or if you push the "play" button in the online demo,
-you will literally see the error *without*
-running the code. Lets see how LiquidHaskell
-checks `ok` and `yup` but flags `nono`, and along
-the way, learn how it reasons about *recursion*,
-*higher-order functions*, *data types* and *polymorphism*.
-
-
 Specification: Vector Bounds {#vectorbounds}
 --------------------------------------------
 
@@ -101,11 +92,6 @@ We can write specifications for imported modules -- for which we
 *lack* the code -- either directly in the client's source file or
 better, in `.spec` files which can be reused across multiple client
 modules.
-
-\newthought{Include} directories can be specified when checking a file.
-Suppose we want to check some file `target.hs` that imports an external
-dependency `Data.Vector`. We can write specifications for `Data.Vector`
-inside `include/Data/Vector.spec` which contains:
 
 ~~~~~{.spec}
 -- | Define the size
@@ -198,10 +184,121 @@ When we check the above, we get an error:
          ?a  : Int | ?a == (0  :  int)
 ~~~~~
 
-\noindent LiquidHaskell is saying that `0` is *not* a valid index
+\noindent 
+
+
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+  
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+
+ <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+   <p>What is the problem that the message is describing?</p>
+   <label class="container"> It does not know what is the `!` operator <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+   <label class="container"> The index should be greater than 0 because the head is not accessible <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
+   <label class="container"> Zero is not a valid index if the list is empty.   <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
+   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
+   <input type="hidden" id="correctAnswer1" value="3">
+
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div id="collapsibleDiv">
+LiquidHaskell is saying that `0` is *not* a valid index
 as it is not between `0` and `vlen vec`. Say what? Well, what if
 `vec` had *no* elements! A formal verifier doesn't
 make *off by one* errors.
+    </div>
+</div>
+
+
+
 
 \newthought{To Fix} the problem we can do one of two things.
 
@@ -274,28 +371,12 @@ vectorSum vec     = go 0 0
     sz            = length vec
 \end{code}
 
-<div class="hwex" id="Guards">
-What happens if you *replace* the guard with `i <= sz`?
-</div>
-
-<div class="hwex" id="Absolute Sum">
-Write a variant of the above function that computes the
-`absoluteSum` of the elements of the vector.
-</div>
-
-\begin{code}
--- >>> absoluteSum (fromList [1, -2, 3])
--- 6
-{-@ absoluteSum :: Vector Int -> Nat @-}
-absoluteSum     = undefined
-\end{code}
-
 
 \newthought{Inference}
 LiquidHaskell verifies `vectorSum` -- or, to be precise,
 the safety of the vector accesses `vec ! i`. 
 The verification works out because LiquidHaskell is able to
-*automatically infer* ^[In your editor, click on `go` to see the inferred type.]
+*automatically infer* 
 
 ~~~~~{.spec}
 go :: Int -> {v:Int | 0 <= v && v <= sz} -> Int
@@ -305,104 +386,3 @@ go :: Int -> {v:Int | 0 <= v && v <= sz} -> Int
 between `0` and the length of `vec` (inclusive). LiquidHaskell
 uses this and the test that `i < sz` to establish that `i` is
 between `0` and `(vlen vec)` to prove safety.
-
-**Note** you need to run `liquid` with the option `--no-termination` 
-or make sure your source file has `{-@ LIQUID "--no-termination" @-}, 
-otherwise the code for `go` fails the now default termination check.
-We will come back to this example later to see how to verify termination
-using metrics.
-
-<div class="hwex" id="Off by one?">
-Why does the type of `go` have `v <= sz` and not `v < sz` ?
-</div>
-
-Higher-Order Functions: Bottling Recursion in a `loop`
-------------------------------------------------------
-
-Let's refactor the above low-level recursive function
-into a generic higher-order `loop`.
-
-\begin{code}
-loop :: Int -> Int -> a -> (Int -> a -> a) -> a
-loop lo hi base f =  go base lo
-  where
-    go acc i
-      | i < hi    = go (f i acc) (i + 1)
-      | otherwise = acc
-\end{code}
-
-We can now use `loop` to implement `vectorSum`:
-
-\begin{code}
-vectorSum'      :: Vector Int -> Int
-vectorSum' vec  = loop 0 n 0 body
-  where
-    body i acc  = acc + (vec ! i)
-    n           = length vec
-\end{code}
-
-\newthought{Inference} is a convenient option. LiquidHaskell finds:
-
-~~~~~{.spec}
-loop :: lo:Nat -> hi:{Nat|lo <= hi} -> a -> (Btwn lo hi -> a -> a) -> a
-~~~~~
-
-\noindent In English, the above type states that
-
-- `lo` the loop *lower* bound is a non-negative integer
-- `hi` the loop *upper* bound is a greater then or equal to `lo`,
-- `f`  the loop *body* is only called with integers between `lo` and `hi`.
-
-\noindent
-It can be tedious to have to keep typing things like the above.
-If we wanted to make `loop` a public or exported function, we
-could use the inferred type to generate an explicit signature.
-
-At the call `loop 0 n 0 body` the parameters `lo` and `hi` are
-instantiated with `0` and `n` respectively, which, by the way
-is where the inference engine deduces non-negativity.
-Thus LiquidHaskell concludes that `body` is only called with
-values of `i` that are *between* `0` and `(vlen vec)`, which
-verifies the safety of the call `vec ! i`.
-
-<div class="hwex" id="Using Higher-Order Loops">
-Complete the implementation of `absoluteSum'` below.
-When you are done, what is the type that is inferred for `body`?
-</div>
-
-\begin{code}
--- >>> absoluteSum' (fromList [1, -2, 3])
--- 6
-{-@ absoluteSum' :: Vector Int -> Nat @-}
-absoluteSum' vec = loop 0 n 0 body
-  where
-    body i acc   = undefined
-    n            = length vec
-\end{code}
-
-<div class="hwex" id="Dot Product">
-The following uses `loop` to compute
-`dotProduct`s. Why does LiquidHaskell flag an error?
-Fix the code or specification so that LiquidHaskell
-accepts it. </div>
-
-\begin{code}
--- >>> dotProduct (fromList [1,2,3]) (fromList [4,5,6])
--- 32
-{-@ dotProduct :: x:Vector Int -> y:Vector Int -> Int @-}
-dotProduct x y = loop 0 sz 0 body
-  where
-    body i acc = acc + (x ! i)  *  (y ! i)
-    sz         = length x
-\end{code}
-
-Recap
------
-
-
-This chapter gave you an idea of how one can use refinements
-to verify size related properties, and more generally, to
-specify and verify properties of recursive and polymorphic
-functions. Next, let's see how we can use LiquidHaskell to
-prevent the creation of illegal values by refining data
-type definitions.
