@@ -129,14 +129,34 @@ if ^[Read `p <=> q` as "if `p` then `q` **and** if `q` then `p`"]), and `not`.
 
 Can you select which of the following ones is not a valid predicate?
 
+ <div id="question2" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+   <p>What should be the predicate of div to make it impossible to divide by zero?</p>
+   <label class="container"> `x /= 3`                               <input type="radio" name="q2" value="1"> <span class="checkmark"></span> </label><br>
+   <label class="container"> `x + y <= 3 && y < 1`                  <input type="radio" name="q2" value="2"> </label><br>
+   <label class="container"> `x < 10 ==> y < 10 ==> x + y < 20`     <input type="radio" name="q2" value="3"></label><br>
+   <label class="container"> `x ** y > 0 `                          <input type="radio" name="q2" value="4"></label><br>
+   <label class="container"> `0 < x + y <=> 0 < y + x`              <input type="radio" name="q2" value="5"></label><br>
+   
+   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(2)">Submit</button>
+   <p id="result2"></p>
+   <input type="hidden" id="correctAnswer2" value="4">
+
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div class="collapsibleDiv">
+All of them are valid syntatic expressions, except for `x ** y > 0 ` since 
+the operator ** is not part of the language.   
+    </div>
+</div>
+
+
+
 + `x /= 3`
 + `x + y <= 3 && y < 1`
 + `x < 10 ==> y < 10 ==> x + y < 20`
 + `x ** y > 0 ` <----  
 + `0 < x + y <=> 0 < y + x`
 
-All of them are valid syntatic expressions, except for `x ** y > 0 ` since 
-the operator ** is not part of the language.
+
 
 
 
@@ -267,6 +287,12 @@ and `False`. Write a predicate for ex2 with that meaning:
 ex2 b = b && not b
 \end{code}
 !!Exercise
+
+ <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div class="collapsibleDiv">
+The correct answer would be: {-@ ex2 :: Bool -> FALSE @-}
+    </div>
+</div>
 
 
 
