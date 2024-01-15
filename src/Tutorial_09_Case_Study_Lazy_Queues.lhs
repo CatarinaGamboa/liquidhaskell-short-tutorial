@@ -138,26 +138,49 @@ analysis. (Actually, he presents a variant which does *not*
 require saving the size as well, but that's for another day.)
 
 How can we be sure that `size` is indeed the *real size* of `elems`?
-Let's write a function to *measure* the real size:
+Write a function to *measure* the real size:
 
 \begin{code}
 {-@ measure realSize @-}
+
+\end{code}
+
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div class="collapsibleDiv">
+{-@ measure realSize @-}
 realSize      :: [a] -> Int
 realSize []     = 0
-realSize (_:xs) = 1 + realSize xs
+realSize (_:xs) = 1 + realSize xs   
+    </div>
+</div>
+
+
+Now, specify a *refined* type for `SList` that ensures
+that the *real* size is saved in the `size` field.
+Do it by replacing the questions marks below.
+
+\begin{code}
+{-@ data SList a = SL {
+      size  :: Nat
+    , elems :: ??
+    }
+@-}
 \end{code}
 
 
-Now, we can simply specify a *refined* type for `SList` that ensures
-that the *real* size is saved in the `size` field:
-
-\begin{code}
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div class="collapsibleDiv">
 {-@ data SList a = SL {
       size  :: Nat
     , elems :: {v:[a] | realSize v = size}
     }
 @-}
-\end{code}
+    </div>
+</div>
+
+
 
 As a sanity check, consider this:
 
@@ -187,8 +210,8 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 \end{code}
 
 <div class="hwex" id="Destructing Lists">We can destruct lists by writing a `hd` and `tl`
-function as shown below. Fix the specification or implementation such that the definitions
-typecheck.
+function as shown below. 
+Fix the specification or implementation such that the definitions typecheck.
 </div>
 
 \begin{code}

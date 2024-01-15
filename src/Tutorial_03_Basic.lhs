@@ -161,29 +161,21 @@ the following *logical implications* are valid:
 + $v = 0 \Rightarrow v \ \mbox{mod}\ 2 = 0$
 + $v = 0 \Rightarrow v < 100$
 
-\begin{comment}
-Chris Tetreault: I believe that this whole section (within this comment block)
-can be eliminated. It should be clear to anybody who's still following at this
-point that if I can make a small boolean expression (Nat, Even, Lt100), that
-I can make a massive boolean expression (Nat && Even && Lt100). I fell that this
-section just uses a bunch of math runes to confuse us mere mortals, but doesn't
-really add much.
 
-\newthought{Composing Refinements}
-If $P \Rightarrow Q$ and $P \Rightarrow R$ then $P \Rightarrow Q \wedge R$.
-Thus, when a term satisfies multiple refinements, we can compose those
-refinements with `&&`:
+Now let us try a new predicate.
+Write a type for the numbers that represent a percentage (between 0 and 100) 
+by replacing the TRUE predicate.
+Then run the code, and the first example should be correct and the second should not.
 
 \begin{code}
-{-@ zero'''' :: {v:Int | 0 <= v && v mod 2 == 0 && v < 100} @-}
-zero'''' :: Int
-zero''''     = 0
-\end{code}
-\end{comment}
+{-@ type Percentage = TRUE  @-}
 
-\begin{comment}
-ES: this is confusingly worded
-\end{comment}
+{-@ percentT  :: Percentage  @-}
+percentT    = 10
+{-@ percentF  :: Percentage  @-}
+percentF    = 10 + 99
+\end{code}
+
 
 \newthought{In Summary} the key points about refinement types are:
 
@@ -442,16 +434,3 @@ for `divide` and verifying that the program has no pesky
 divide-by-zero errors.
 
 
-Recap
------
-
-This concludes our quick introduction to Refinement Types and
-LiquidHaskell. Hopefully you have some sense of how to
-
-1. **Specify** fine-grained properties of values by decorating their
-   types with logical predicates.
-2. **Encode** assertions, pre-conditions, and post-conditions with suitable
-   function types.
-3. **Verify** semantic properties of code by using automatic logic engines
-   (SMT solvers) to track and establish the key relationships between
-   program values.
