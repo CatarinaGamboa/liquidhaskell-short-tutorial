@@ -161,25 +161,19 @@ MathJax.Hub.Config({
 </ul>
 <li><a href='Tutorial_05_Datatypes.html'><b>5.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_05_Datatypes.html#'><b>5.1.</b> Sparse Vectors Revisited {#autosmart}</a></li>
-<li><a href='Tutorial_05_Datatypes.html#'><b>5.2.</b> Recap</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>5.1.</b> Sparse Vectors {#autosmart}</a></li>
 </ul>
 <li><a href='Tutorial_06_Measure_Bool.html'><b>6.</b>Boolean Measures {#boolmeasures}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_06_Measure_Bool.html#'><b>6.1.</b> Partial Functions</a></li>
 <li><a href='Tutorial_06_Measure_Bool.html#'><b>6.2.</b> Lifting Functions to Measures {#usingmeasures}</a></li>
-<li><a href='Tutorial_06_Measure_Bool.html#'><b>6.3.</b> A Safe List API</a></li>
-<li><a href='Tutorial_06_Measure_Bool.html#'><b>6.4.</b> Recap</a></li>
+<li><a href='Tutorial_06_Measure_Bool.html#'><b>6.3.</b> collapsibleDiv {</a></li>
 </ul>
 <li><a href='Tutorial_07_Measure_Int.html'><b>7.</b>Numeric Measures {#numericmeasure}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.1.</b> Wholemeal Programming</a></li>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.2.</b> Specifying List Dimensions</a></li>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.3.</b> Lists: Size Preserving API</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.4.</b> Lists: Size Reducing API {#listreducing}</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.5.</b> Dimension Safe Vector API</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.6.</b> Dimension Safe Matrix API</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.7.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>8.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
 <ul class='section'>
@@ -442,8 +436,8 @@ href="#semantics">implication</a> in the output refinement.</p>
 </div>
 
 <p><br />
-<strong>Average</strong> is only sensible for non-empty lists. Happily,
-we can specify this using the refined <code>NEList</code> type:</p>
+<strong>Average</strong> is only sensible for non-empty lists. Add a
+specification to average using the type NEList.</p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -459,32 +453,102 @@ average xs = divide total elems
     elems  = size xs</div>
 </div>
 
-<div id="Average, Maybe" class="hwex">
-<p><br />
-<strong>Exercise: (Average, Maybe): </strong>Fix the code below to
-obtain an alternate variant <code>average'</code> that returns
-<code>Nothing</code> for empty lists:</p>
-<br />
-<br />
+<style>
+/* Add some basic styling */
+#collapsibleDiv {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+/* The container */
+.container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 18px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
 
+/* Hide the browser's default radio button */
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 25px;
+width: 25px;
+background-color: #eee;
+border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ top: 9px;
+left: 9px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: white;
+}
+</style>
+<script>
+function checkAnswer(questionNumber) {
+    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+    const resultElement = document.getElementById(`result${questionNumber}`);
+
+    if (selectedAnswer === correctAnswer) {
+       resultElement.textContent = 'Correct!';
+    } else {
+       resultElement.textContent = 'Incorrect. Please try again.';
+    }
+}
+
+function toggleCollapsibleDiv() {
+    var div = document.getElementById('collapsibleDiv');
+    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+Answer</button>
+<div id="collapsibleDiv">
+<p><code>{-@ average :: NEList Int -&gt; Int @-}</code></p>
 </div>
-<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-10" class="programbox">average'      :: [Int] -> Maybe Int
-average' xs
-  | ok        = Just $ divide (sum xs) elems
-  | otherwise = Nothing
-  where
-    elems     = size xs
-    ok        = True   -- What expression goes here?</div>
-</div>
-
 <div id="Debugging Specifications" class="hwex">
 <p><br />
 <strong>Exercise: (Debugging Specifications): </strong>An important
@@ -497,7 +561,7 @@ spirit, can you explain why the following two variants of
 <br />
 
 </div>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -505,7 +569,7 @@ spirit, can you explain why the following two variants of
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">{-@ size1    :: xs:NEList a -> Pos @-}
+  <div id="program-10" class="programbox">{-@ size1    :: xs:NEList a -> Pos @-}
 size1 []     =  0
 size1 (_:xs) =  1 + size1 xs
 
@@ -514,258 +578,6 @@ size2 []     =  0
 size2 (_:xs) =  1 + size2 xs</div>
 </div>
 
-</section>
-<section id="a-safe-list-api" class="level2">
-<h2>A Safe List API</h2>
-<p>Now that we can talk about non-empty lists, we can ensure the safety
-of various list-manipulating functions which are only well-defined on
-non-empty lists and crash otherwise.</p>
-<p><br />
-<strong>Head and Tail</strong> are two of the canonical
-<em>dangerous</em> functions, that only work on non-empty lists, and
-burn horribly otherwise. We can type them simple as:</p>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-12" class="programbox">{-@ head    :: NEList a -> a @-}
-head (x:_)  = x
-head []     = die "Fear not! 'twill ne'er come to pass"
-
-{-@ tail    :: NEList a -> [a] @-}
-tail (_:xs) = xs
-tail []     = die "Relaxeth! this too shall ne'er be"</div>
-</div>
-
-<p>LiquidHaskell uses the precondition to deduce that the second
-equations are <em>dead code</em>. Of course, this requires us to
-establish that <em>callers</em> of <code>head</code> and
-<code>tail</code> only invoke the respective functions with non-empty
-lists.</p>
-<div id="Safe Head" class="hwex">
-<p><br />
-<strong>Exercise: (Safe Head): </strong>Write down a specification for
-<code>null</code> such that <code>safeHead</code> is verified. Do
-<em>not</em> force <code>null</code> to only take non-empty inputs, that
-defeats the purpose. Instead, its type should say that it works on
-<em>all</em> lists and returns <code>False</code> <em>if and only
-if</em> the input is non-empty.</p>
-<br />
-<br />
-
-</div>
-<p><strong>Hint: </strong>You may want to refresh your memory about
-implies <code>==&gt;</code> and <code>&lt;=&gt;</code> from the <a
-href="#semantics">chapter on logic</a>.</p>
-<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-13" class="programbox">safeHead      :: [a] -> Maybe a
-safeHead xs
-  | null xs   = Nothing
-  | otherwise = Just $ head xs
-
-{-@ null      :: [a] -> Bool @-}
-null []       =  True
-null (_:_)    =  False</div>
-</div>
-
-<p>Lets use the above to write a function that chunks sequences into
-non-empty groups of equal elements:</p>
-<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-14" class="programbox">{-@ groupEq    :: (Eq a) => [a] -> [NEList a] @-}
-groupEq []     = []
-groupEq (x:xs) = (x:ys) : groupEq zs
-  where
-    (ys, zs)   = span (x ==) xs</div>
-</div>
-
-<p>By using the fact that <em>each element</em> in the output returned
-by <code>groupEq</code> is in fact of the form <code>x:ys</code>,
-LiquidHaskell infers that <code>groupEq</code> returns a
-<code>[NEList a]</code> that is, a list of <em>non-empty lists</em>.</p>
-<p><br />
-<strong>To Eliminate Stuttering</strong> from a string, we can use
-<code>groupEq</code> to split the string into blocks of repeating
-<code>Char</code>s, and then just extract the first <code>Char</code>
-from each block:</p>
-<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-15" class="programbox">-- >>> eliminateStutter "ssstringssss liiiiiike thisss"
--- "strings like this"
-eliminateStutter xs = map head $ groupEq xs</div>
-</div>
-
-<p> LiquidHaskell automatically instantiates the type parameter for
-<code>map</code> in <code>eliminateStutter</code> to
-<code>notEmpty v</code> to deduce that <code>head</code> is only called
-on non-empty lists.</p>
-<p><br />
-<strong>Foldl1</strong> is one of my favorite folds; it uses the first
-element of the sequence as the initial value. Of course, it should only
-be called with non-empty sequences!</p>
-<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-16" class="programbox">{-@ foldl1         :: (a -> a -> a) -> NEList a -> a @-}
-foldl1 f (x:xs)    = foldl f x xs
-foldl1 _ []        = die "foldl1"
-
-foldl              :: (a -> b -> a) -> a -> [b] -> a
-foldl _ acc []     = acc
-foldl f acc (x:xs) = foldl f (f acc x) xs</div>
-</div>
-
-<p><br />
-<strong>To Sum</strong> a non-empty list of numbers, we can just perform
-a <code>foldl1</code> with the <code>+</code> operator: Thanks to the
-precondition, LiquidHaskell will prove that the <code>die</code> code is
-indeed dead. Thus, we can write</p>
-<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-17" class="programbox">{-@ sum :: (Num a) => NEList a -> a  @-}
-sum []  = die "cannot add up empty list"
-sum xs  = foldl1 (+) xs</div>
-</div>
-
-<p>Consequently, we can only invoke <code>sum</code> on non-empty lists,
-so:</p>
-<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-18" class="programbox">sumOk  = sum [1,2,3,4,5]    -- is accepted by LH, but
-
-sumBad = sum []             -- is rejected by LH</div>
-</div>
-
-<div id="Weighted Average" class="hwex">
-<p><br />
-<strong>Exercise: (Weighted Average): </strong>The function below
-computes a weighted average of its input. Unfortunately, LiquidHaskell
-is not very happy about it. Can you figure out why, and fix the code or
-specification appropriately?</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-19" class="programbox">{-@ wtAverage :: NEList (Pos, Pos) -> Int @-}
-wtAverage wxs = divide totElems totWeight
-  where
-    elems     = map (\(w, x) -> w * x) wxs
-    weights   = map (\(w, _) -> w    ) wxs
-    totElems  = sum elems
-    totWeight = sum weights
-    sum       = foldl1 (+)
-
-map           :: (a -> b) -> [a] -> [b]
-map _ []      =  []
-map f (x:xs)  =  f x : map f xs</div>
-</div>
-
-<p><strong>Hint: </strong>On what variables are the errors? How are
-those variables’ values computed? Can you think of a better
-specification for the function(s) doing those computations?</p>
-<div id="Mitchell&#39;s Risers" class="hwex">
-<p><br />
-<strong>Exercise: (Mitchell's Risers): </strong>Non-empty lists pop up
-in many places, and it is rather convenient to have the type system
-track non-emptiness without having to make up special types. Consider
-the <code>risers</code> function, popularized by <a
-href="http://neilmitchell.blogspot.com/2008/03/sorting-at-speed.html">Neil
-Mitchell</a>. <code>safeSplit</code> requires its input be non-empty;
-but LiquidHaskell believes that the call inside <code>risers</code>
-fails this requirement. Fix the specification for <code>risers</code> so
-that it is verified.</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-20" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-20" class="programbox">{-@ risers       :: (Ord a) => [a] -> [[a]] @-}
-risers           :: (Ord a) => [a] -> [[a]]
-risers []        = []
-risers [x]       = [[x]]
-risers (x:y:etc)
-  | x <= y       = (x:s) : ss
-  | otherwise    = [x] : (s : ss)
-    where
-      (s, ss)    = safeSplit $ risers (y:etc)
-
-{-@ safeSplit    :: NEList a -> (a, [a]) @-}
-safeSplit (x:xs) = (x, xs)
-safeSplit _      = die "don't worry, be happy"</div>
-</div>
-
-</section>
-<section id="recap" class="level2">
-<h2>Recap</h2>
-<p>In this chapter we saw how LiquidHaskell lets you</p>
-<ol type="1">
-<li><p><em>Define</em> structural properties of data types,</p></li>
-<li><p><em>Use refinements</em> over these properties to describe key
-invariants that establish, at compile-time, the safety of operations
-that might otherwise fail on unexpected values at run-time, all
-while,</p></li>
-<li><p><em>Working with plain Haskell types</em>, here, Lists, without
-having to <a
-href="http://blog.jbapple.com/2008/01/extra-type-safety-using-polymorphic.html">make
-up new types</a> which can have the unfortunate effect of adding a
-multitude of constructors and conversions which often clutter
-implementations and specifications.</p></li>
-</ol>
 <p> Of course, we can do a lot more with measures, so let’s press
 on!</p>
 </section>

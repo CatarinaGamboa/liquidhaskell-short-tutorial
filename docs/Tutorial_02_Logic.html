@@ -161,25 +161,19 @@ MathJax.Hub.Config({
 </ul>
 <li><a href='Tutorial_05_Datatypes.html'><b>5.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_05_Datatypes.html#'><b>5.1.</b> Sparse Vectors Revisited {#autosmart}</a></li>
-<li><a href='Tutorial_05_Datatypes.html#'><b>5.2.</b> Recap</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>5.1.</b> Sparse Vectors {#autosmart}</a></li>
 </ul>
 <li><a href='Tutorial_06_Measure_Bool.html'><b>6.</b>Boolean Measures {#boolmeasures}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_06_Measure_Bool.html#'><b>6.1.</b> Partial Functions</a></li>
 <li><a href='Tutorial_06_Measure_Bool.html#'><b>6.2.</b> Lifting Functions to Measures {#usingmeasures}</a></li>
-<li><a href='Tutorial_06_Measure_Bool.html#'><b>6.3.</b> A Safe List API</a></li>
-<li><a href='Tutorial_06_Measure_Bool.html#'><b>6.4.</b> Recap</a></li>
+<li><a href='Tutorial_06_Measure_Bool.html#'><b>6.3.</b> collapsibleDiv {</a></li>
 </ul>
 <li><a href='Tutorial_07_Measure_Int.html'><b>7.</b>Numeric Measures {#numericmeasure}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.1.</b> Wholemeal Programming</a></li>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.2.</b> Specifying List Dimensions</a></li>
 <li><a href='Tutorial_07_Measure_Int.html#'><b>7.3.</b> Lists: Size Preserving API</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.4.</b> Lists: Size Reducing API {#listreducing}</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.5.</b> Dimension Safe Vector API</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.6.</b> Dimension Safe Matrix API</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>7.7.</b> Recap</a></li>
 </ul>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>8.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
 <ul class='section'>
@@ -727,45 +721,6 @@ size (x:xs) = 1 + size xs</div>
 fx0 xs ys = (xs == ys) ==> (size xs == size ys)</div>
 </div>
 
-<p>Note that to determine that the above is valid, the SMT solver does
-not need to know the <em>meaning</em> or <em>interpretation</em> of
-<code>size</code> – merely that it is a function. When we need some
-information about the definition, of <code>size</code> we will put it
-inside the predicate. For example, in order to prove that the following
-is valid:</p>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-11" class="programbox">{-@ fx2 :: a -> [a] -> TRUE @-}
-fx2 x xs = 0 < size ys
-  where
-    ys   = x : xs</div>
-</div>
-
-<p>LiquidHaskell actually asks the SMT solver to prove the validity of a
-VC predicate which states that sizes are non-negative and that since
-<code>ys</code> equals <code>x:xs</code>, the size of <code>ys</code> is
-one more than <code>xs</code>. <a href="#fn7" class="footnote-ref"
-id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-12" class="programbox">{-@ fx2VC :: _ -> _ -> _ -> TRUE @-}
-fx2VC x xs ys =   (0 <= size xs)
-              ==> (size ys == 1 + size xs)
-              ==> (0 < size ys)</div>
-</div>
-
 <p>Next, let’s see how we can use logical predicates to <em>specify</em>
 and <em>verify</em> properties of real programs.</p>
 </section>
@@ -794,9 +749,6 @@ to create many sophisticated abstractions.<a href="#fnref5"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>This syntax will be discussed in greater detail <a
 href="#propositions">soon</a><a href="#fnref6" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>Fear not! We will describe how this works <a
-href="#autosmart">soon</a><a href="#fnref7" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
