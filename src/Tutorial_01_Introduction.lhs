@@ -42,14 +42,58 @@ ghci> average [10, 20, 30, 40]
 ~~~~~
 
 
-a. Yes, e.g., the list [1]
-b. Yes, e.g., the list []
-c. No, it should not crash
+<style>
+        /* Add some basic styling */
+        #collapsibleDiv {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+        }
+</style>
 
-
-
-
--- html_quizzes/intro_1.html
+<script>
+    function checkAnswer(questionNumber) {
+       const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
+       const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
+       const resultElement = document.getElementById(`result${questionNumber}`);
+ 
+       if (selectedAnswer === correctAnswer) {
+          resultElement.textContent = 'Correct!';
+       } else {
+          resultElement.textContent = 'Incorrect. Please try again.';
+       }
+    }
+    function toggleCollapsibleDiv() {
+            var div = document.getElementById('collapsibleDiv');
+            div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+      }
+ </script>
+ 
+ 
+<div id="question1" style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; border-radius: 10px; background-color: #ecf0f1;">
+    <h2 style="color: #2980b9;">Question 1:</h2>
+    <p style="color: #2c3e50; font-size: 16px;">But, are there any inputs for which it crashes?</p>
+    <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
+        <input type="radio" name="q1" value="3"> Yes, e.g., the list [1]
+    </label>
+    <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
+        <input type="radio" name="q1" value="4"> Yes, e.g., the list []
+    </label>
+    <label style="display: block; margin-bottom: 10px; color: #2c3e50;">
+        <input type="radio" name="q1" value="5"> No, it should not crash
+    </label>
+    <button onclick="checkAnswer(1)" style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+    <p id="result1" style="margin-top: 10px; font-weight: bold; color: #3498db;"></p>
+    <input type="hidden" id="correctAnswer1" value="4">
+</div>
+<div>
+   <button onclick="toggleCollapsibleDiv()">Toggle Collapsible Div</button>
+    <div id="collapsibleDiv">
+        <h2>Collapsible Content</h2>
+        <p>This is the content of the collapsible div. You can add any content here.</p>
+    </div>
+</div>
 
 
 ^[If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning
