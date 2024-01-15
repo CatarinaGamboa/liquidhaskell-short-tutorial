@@ -295,6 +295,14 @@ avg xs    = divide total n
     n     = length xs
 \end{code}
 
+<div>
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
+    <div class="collapsibleDiv">
+Add a case for the empty list that does not call upon divide.
+    </div>
+</div>
+
+
 
 Refining Function Types: Post-conditions
 ---------------------------------------

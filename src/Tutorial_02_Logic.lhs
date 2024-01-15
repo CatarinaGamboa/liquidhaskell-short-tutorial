@@ -128,7 +128,7 @@ if ^[Read `p <=> q` as "if `p` then `q` **and** if `q` then `p`"]), and `not`.
 
 
 Can you select which of the following ones is not a valid predicate?
-
+!!Exercise
  <div id="question2" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What should be the predicate of div to make it impossible to divide by zero?</p>
    <label class="container"> `x /= 3`                               <input type="radio" name="q2" value="1"> <span class="checkmark"></span> </label><br>
@@ -287,7 +287,7 @@ and `False`. Write a predicate for ex2 with that meaning:
 ex2 b = b && not b
 \end{code}
 !!Exercise
-
+<div>
  <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
     <div class="collapsibleDiv">
 The correct answer would be: {-@ ex2 :: Bool -> FALSE @-}
