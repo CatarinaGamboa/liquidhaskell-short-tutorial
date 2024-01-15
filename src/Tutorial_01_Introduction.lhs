@@ -47,43 +47,9 @@ b. Yes, e.g., the list []
 c. No, it should not crash
 
 
-<script>
-   function checkAnswer(questionNumber) {
-      const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
-      const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
-      const resultElement = document.getElementById(`result${questionNumber}`);
-
-      if (selectedAnswer === correctAnswer) {
-         resultElement.textContent = 'Correct!';
-      } else {
-         resultElement.textContent = 'Incorrect. Please try again.';
-      }
-   }
-</script>
 
 
-<div id="question1" style="width=640px;">
-   <h2>Question 1:</h2>
-   <p>But, are there any inputs for which it crashes?</p>
-   <label><input type="radio" name="q1" value="3"> Yes, e.g., the list [1]</label><br>
-   <label><input type="radio" name="q1" value="4"> Yes, e.g., the list []</label><br>
-   <label><input type="radio" name="q1" value="5"> No, it should not crash</label><br>
-   <button onclick="checkAnswer(1)">Submit</button>
-   <p id="result1"></p>
-   <input type="hidden" id="correctAnswer1" value="4">
-</div>
-
-\begin{code}
--- Code block with user interaction
-main :: IO ()
-main = do
-    putStr "Enter your answer (a, b, c, or d): "
-    answer <- getChar
-    putStrLn ""
-    case answer of
-        'b' -> putStrLn "Correct! "
-        _   -> putStrLn "Incorrect. The correct answer is c."
-\end{code}
+-- html_quizzes/intro_1.html
 
 
 ^[If we call it with an empty list, we get a rather unpleasant crash: *** Exception: divide by zero. We could write `average` more *defensively*, returning
