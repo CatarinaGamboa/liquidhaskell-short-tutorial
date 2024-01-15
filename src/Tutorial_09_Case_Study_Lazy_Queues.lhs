@@ -311,12 +311,9 @@ example0Q = Q nil nil
 
 
 
-
-
-
 \newthought{To Remove} an element we pop it off the `front` by using
 `hd` and `tl`.  Notice that the `remove` is only called on non-empty
-`Queue`s, which together with the key balance invariant, ensures that
+`Queue`s, which together with the key balance invariant (`makeq` that we will see later), ensures that
 the calls to `hd` and `tl` are safe.
 
 
