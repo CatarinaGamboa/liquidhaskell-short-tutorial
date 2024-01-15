@@ -69,6 +69,17 @@ ghci> average [10, 20, 30, 40]
             div.style.display = (div.style.display === 'none') ? 'block' : 'none';
       }
  </script>
+
+
+ <div id="question1" style="width=640px;">
+   <h2>Question 1:</h2>
+   <p>What should be the predicate of div to make it impossible to divide by zero?</p>
+   <label><input type="radio" name="q2" value="3"> <code>{-@ div :: Int -> {v:Int | v > 0} -> Int @-}</code></label><br>
+   <label><input type="radio" name="q2" value="4"> <code>{-@ div :: Int -> {v:Int | v /= 0} -> Int @-}</code></label><br>
+   <button onclick="checkAnswer(2)">Submit</button>
+   <p id="result1"></p>
+   <input type="hidden" id="correctAnswer2" value="3">
+</div>
  
  
 <div id="question1" style="width: 640px; margin: 20px; padding: 15px; border: 2px solid #3498db; border-radius: 10px; background-color: #ecf0f1;">
