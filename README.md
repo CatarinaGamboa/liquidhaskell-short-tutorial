@@ -1,10 +1,13 @@
-# LiquidHaskell Tutorial
+# LiquidHaskell - Short - Tutorial
 
-**TODO: UPDATE the website with the new code**
+This is a short version of the full LiquidHaskell Tutorial.
 
-**NOTE** The PDF/HTML are sometimes not up-to-date
-with the latest LiquidHaskell release. Please clone
-the github repository and run locally for best results.
+To access the tutorial, follow the following steps:
+1. Clone the repo
+2. On the command line change to the "publishing branch" `git checkout gh-pages`
+3. Open the html files in the folder `docs`, starting with `Tutorial_01_Introduction.html`
+
+<!-- 
 
 ## How to _Do_ The Tutorial
 
@@ -95,7 +98,6 @@ $ evince dist/pbook.pdf
 Solutions are in *separate* [private repo](https://github.com/ucsd-progsys/liquidhaskell-tutorial-solutions)
 
 
-Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/
 
 ## TODO
 
@@ -103,4 +105,7 @@ A work list of TODO items can be found in the [bug tracker](https://github.com/u
 
 ## Feedback and Gotchas
 
-Editing feedback and various gotchas can be found in [feedback.md](feedback.md)
+Editing feedback and various gotchas can be found in [feedback.md](feedback.md) -->
+
+## Solutions
+Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/
