@@ -398,7 +398,7 @@ badQ = Q nil okList  -- rejected, |front| < |back|
 \end{code}
 
 
-\begin{comment}
+
 Queue Operations
 ----------------
 
@@ -562,5 +562,3 @@ This example is particularly interesting because
 This exercise concludes the Short Tutorial of LiquidHaskell. 
 Thank you for tagging along!
 
-
-\end{comment}
