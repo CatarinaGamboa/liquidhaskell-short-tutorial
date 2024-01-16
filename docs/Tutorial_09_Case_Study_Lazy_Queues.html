@@ -183,7 +183,8 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.3.</b> collapsibleDiv1, #collapsibleDiv2, #collapsibleDiv3, #collapsibleDiv4,
 #collapsibleDiv5, #collapsibleDiv6 {</a></li>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.4.</b> Queue Type</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.5.</b> Recap</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.5.</b> Queue Operations</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>8.6.</b> Recap</a></li>
 </ul>
 </ul>
 
@@ -711,6 +712,215 @@ Queues</em>:</p>
 badQ = Q nil okList  -- rejected, |front| < |back|</div>
 </div>
 
+</section>
+<section id="queue-operations" class="level2">
+<h2>Queue Operations</h2>
+<p>Almost there! Now all that remains is to define the
+<code>Queue</code> API. The code below is more or less identical to
+Okasaki’s (I prefer <code>front</code> and <code>back</code> to his
+<code>left</code> and <code>right</code>.)</p>
+<p><br />
+<strong>The Empty Queue</strong> is simply one where both
+<code>front</code> and <code>back</code> are both empty:</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">emp = Q nil nil</div>
+</div>
+
+<div id="Queue Sizes" class="hwex">
+<p><br />
+<strong>Exercise: (Queue Sizes): </strong>For the remaining operations
+we need some more information. Do the following steps:</p>
+<ol type="1">
+<li>Write a <em>measure</em> qsize to describe the queue size,</li>
+<li>Use it to complete the definition of <code>QueueN</code> below,
+and</li>
+<li>Use it to give <code>remove</code> a type that verifies the safety
+of the calls made to <code>hd</code> and <code>tl</code>.</li>
+</ol>
+<br />
+<br />
+
+</div>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">-- | create measuere qsize here
+
+-- | Queues of size `N`
+{-@ type QueueN a N = {v:Queue a | true} @-}
+
+{-@ emp :: QueueN _ 0 @-}
+
+{-@ example2Q :: QueueN _ 2 @-}
+example2Q = Q (1 `cons` (2 `cons` nil)) nil
+
+{-@ example0Q :: QueueN _ 0 @-}
+example0Q = Q nil nil</div>
+</div>
+
+<p><br />
+<strong>To Remove</strong> an element we pop it off the
+<code>front</code> by using <code>hd</code> and <code>tl</code>. Notice
+that the <code>remove</code> is only called on non-empty
+<code>Queue</code>s, which together with the key balance invariant
+(<code>makeq</code> that we will see later), ensures that the calls to
+<code>hd</code> and <code>tl</code> are safe.</p>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">remove (Q f b)   = (hd f, makeq (tl f) b)
+
+{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}
+
+
+okRemove  = remove example2Q   -- accept
+badRemove = remove example0Q   -- reject</div>
+</div>
+
+<p><strong>Hint: </strong>When you are done, <code>okRemove</code>
+should be accepted, <code>badRemove</code> should be rejected.</p>
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv4()">
+Answer</button>
+<div id="collapsibleDiv4">
+<p>{-@ measure qsize @-} qsize :: Queue a -&gt; Int qsize (Q l r) = size
+l + size r</p>
+<p>{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}</p>
+{-@ remove :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-} remove
+(Q f b) = (hd f, makeq (tl f) b)
+</div>
+</div>
+<p><br />
+<strong>To Insert</strong> an element we just <code>cons</code> it to
+the <code>back</code> list, and call the <em>smart constructor</em>
+<code>makeq</code> to ensure that the balance invariant holds:</p>
+<div id="Insert" class="hwex">
+<p><br />
+<strong>Exercise: (Insert): </strong>Write down a type for
+<code>insert</code> such that <code>replicate</code> and
+<code>okReplicate</code> are accepted by LiquidHaskell, but
+<code>badReplicate</code> is rejected.</p>
+<br />
+<br />
+
+</div>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">insert e (Q f b) = makeq f (e `cons` b)
+
+{-@ replicate :: n:Nat -> a -> QueueN a n @-}
+replicate 0 _ = emp
+replicate n x = insert x (replicate (n-1) x)
+
+{-@ okReplicate :: QueueN _ 3 @-}
+okReplicate = replicate 3 "Yeah!"  -- accept
+
+{-@ badReplicate :: QueueN _ 3 @-}
+badReplicate = replicate 1 "No!"   -- reject</div>
+</div>
+
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv5()">
+Answer</button>
+<div id="collapsibleDiv5">
+{-@ insert :: a -&gt; q:Queue a -&gt; QueueN a {qsize q + 1} @-} insert
+e (Q f b) = makeq f (e <code>cons</code> b)
+</div>
+</div>
+<p><br />
+<strong>To Ensure the Invariant</strong> we use the smart constructor
+<code>makeq</code>, which is where the heavy lifting happens. The
+constructor takes two lists, the front <code>f</code> and back
+<code>b</code> and if they are balanced, directly returns the
+<code>Queue</code>, and otherwise transfers the elements from
+<code>b</code> over using the rotate function <code>rot</code> described
+next.</p>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ makeq :: f:SList a -> b:SListLE a {size f + 1 } -> QueueN a {size f + size b} @-}
+makeq f b
+  | size b <= size f = Q f b
+  | otherwise        = Q (rot f b nil) nil</div>
+</div>
+
+<div id="Rotate" class="hwex">
+<p><br />
+<strong>Exercise: (Rotate): </strong> The Rotate function
+<code>rot</code> is only called when the <code>back</code> is one larger
+than the <code>front</code> (we never let things drift beyond that). It
+is arranged so that it the <code>hd</code> is built up fast, before the
+entire computation finishes; which, combined with laziness provides the
+efficient worst-case guarantee. Write down a type for <code>rot</code>
+so that it typechecks and verifies the type for <code>makeq</code>.</p>
+<br />
+<br />
+
+</div>
+<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-18" class="programbox">rot f b acc
+  | size f == 0 = hd b `cons` acc
+  | otherwise   = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)</div>
+</div>
+
+<div>
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv6()">
+Answer</button>
+<div id="collapsibleDiv6">
+{-@ rot :: f:SList a -&gt; b:SListN _ {1 + size f} -&gt; a:SList <em>
+-&gt; SListN </em> {size f + size b + size a} @-}
+</div>
+</div>
+</section>
+<section id="recap" class="level2">
+<h2>Recap</h2>
+<p>Well there you have it; Okasaki’s beautiful lazy Queue, with the
+invariants easily expressed and checked with LiquidHaskell. This example
+is particularly interesting because</p>
+<ol type="1">
+<li>The refinements express invariants that are critical for
+efficiency,</li>
+<li>The code introspects on the <code>size</code> to guarantee the
+invariants, and</li>
+<li>The code is quite simple and we hope, easy to follow!</li>
+</ol>
+<p>This exercise concludes the Short Tutorial of LiquidHaskell. Thank
+you for tagging along!</p>
 </section>
 </section>
 
