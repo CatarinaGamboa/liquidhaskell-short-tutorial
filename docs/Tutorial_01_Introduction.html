@@ -21,6 +21,7 @@
     <link href="./css/bootstrap-theme.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/rust-book.css">
     <link rel="stylesheet" type="text/css" href="./css/editor.css">
+    <link rel="stylesheet" type="text/css" href="./css/short-tutorial.css">
 
    
     <style type="text/css">code{white-space: pre;}
@@ -65,6 +66,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="./js/angular/angular.js"></script>
 <script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="./js/short-tutorial.js"></script>
 
 <!-- MATHJAX TEMPLATES GO HERE -->
 <script type="text/x-mathjax-config">
@@ -128,8 +130,7 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_01_Introduction.html'><b>1.</b>Introduction {#intro}</a></li>
 <ul class='section'>
 <li><a href='Tutorial_01_Introduction.html#'><b>1.1.</b> Well-Typed Programs Do Go Wrong {#gowrong}</a></li>
-<li><a href='Tutorial_01_Introduction.html#'><b>1.2.</b> collapsibleDiv {</a></li>
-<li><a href='Tutorial_01_Introduction.html#'><b>1.3.</b> Refinement Types</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>1.2.</b> Refinement Types</a></li>
 </ul>
 <li><a href='Tutorial_02_Logic.html'><b>2.</b>Logic &amp; SMT</a></li>
 <ul class='section'>
@@ -279,96 +280,6 @@ average xs = sum xs `div` length xs</div>
 <p>We get the desired result on a non-empty list of numbers:</p>
 <pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
 25</code></pre>
-<style>
-/* Add some basic styling */
-#collapsibleDiv {
-  display: none;
-  padding: 20px;
-  border: 1px solid #ddd;
-  margin-top: 10px;
-}
-/* The container */
-.container {
-display: block;
-position: relative;
-padding-left: 35px;
-margin-bottom: 12px;
-cursor: pointer;
-font-size: 18px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-}
-
-/* Hide the browser's default radio button */
-.container input {
-position: absolute;
-opacity: 0;
-cursor: pointer;
-}
-
-/* Create a custom radio button */
-.checkmark {
-position: absolute;
-top: 0;
-left: 0;
-height: 25px;
-width: 25px;
-background-color: #eee;
-border-radius: 50%;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-background-color: #ccc;
-}
-
-/* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
-background-color: #2196F3;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-content: "";
-position: absolute;
-display: none;
-}
-
-/* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
-display: block;
-}
-
-/* Style the indicator (dot/circle) */
-.container .checkmark:after {
- top: 9px;
-left: 9px;
-width: 8px;
-height: 8px;
-border-radius: 50%;
-background: white;
-}
-</style>
-<script>
-function checkAnswer(questionNumber) {
-    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
-    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
-    const resultElement = document.getElementById(`result${questionNumber}`);
-
-    if (selectedAnswer === correctAnswer) {
-       resultElement.textContent = 'Correct!';
-    } else {
-       resultElement.textContent = 'Incorrect. Please try again.';
-    }
-}
-
-function toggleCollapsibleDiv() {
-    var div = document.getElementById('collapsibleDiv');
-    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
-}
-</script>
 <div id="question1"
 style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <p>
@@ -385,9 +296,9 @@ class="checkmark"></span> </label><br>
 <p id="result1">
 </p>
 <p><input type="hidden" id="correctAnswer1" value="2"></p>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()">
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)">
 Answer</button>
-<div id="collapsibleDiv">
+<div id="collapsibleDiv1">
 If we call it with an empty list, we get a rather unpleasant crash: ***
 Exception: divide by zero. We could write <code>average</code> more
 <em>defensively</em>, returning a <code>Maybe</code> or
