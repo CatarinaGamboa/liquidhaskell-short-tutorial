@@ -194,3 +194,8 @@ dotProd' x (SP _ y) = foldl' body 0 y
 for the type parameters of `foldl'`, saving us a fair
 bit of typing and enabling the use of the elegant
 polymorphic, higher-order combinators we know and love.
+
+
+<a href="Tutorial_06_Measure_Bool.html" >
+    <button class="btn-next">Next</button>
+</a> 

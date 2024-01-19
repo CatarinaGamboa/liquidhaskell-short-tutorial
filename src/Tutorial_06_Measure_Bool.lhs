@@ -202,3 +202,6 @@ Of course, we can do a lot more with measures, so let's press on!
 
 
 
+<a href="Tutorial_07_Measure_Int.html" >
+    <button class="btn-next">Next</button>
+</a> 

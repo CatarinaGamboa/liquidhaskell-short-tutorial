@@ -332,4 +332,6 @@ by using an [SMT solver][smt-wiki] which has built-in
 decision procedures for arithmetic, to reason about the
 logical refinements.]
 
-
+<a href="Tutorial_04_Polymorphism.html" >
+    <button class="btn-next">Next</button>
+</a> 

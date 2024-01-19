@@ -245,3 +245,8 @@ prop_map xs = size ys == size xs
 
 
 Now that we have seen the basics of LiquidHaskell, let us try a more complex exercise.
+
+
+<a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
+    <button class="btn-next">Next</button>
+</a> 

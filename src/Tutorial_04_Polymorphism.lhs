@@ -292,3 +292,8 @@ go :: Int -> {v:Int | 0 <= v && v <= sz} -> Int
 between `0` and the length of `vec` (inclusive). LiquidHaskell
 uses this and the test that `i < sz` to establish that `i` is
 between `0` and `(vlen vec)` to prove safety.
+
+
+<a href="Tutorial_05_Datatypes.html" >
+    <button class="btn-next">Next</button>
+</a> 

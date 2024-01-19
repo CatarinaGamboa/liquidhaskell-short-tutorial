@@ -348,3 +348,7 @@ fx0 xs ys = (xs == ys) ==> (size xs == size ys)
 
 Next, let's see how we can use logical predicates to *specify* and
 *verify* properties of real programs.
+
+<a href="Tutorial_03_Basic.html" >
+    <button class="btn-next">Next</button>
+</a> 
