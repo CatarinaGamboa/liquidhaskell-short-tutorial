@@ -372,16 +372,15 @@ function toggleCollapsibleDiv() {
 <div id="question1"
 style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <p>
-What should be the predicate of div to make it impossible to divide by
-zero?
+However, this program crashes with certain arguments. From the following
+options, what argument would make <code>average</code> crash?
 </p>
-<label class="container"> Yes, e.g., the list [1]
-<input type="radio" name="q1" value="1"> <span class="checkmark"></span>
-</label><br> <label class="container"> Yes, e.g., the list []
-<input type="radio" name="q1" value="2"><span class="checkmark"></span>
-</label><br> <label class="container"> No, it should not crash.
-<input type="radio" name="q1" value="3"><span class="checkmark"></span>
-</label><br>
+<label class="container"> [1] <input type="radio" name="q1" value="1">
+<span class="checkmark"></span> </label><br> <label class="container">
+[] <input type="radio" name="q1" value="2"><span
+class="checkmark"></span> </label><br> <label class="container">
+[1,1,1,1,1,1,1,1,1,1,1] <input type="radio" name="q1" value="3"><span
+class="checkmark"></span> </label><br>
 <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button>
 <p id="result1">
 </p>
@@ -435,8 +434,9 @@ the above calamities <em>cannot occur at run-time</em>.</p>
 and in this tutorial we’ll describe how you can use it to make programs
 better and programming even more fun.</p>
 As a glimpse of what LiquidHaskell can do, run the average example below
-and read the error message. Since div cannot take a zero value as the
-second argument, and LiquidHaskell sees that it is a possibility in this
+by pushing the green triangle on the top, and try to read the error
+message. Since <code>div</code> cannot take a zero value as the second
+argument, and LiquidHaskell sees that it is a possibility in this
 function, an error will be raised.
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
@@ -453,10 +453,13 @@ average' xs =  sum xs `div` length xs</div>
 <p>In this tutorial you will learn how to add and reason about
 refinement types in Haskell, and how it can increase the realiability of
 Haskell problems.</p>
-<p>To get started, open the <a
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="location.href=&#39;./Tutorial_02_Logic.html">
+Next &gt;
+</button>
+<p>% To get started, open the <a
 href="http://goto.ucsd.edu:8090/index.html#?demo=blank.hs">Web Demo</a>
-and see what is the result when you <code>Check</code> the code from the
-first example.</p>
+% and see what is the result when you <code>Check</code> the code from
+the first example.</p>
 </section>
 </section>
 
