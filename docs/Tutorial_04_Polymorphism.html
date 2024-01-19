@@ -439,13 +439,13 @@ index should be greater than 0 because the head is not accessible
 </label><br> <label class="container"> Zero is not a valid index if the
 list is empty. <input type="radio" name="q1" value="3"><span
 class="checkmark"></span> </label><br>
-<button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button>
+<button class="btn-select" onclick="checkAnswer(1)">Submit</button>
 <p id="result1">
 </p>
 <p><input type="hidden" id="correctAnswer1" value="3"></p>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)">
+<button class="btn-answer" onclick="toggleCollapsible(5)">
 Answer</button>
-<div id="collapsibleDiv1">
+<div id="collapsibleDiv5">
 LiquidHaskell is saying that <code>0</code> is <em>not</em> a valid
 index as it is not between <code>0</code> and <code>vlen vec</code>. Say
 what? Well, what if <code>vec</code> had <em>no</em> elements! A formal

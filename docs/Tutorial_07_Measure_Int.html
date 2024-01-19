@@ -495,10 +495,10 @@ prop_map xs = size ys == size xs
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)">
+<button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
-`{-@ map :: (a -&gt; b) -&gt; xs: List a -&gt; ListX b xs @-}``
+<code>{-@ map      :: (a -&gt; b) -&gt; xs: List a -&gt; ListX b xs @-}</code>
 </div>
 </div>
 <p>Now that we have seen the basics of LiquidHaskell, let us try a more

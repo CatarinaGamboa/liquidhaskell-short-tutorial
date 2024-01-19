@@ -284,11 +284,11 @@ options, what argument would make <code>average</code> crash?
 class="checkmark"></span> </label><br> <label class="container">
 [1,1,1,1,1,1,1,1,1,1,1] <input type="radio" name="q1" value="3"><span
 class="checkmark"></span> </label><br>
-<button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button>
+<button class="btn-select" onclick="checkAnswer(1)">Submit</button>
 <p id="result1">
 </p>
 <p><input type="hidden" id="correctAnswer1" value="2"></p>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)">
+<button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
 If we call it with an empty list, we get a rather unpleasant crash: ***
@@ -356,13 +356,13 @@ average' xs =  sum xs `div` length xs</div>
 <p>In this tutorial you will learn how to add and reason about
 refinement types in Haskell, and how it can increase the realiability of
 Haskell problems.</p>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="location.href=&#39;./Tutorial_02_Logic.html">
+<button class="btn-next" onclick="location.href=&#39;./Tutorial_02_Logic.html">
 Next &gt;
 </button>
-<p>% To get started, open the <a
+<p>&lt;!– To get started, open the <a
 href="http://goto.ucsd.edu:8090/index.html#?demo=blank.hs">Web Demo</a>
-% and see what is the result when you <code>Check</code> the code from
-the first example.</p>
+and see what is the result when you <code>Check</code> the code from the
+first example.–!&gt;</p>
 </section>
 </section>
 

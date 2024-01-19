@@ -394,7 +394,7 @@ the real size:</p>
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)">
+<button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
 {-@ measure realSize @-} realSize :: [a] -&gt; Int realSize [] = 0
@@ -462,7 +462,7 @@ badList = SL 1 []         -- rejected</div>
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(3)">
+<button class="btn-answer" onclick="toggleCollapsible(3)">
 Answer</button>
 <div id="collapsibleDiv3">
 {-@ type NEList a = {v:SList a | size v &gt; 0} @-}
@@ -532,7 +532,7 @@ badHd = hd (tl okList)  -- rejected</div>
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(2)">
+<button class="btn-answer" onclick="toggleCollapsible(2)">
 Answer</button>
 <div id="collapsibleDiv2">
 <p>{-@ tl :: xs:NEList a -&gt; SListN a {size xs - 1} @-} tl (SL n
@@ -679,7 +679,7 @@ badRemove = remove example0Q   -- reject</div>
 <p><strong>Hint: </strong>When you are done, <code>okRemove</code>
 should be accepted, <code>badRemove</code> should be rejected.</p>
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(4)">
+<button class="btn-answer" onclick="toggleCollapsible(4)">
 Answer</button>
 <div id="collapsibleDiv4">
 <p>{-@ measure qsize @-} qsize :: Queue a -&gt; Int qsize (Q l r) = size
@@ -725,7 +725,7 @@ badReplicate = replicate 1 "No!"   -- reject</div>
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(5)">
+<button class="btn-answer" onclick="toggleCollapsible(5)">
 Answer</button>
 <div id="collapsibleDiv5">
 {-@ insert :: a -&gt; q:Queue a -&gt; QueueN a {qsize q + 1} @-} insert
@@ -781,7 +781,7 @@ so that it typechecks and verifies the type for <code>makeq</code>.</p>
 </div>
 
 <div>
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(6)">
+<button class="btn-answer" onclick="toggleCollapsible(6)">
 Answer</button>
 <div id="collapsibleDiv6">
 {-@ rot :: f:SList a -&gt; b:SListN _ {1 + size f} -&gt; a:SList <em>
