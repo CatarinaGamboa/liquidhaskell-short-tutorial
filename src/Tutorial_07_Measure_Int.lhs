@@ -239,7 +239,7 @@ prop_map xs = size ys == size xs
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
-`{-@ map      :: (a -> b) -> xs: List a -> ListX b xs @-}``
+`{-@ map      :: (a -> b) -> xs: List a -> ListX b xs @-}`
     </div>
 </div>
 

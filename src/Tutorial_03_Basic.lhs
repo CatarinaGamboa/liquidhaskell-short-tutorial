@@ -295,8 +295,8 @@ avg xs    = divide total n
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
-    <div id="collapsibleDiv1">
+   <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
+    <div id="collapsibleDiv4">
 Add a case for the empty list that does not call upon divide.
     </div>
 </div>

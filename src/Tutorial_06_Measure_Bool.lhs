@@ -173,8 +173,8 @@ average xs = divide total elems
 
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
-    <div id="collapsibleDiv1">
+   <button class="btn-answer" onclick="toggleCollapsible(6)"> Answer</button>
+    <div id="collapsibleDiv6">
 `{-@ average :: NEList Int -> Int @-}`
 </div>
 

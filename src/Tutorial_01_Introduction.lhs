@@ -47,8 +47,7 @@ ghci> average [10, 20, 30, 40]
    <label class="container"> [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
    <label class="container"> []   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
    <label class="container"> [1,1,1,1,1,1,1,1,1,1,1] <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
-   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
-   <input type="hidden" id="correctAnswer1" value="2">
+   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p> <input type="hidden" id="correctAnswer1" value="2">
 
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">

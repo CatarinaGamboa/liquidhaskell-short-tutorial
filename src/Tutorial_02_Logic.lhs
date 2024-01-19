@@ -134,9 +134,7 @@ Can you select which of the following ones is not a valid predicate?
    <label class="container"> `x ** y > 0 `                          <input type="radio" name="q2" value="4"><span class="checkmark"></span></label><br>
    <label class="container"> `0 < x + y <=> 0 < y + x`              <input type="radio" name="q2" value="5"><span class="checkmark"></span></label><br>
    
-   <button class="btn-select" onclick="checkAnswer(2)">Submit</button>
-   <p id="result2"></p>
-   <input type="hidden" id="correctAnswer2" value="4">
+   <button class="btn-select" onclick="checkAnswer(2)">Submit</button><p id="result2"></p><input type="hidden" id="correctAnswer2" value="4">
 
    <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
     <div id="collapsibleDiv2">
@@ -275,8 +273,8 @@ and `False`. Write a predicate for ex2 with that meaning:
 ex2 b = b && not b
 \end{code}
 <div>
- <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
-    <div id="collapsibleDiv1">
+ <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
+    <div id="collapsibleDiv3">
 The correct answer would be: `{-@ ex2 :: Bool -> FALSE @-}`
     </div>
 </div>
