@@ -237,7 +237,7 @@ prop_map xs = size ys == size xs
 
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
 `{-@ map      :: (a -> b) -> xs: List a -> ListX b xs @-}``
     </div>

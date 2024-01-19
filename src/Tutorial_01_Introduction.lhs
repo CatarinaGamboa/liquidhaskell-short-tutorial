@@ -47,10 +47,10 @@ ghci> average [10, 20, 30, 40]
    <label class="container"> [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
    <label class="container"> []   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
    <label class="container"> [1,1,1,1,1,1,1,1,1,1,1] <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
-   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
+   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
    <input type="hidden" id="correctAnswer1" value="2">
 
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
 If we call it with an empty list, we get a rather unpleasant crash: 
 *** Exception: divide by zero. We could write `average` more *defensively*, 
@@ -124,9 +124,9 @@ In this tutorial you will learn how to add and reason about
 refinement types in Haskell, and how it can increase the realiability
 of Haskell problems.
 
-<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="location.href='./Tutorial_02_Logic.html"> Next ></button>
+<button class="btn-next" onclick="location.href='./Tutorial_02_Logic.html"> Next ></button>
 
 
-% To get started, open the [Web Demo](http://goto.ucsd.edu:8090/index.html#?demo=blank.hs)
-% and see what is the result when you `Check` the code from the first example.
+<!-- To get started, open the [Web Demo](http://goto.ucsd.edu:8090/index.html#?demo=blank.hs)
+and see what is the result when you `Check` the code from the first example.--!> 
 

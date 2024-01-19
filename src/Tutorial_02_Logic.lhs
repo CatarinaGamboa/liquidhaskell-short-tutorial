@@ -134,11 +134,11 @@ Can you select which of the following ones is not a valid predicate?
    <label class="container"> `x ** y > 0 `                          <input type="radio" name="q2" value="4"><span class="checkmark"></span></label><br>
    <label class="container"> `0 < x + y <=> 0 < y + x`              <input type="radio" name="q2" value="5"><span class="checkmark"></span></label><br>
    
-   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(2)">Submit</button>
+   <button class="btn-select" onclick="checkAnswer(2)">Submit</button>
    <p id="result2"></p>
    <input type="hidden" id="correctAnswer2" value="4">
 
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv2()"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
     <div id="collapsibleDiv2">
 All of them are valid syntatic expressions, except for `x ** y > 0 ` since 
 the operator ** is not part of the language.   
@@ -275,7 +275,7 @@ and `False`. Write a predicate for ex2 with that meaning:
 ex2 b = b && not b
 \end{code}
 <div>
- <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv1()"> Answer</button>
+ <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
 The correct answer would be: `{-@ ex2 :: Bool -> FALSE @-}`
     </div>

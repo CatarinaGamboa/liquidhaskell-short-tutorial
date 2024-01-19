@@ -148,7 +148,7 @@ Write a function to *measure* the real size:
 
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
 {-@ measure realSize @-}
 realSize      :: [a] -> Int
@@ -192,7 +192,7 @@ badList = SL 1 []         -- rejected
 \end{code}
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(3)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
     <div id="collapsibleDiv3">
 {-@ type NEList a = {v:SList a | size v > 0} @-}
     </div>
@@ -238,7 +238,7 @@ badHd = hd (tl okList)  -- rejected
 \end{code}
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(2)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
     <div id="collapsibleDiv2">
 {-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}
 tl (SL n (_:xs)) = SL (n-1) xs
@@ -347,7 +347,7 @@ badRemove = remove example0Q   -- reject
 should be rejected.
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(4)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
 {-@ measure qsize @-}
 qsize         :: Queue a -> Int
@@ -385,7 +385,7 @@ badReplicate = replicate 1 "No!"   -- reject
 \end{code}
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(5)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
     <div id="collapsibleDiv5">
 {-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}
 insert e (Q f b) = makeq f (e `cons` b)
@@ -422,7 +422,7 @@ rot f b acc
 \end{code}
 
 <div>
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(6)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(6)"> Answer</button>
     <div id="collapsibleDiv6">
 {-@ rot :: f:SList a
         -> b:SListN _ {1 + size f}

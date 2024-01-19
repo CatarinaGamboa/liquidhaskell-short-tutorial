@@ -192,10 +192,10 @@ When we check the above, we get an error:
    <label class="container"> It does not know what is the `!` operator <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
    <label class="container"> The index should be greater than 0 because the head is not accessible <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
    <label class="container"> Zero is not a valid index if the list is empty.   <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
-   <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
+   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
    <input type="hidden" id="correctAnswer1" value="3">
 
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
 LiquidHaskell is saying that `0` is *not* a valid index
 as it is not between `0` and `vlen vec`. Say what? Well, what if
