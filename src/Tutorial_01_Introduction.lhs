@@ -123,7 +123,7 @@ In this tutorial you will learn how to add and reason about
 refinement types in Haskell, and how it can increase the realiability
 of Haskell problems.
 
-<button class="btn-next" onclick="location.href='./Tutorial_02_Logic.html"> Next ></button>
+<button class="btn-next" onclick="location.href='Tutorial_02_Logic.html"> Next ></button>
 
 
 <!-- To get started, open the [Web Demo](http://goto.ucsd.edu:8090/index.html#?demo=blank.hs)
