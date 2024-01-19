@@ -138,10 +138,10 @@ function toggleCollapsibleDiv() {
 
 
  <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
-   <p>What should be the predicate of div to make it impossible to divide by zero?</p>
-   <label class="container"> Yes, e.g., the list [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
-   <label class="container"> Yes, e.g., the list []   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
-   <label class="container"> No, it should not crash. <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
+   <p>However, this program crashes with certain arguments. From the following options, what argument would make `average` crash?</p>
+   <label class="container"> [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+   <label class="container"> []   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
+   <label class="container"> [1,1,1,1,1,1,1,1,1,1,1] <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
    <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
    <input type="hidden" id="correctAnswer1" value="2">
 
@@ -205,9 +205,9 @@ the above calamities *cannot occur at run-time*.
 this tutorial we'll describe how you can use it to make programs
 better and programming even more fun. 
 
-As a glimpse of what LiquidHaskell can do, run the average example below and 
-read the error message.
-Since div cannot take a zero value as the second argument, and LiquidHaskell
+As a glimpse of what LiquidHaskell can do, run the average example below by 
+pushing the green triangle on the top, and try to read the error message.
+Since `div` cannot take a zero value as the second argument, and LiquidHaskell
 sees that it is a possibility in this function, an error will be raised.
 \begin{code}
 average'    :: [Int] -> Int
@@ -219,6 +219,9 @@ In this tutorial you will learn how to add and reason about
 refinement types in Haskell, and how it can increase the realiability
 of Haskell problems.
 
-To get started, open the [Web Demo](http://goto.ucsd.edu:8090/index.html#?demo=blank.hs)
-and see what is the result when you `Check` the code from the first example.
+<button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="location.href='./Tutorial_02_Logic.html"> Next ></button>
+
+
+% To get started, open the [Web Demo](http://goto.ucsd.edu:8090/index.html#?demo=blank.hs)
+% and see what is the result when you `Check` the code from the first example.
 
