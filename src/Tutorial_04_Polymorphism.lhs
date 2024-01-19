@@ -187,99 +187,6 @@ When we check the above, we get an error:
 \noindent 
 
 
-<style>
-/* Add some basic styling */
-#collapsibleDiv {
-  display: none;
-  padding: 20px;
-  border: 1px solid #ddd;
-  margin-top: 10px;
-}
-/* The container */
-.container {
-display: block;
-position: relative;
-padding-left: 35px;
-margin-bottom: 12px;
-cursor: pointer;
-font-size: 18px;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-}
-
-/* Hide the browser's default radio button */
-.container input {
-position: absolute;
-opacity: 0;
-cursor: pointer;
-}
-
-/* Create a custom radio button */
-.checkmark {
-position: absolute;
-top: 0;
-left: 0;
-height: 25px;
-width: 25px;
-background-color: #eee;
-border-radius: 50%;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-background-color: #ccc;
-}
-
-/* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
-background-color: #2196F3;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-content: "";
-position: absolute;
-display: none;
-}
-
-/* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
-display: block;
-}
-
-/* Style the indicator (dot/circle) */
-.container .checkmark:after {
- top: 9px;
-left: 9px;
-width: 8px;
-height: 8px;
-border-radius: 50%;
-background: white;
-}
-</style>
-  
-<script>
-function checkAnswer(questionNumber) {
-    const selectedAnswer = document.querySelector(`input[name=q${questionNumber}]:checked`).value;
-    const correctAnswer = document.getElementById(`correctAnswer${questionNumber}`).value;
-    const resultElement = document.getElementById(`result${questionNumber}`);
-
-    if (selectedAnswer === correctAnswer) {
-       resultElement.textContent = 'Correct!';
-    } else {
-       resultElement.textContent = 'Incorrect. Please try again.';
-    }
-}
-
-function toggleCollapsibleDiv() {
-    var div = document.getElementById('collapsibleDiv');
-    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
-}
-</script>
-
-
  <div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>What is the problem that the message is describing?</p>
    <label class="container"> It does not know what is the `!` operator <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
@@ -288,8 +195,8 @@ function toggleCollapsibleDiv() {
    <button style="padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px;" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p>
    <input type="hidden" id="correctAnswer1" value="3">
 
-   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsibleDiv()"> Answer</button>
-    <div id="collapsibleDiv">
+   <button style="padding: 10px; background-color: green; color: white; border: none; border-radius: 5px;" onclick="toggleCollapsible(1)"> Answer</button>
+    <div id="collapsibleDiv1">
 LiquidHaskell is saying that `0` is *not* a valid index
 as it is not between `0` and `vlen vec`. Say what? Well, what if
 `vec` had *no* elements! A formal verifier doesn't

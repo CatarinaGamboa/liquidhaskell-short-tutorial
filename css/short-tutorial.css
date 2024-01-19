@@ -1,5 +1,5 @@
 /* Add some basic styling */
-#collapsibleDiv {
+#collapsibleDiv1,#collapsibleDiv2,#collapsibleDiv3,#collapsibleDiv4,#collapsibleDiv5 {
   display: none;
   padding: 20px;
   border: 1px solid #ddd;
