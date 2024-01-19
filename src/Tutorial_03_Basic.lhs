@@ -171,9 +171,10 @@ Then run the code, and the first example should be correct and the second should
 {-@ type Percentage = TRUE  @-}
 
 {-@ percentT  :: Percentage  @-}
-percentT    = 10
+percentT    = 10 :: Int
 {-@ percentF  :: Percentage  @-}
-percentF    = 10 + 99
+percentF :: Int
+percentF    = 10 + 99 :: Int
 \end{code}
 
 
