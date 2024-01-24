@@ -351,6 +351,7 @@ more refinements of <code>Int</code></p>
 as it is a <em>subtype</em> of <code>Nat</code>, <code>Even</code> and
 <code>Lt100</code>. However, it is not a subtype of
 <code>Positive</code>.</p>
+<div class="interact">
 <p>Now let us try a new predicate. Write a type for the numbers that
 represent a percentage (between 0 and 100) by replacing the
 <code>TRUE</code> predicate. Then run the code, and the first example
@@ -372,6 +373,7 @@ percentF :: Int
 percentF    = 10 + 99 :: Int</div>
 </div>
 
+</div>
 <p><br />
 <strong>In Summary</strong> the key points about refinement types
 are:</p>
@@ -426,7 +428,7 @@ the first case will not be called.</p>
 <p>The above signature forces us to ensure that that when we
 <em>use</em> <code>divide</code>, we only supply provably
 <code>NonZero</code> arguments.</p>
-<div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <p>
 Select which of the following functions that call divide would <b>raise
 an error:</b>
@@ -507,6 +509,7 @@ plus1 a = a + 1</div>
 </div>
 
 <p>And the same could be done between input values.</p>
+<div class="interact">
 <div id="List Average" class="hwex">
 <p><br />
 <strong>Exercise: (List Average): </strong>Can you now put everything
@@ -540,6 +543,7 @@ calcPer 10 11 -- should be incorrect</div>
 Answer</button>
 <div id="collapsibleDiv1">
 <code>{-@ calcPer :: a:Positive -&gt; {b:Int | 0 &lt;= b &amp;&amp; b &lt;= a} -&gt; c:Percentage @-}</code>
+</div>
 </div>
 </div>
 <p><a href="Tutorial_04_Polymorphism.html" >
