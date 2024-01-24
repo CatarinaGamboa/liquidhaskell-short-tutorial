@@ -59,7 +59,7 @@ the `Int` from the `Maybe` and if the inputs were invalid
 to start with, then at that point we'd be stuck.    
     </div>
 </div>
-
+<br/>
 
 
 \newthought{Heart Bleeds}
@@ -123,12 +123,6 @@ In this tutorial you will learn how to add and reason about
 refinement types in Haskell, and how it can increase the realiability
 of Haskell problems.
 
-<button class="btn-next" onclick="location.href='Tutorial_02_Logic.html"> Next ></button>
-
 <a href="Tutorial_02_Logic.html" >
     <button class="btn-next">Next</button>
 </a> 
-
-<!-- To get started, open the [Web Demo](http://goto.ucsd.edu:8090/index.html#?demo=blank.hs)
-and see what is the result when you `Check` the code from the first example.--!> 
-
