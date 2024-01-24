@@ -42,7 +42,7 @@ ghci> average [10, 20, 30, 40]
 25
 ~~~~~
 
-<div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>However, this program crashes with certain arguments. From the following options, what argument would make `average` crash?</p>
    <label class="container"> [1] <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
    <label class="container"> []   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>

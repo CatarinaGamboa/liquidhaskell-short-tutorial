@@ -127,6 +127,7 @@ What is this business of *subtyping*? Suppose we have some more refinements of `
 `Zero` is the most precise type for `0::Int`, as it is a *subtype* of `Nat`,
 `Even` and `Lt100`. However, it is not a subtype of `Positive`.
 
+<div class = "interact">
 Now let us try a new predicate.
 Write a type for the numbers that represent a percentage (between 0 and 100) 
 by replacing the `TRUE` predicate.
@@ -142,6 +143,7 @@ percentF :: Int
 percentF    = 10 + 99 :: Int
 \end{code}
 
+</div>
 
 \newthought{In Summary} the key points about refinement types are:
 
@@ -182,7 +184,7 @@ The above signature forces us to ensure that that when we
 *use* `divide`, we only supply provably `NonZero` arguments.
 
 
-<div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
    <p>Select which of the following functions that call divide would <b>raise an error:</b> </p>
    <label class="container"> abc x y   = divide (x + y) 2 <input type="radio" name="q3" value="1"> <span class="checkmark"></span> </label><br>
    <label class="container"> efg x y z = divide (divide (x + y) 3) 10 <input type="radio" name="q3" value="3"><span class="checkmark"></span> </label><br>
@@ -239,7 +241,7 @@ plus1 a = a + 1
 
 And the same could be done between input values.
 
-
+<div class="interact">
 <div class="hwex" id="List Average">
 Can you now put everything together?
 
@@ -268,7 +270,7 @@ calcPer 10 11 -- should be incorrect
     </div>
 </div>
 
-
+</div>
 
 <a href="Tutorial_04_Polymorphism.html" >
     <button class="btn-next">Next</button>
