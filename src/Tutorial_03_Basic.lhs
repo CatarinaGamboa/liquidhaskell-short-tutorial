@@ -11,7 +11,7 @@ module Tutorial_03_Basic where
 import Prelude hiding (abs)
 divide  :: Int -> Int -> Int
 die     :: String -> a
-
+calcPer :: Int -> Int -> Int
 -- {-@ fail nonsense  @-}
 -- {-@ fail canDie    @-}
 -- {-@ fail divide'   @-}
