@@ -417,9 +417,9 @@ an error:</b>
 <label class="container"> abc x y = divide (x + y) 2
 <input type="radio" name="q3" value="1"> <span class="checkmark"></span>
 </label><br> <label class="container"> efg x y z = divide (divide (x +
-y) 3) 10 <input type="radio" name="q3" value="3"><span
+y) 3) 10 <input type="radio" name="q3" value="2"><span
 class="checkmark"></span> </label><br> <label class="container"> hij x y
-z = divide (x + y) z <input type="radio" name="q3" value="2"><span
+z = divide (x + y) z <input type="radio" name="q3" value="3"><span
 class="checkmark"></span> </label><br>
 <button class="btn-select" onclick="checkAnswer(3)">Submit</button>
 <p id="result3">
@@ -429,6 +429,7 @@ class="checkmark"></span> </label><br>
 Answer</button>
 <div id="collapsibleDiv3">
 <pre><code>`hij` is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
+
 &lt;/div&gt;</code></pre>
 </div>
 <p><br/></p>
