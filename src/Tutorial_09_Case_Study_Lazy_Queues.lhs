@@ -149,10 +149,10 @@ Write a function to *measure* the real size:
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
-{-@ measure realSize @-}
-realSize      :: [a] -> Int
-realSize []     = 0
-realSize (_:xs) = 1 + realSize xs   
+`{-@ measure realSize @-}`
+`realSize      :: [a] -> Int`
+`realSize []     = 0`
+`realSize (_:xs) = 1 + realSize xs   `
     </div>
 </div>
 </div>
@@ -195,7 +195,7 @@ badList = SL 1 []         -- rejected
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
     <div id="collapsibleDiv3">
-{-@ type NEList a = {v:SList a | size v > 0} @-}
+`{-@ type NEList a = {v:SList a | size v > 0} @-}`
     </div>
 </div>
 </div>
@@ -243,13 +243,15 @@ badHd = hd (tl okList)  -- rejected
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
-    <div id="collapsibleDiv2">
-{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}
-tl (SL n (_:xs)) = SL (n-1) xs
+   <button class="btn-answer" onclick="toggleCollapsible(9)"> Answer</button>
+    <div id="collapsibleDiv9">
+`{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}`
 
-{-@ hd           :: xs:NEList a -> a @-}
-hd (SL _ (x:_))  = x 
+`tl (SL n (_:xs)) = SL (n-1) xs`
+
+`{-@ hd           :: xs:NEList a -> a @-}`
+
+`hd (SL _ (x:_))  = x `
     </div>
 </div>
 
@@ -332,8 +334,8 @@ example0Q = Q nil nil
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
-    <div id="collapsibleDiv2">
+   <button class="btn-answer" onclick="toggleCollapsible(7)"> Answer</button>
+    <div id="collapsibleDiv7">
 {-@ measure qsize @-}
 qsize         :: Queue a -> Int
 qsize (Q l r) = size l + size r
@@ -366,7 +368,8 @@ badRemove = remove example0Q   -- reject
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
-`{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}`<br/>
+`{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}`
+
 `remove (Q f b)   = (hd f, makeq (tl f) b)`
     </div>
 </div>
@@ -401,8 +404,9 @@ badReplicate = replicate 1 "No!"   -- reject
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
     <div id="collapsibleDiv5">
-{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}
-insert e (Q f b) = makeq f (e `cons` b)
+`{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}`
+
+`insert e (Q f b) = makeq f (e `cons` b)`
     </div>
 </div>
 
@@ -425,6 +429,7 @@ makeq f b
 <div class="hwex" id="Rotate"> \doublestar
 The Rotate function `rot`:  
 1) is only called when `back` is one larger than the `front` (we never let things drift beyond that). 
+
 2) And the return size is the sum of the size in front, back and the additional to be rotated.
 
 It is arranged so that it the `hd` is built up fast, before the entire
@@ -449,7 +454,7 @@ rot f b acc
 `         -> b:SListN _ {1 + size f}`<br/>
 `         -> a:SList _`<br/>
 `         -> SListN _ {size f + size b + size a}`<br/>
-@-}`
+`@-}`
     </div>
 </div>
 </div>
