@@ -35,9 +35,7 @@ the underlying values.
 Defining Types {#definetype}
 --------------
 
-Let us define some refinement types:^[You can read the type of `Zero` as:
-"`v` is an `Int` *such that* `v` equals `0`" and `NonZero` as : "`v` is
-an `Int` *such that* `v` does not equal `0`"]
+Let us define some refinement types:
 
 \begin{code}
 {-@ type Zero    = {v:Int | v == 0} @-}
