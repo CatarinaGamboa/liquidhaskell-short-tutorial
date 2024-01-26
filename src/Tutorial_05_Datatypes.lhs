@@ -160,17 +160,29 @@ e.g., `badSP' = SP -1 [(0, "cat")]`
 
 
 \newthought{Field Measures} It is convenient to write an alias
-for sparse vectors of a given size `N`. We can use the field name
-`spDim` as a *measure*. 
+for sparse vectors of a given size `N`. So that we can easily say in
+a refinement that we have a sparse vector of a certain size.
+
+For this we can use *measures*.
 
 \newthought{Measures} are used to define *properties* of
 Haskell data values that are useful for specification and
 verification. 
 
-For example, for a list we can define a way to *measure* its size
-that is valid inside the refinements.
-For this, we create a Haskell function that can be lifted into the refinements
-logic. 
+\newthought{A measure} is a *total* Haskell function,
+1. With a *single* equation per data constructor, and
+2. Guaranteed to *terminate*, typically via structural recursion.
+
+\noindent
+We can tell LiquidHaskell to *lift* a function meeting
+the above requirements into the refinement logic by declaring:
+
+\begin{code}
+{-@ measure nameOfMeasure @-}
+\end{code}
+
+For example, for a list we can define a way to *measure* its size with 
+the following function.
 
 \begin{code}
 {-@ measure size @-}
@@ -179,10 +191,11 @@ size []     = 0
 size (_:rs) = 1 + size rs
 \end{code}
 
+Then, we can use this measure to define aliases.
 
 <div class = "interact">
-Can you create another measure `notEmpty` that takes a list as input
-and returns a `Bool` with the information if it is empty or not?
+But first, create another measure named `notEmpty` that takes a list as input
+and returns a `Bool` with the information if it is empty or not.
 
 \begin{code}
 {-@ measure notEmpty @-}
@@ -200,6 +213,27 @@ and returns a `Bool` with the information if it is empty or not?
 </div>
 
 </div>
+
+
+
+And now, we can use this `size` to create an alias that defines
+lists of a certain size `N` and another that defines 
+
+\begin{code}
+type List a = [a]
+
+{-@ type ListN a N = {v:List a | size v = N} @-}
+\end{code}
+
+\newthought{A ListN} is a list with exactly `N` elements. 
+We can also create a list of and a
+`ListX` is a list whose size is the same as another list `X`.  Note
+that when defining refinement type aliases, we use uppercase variables
+like `N` and `X` to distinguish *value* parameters from the lowercase
+*type* parameters like `a`.
+
+
+
 
 
 Similarly, the sparse vector can also have a *measure* for its dimension.
