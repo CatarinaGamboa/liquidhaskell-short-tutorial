@@ -372,9 +372,10 @@ the real size:</p>
 <button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
-{-@ measure realSize @-} realSize :: [a] -&gt; Int realSize [] = 0
-realSize (_:xs) = 1 + realSize xs<br />
-
+<code>{-@ measure realSize @-}</code>
+<code>realSize      :: [a] -&gt; Int</code>
+<code>realSize []     = 0</code>
+<code>realSize (_:xs) = 1 + realSize xs</code>
 </div>
 </div>
 </div>
@@ -442,7 +443,7 @@ badList = SL 1 []         -- rejected</div>
 <button class="btn-answer" onclick="toggleCollapsible(3)">
 Answer</button>
 <div id="collapsibleDiv3">
-{-@ type NEList a = {v:SList a | size v &gt; 0} @-}
+<code>{-@ type NEList a = {v:SList a | size v &gt; 0} @-}</code>
 </div>
 </div>
 </div>
@@ -511,12 +512,13 @@ badHd = hd (tl okList)  -- rejected</div>
 </div>
 
 <div>
-<button class="btn-answer" onclick="toggleCollapsible(2)">
+<button class="btn-answer" onclick="toggleCollapsible(9)">
 Answer</button>
-<div id="collapsibleDiv2">
-<p>{-@ tl :: xs:NEList a -&gt; SListN a {size xs - 1} @-} tl (SL n
-(_:xs)) = SL (n-1) xs</p>
-{-@ hd :: xs:NEList a -&gt; a @-} hd (SL _ (x:_)) = x
+<div id="collapsibleDiv9">
+<p><code>{-@ tl           :: xs:NEList a -&gt; SListN a {size xs - 1}  @-}</code></p>
+<p><code>tl (SL n (_:xs)) = SL (n-1) xs</code></p>
+<p><code>{-@ hd           :: xs:NEList a -&gt; a @-}</code></p>
+<code>hd (SL _ (x:_))  = x</code>
 </div>
 </div>
 </div>
@@ -633,9 +635,9 @@ example0Q = Q nil nil</div>
 </div>
 
 <div>
-<button class="btn-answer" onclick="toggleCollapsible(2)">
+<button class="btn-answer" onclick="toggleCollapsible(7)">
 Answer</button>
-<div id="collapsibleDiv2">
+<div id="collapsibleDiv7">
 <p>{-@ measure qsize @-} qsize :: Queue a -&gt; Int qsize (Q l r) = size
 l + size r</p>
 {-@ type QueueN a N = {v:Queue a | qsize v = N} @-}
@@ -672,7 +674,7 @@ badRemove = remove example0Q   -- reject</div>
 <button class="btn-answer" onclick="toggleCollapsible(4)">
 Answer</button>
 <div id="collapsibleDiv4">
-<code>{-@ remove       :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-}</code><br/>
+<p><code>{-@ remove       :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-}</code></p>
 <code>remove (Q f b)   = (hd f, makeq (tl f) b)</code>
 </div>
 </div>
@@ -717,8 +719,8 @@ badReplicate = replicate 1 "No!"   -- reject</div>
 <button class="btn-answer" onclick="toggleCollapsible(5)">
 Answer</button>
 <div id="collapsibleDiv5">
-{-@ insert :: a -&gt; q:Queue a -&gt; QueueN a {qsize q + 1} @-} insert
-e (Q f b) = makeq f (e <code>cons</code> b)
+<p><code>{-@ insert       :: a -&gt; q:Queue a -&gt; QueueN a {qsize q + 1}   @-}</code></p>
+<code>insert e (Q f b) = makeq f (e</code>cons<code>b)</code>
 </div>
 </div>
 </div>
@@ -749,9 +751,11 @@ makeq f b
 <strong>Exercise: (Rotate): </strong> The Rotate function
 <code>rot</code>:<br />
 1) is only called when <code>back</code> is one larger than the
-<code>front</code> (we never let things drift beyond that). 2) And the
-return size is the sum of the size in front, back and the additional to
-be rotated.</p>
+<code>front</code> (we never let things drift beyond that).</p>
+<ol start="2" type="1">
+<li>And the return size is the sum of the size in front, back and the
+additional to be rotated.</li>
+</ol>
 <p>It is arranged so that it the <code>hd</code> is built up fast,
 before the entire computation finishes; which, combined with laziness
 provides the efficient worst-case guarantee.</p>
@@ -782,7 +786,8 @@ Answer</button>
 <code>{-@ rot :: f:SList a</code><br/>
 <code>-&gt; b:SListN _ {1 + size f}</code><br/>
 <code>-&gt; a:SList _</code><br/>
-<code>-&gt; SListN _ {size f + size b + size a}</code><br/> @-}`
+<code>-&gt; SListN _ {size f + size b + size a}</code><br/>
+<code>@-}</code>
 </div>
 </div>
 </div>
