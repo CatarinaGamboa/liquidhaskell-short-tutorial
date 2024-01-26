@@ -11,7 +11,6 @@ module Tutorial_03_Basic where
 import Prelude hiding (abs)
 divide  :: Int -> Int -> Int
 die     :: String -> a
-calcPer :: Int -> Int -> Int
 -- {-@ fail nonsense  @-}
 -- {-@ fail canDie    @-}
 -- {-@ fail divide'   @-}
@@ -258,8 +257,8 @@ calcPer       :: Int -> Int -> Int
 calcPer a b    = (b * 100) `div` a
 
 
-calcPer 10 5  -- should be correct
-calcPer 10 11 -- should be incorrect
+cpc = calcPer 10 5 :: Int  -- should be correct
+cpi = calcPer 10 11 :: Int -- should be incorrect
 
 \end{code}
 
