@@ -308,6 +308,6 @@ bit of typing and enabling the use of the elegant
 polymorphic, higher-order combinators we know and love.
 
 
-<a href="Tutorial_06_Measure_Bool.html" >
+<a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
     <button class="btn-next">Next</button>
 </a> 
