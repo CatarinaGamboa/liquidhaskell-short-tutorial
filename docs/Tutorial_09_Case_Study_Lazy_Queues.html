@@ -151,7 +151,7 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.2.</b> Sized Lists</a></li>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.3.</b> Queue Type</a></li>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.4.</b> Queue Operations</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.5.</b> Recap</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.5.</b> Recap of everyting!</a></li>
 </ul>
 </ul>
 
@@ -194,9 +194,9 @@ MathJax.Hub.Config({
 
 <section id="lazyqueue" class="level1">
 <h1>Case Study: Okasaki’s Lazy Queues</h1>
-<p>Lets start with a case study that is simple enough to explain without
-pages of code, yet complex enough to show off whats cool about
-dependency: Chris Okasaki’s beautiful <a
+<p>Lets test what we learned so far in a case study that is simple
+enough to explain without pages of code, yet complex enough to show off
+whats cool about dependency: Chris Okasaki’s beautiful <a
 href="http://www.westpoint.edu/eecs/SiteAssets/SitePages/Faculty%20Publication%20Documents/Okasaki/jfp95queue.pdf">Lazy
 Queues</a>. This structure leans heavily on an invariant to provide fast
 <em>insertion</em> and <em>deletion</em>. Let’s see how to enforce that
@@ -353,6 +353,7 @@ otherwise, we have a linear time computation that wrecks Okasaki’s
 careful analysis. (Actually, he presents a variant which does
 <em>not</em> require saving the size as well, but that’s for another
 day.)</p>
+<div class="interact">
 <p>How can we be sure that <code>size</code> is indeed the <em>real
 size</em> of <code>elems</code>? Write a function to <em>measure</em>
 the real size:</p>
@@ -374,6 +375,7 @@ Answer</button>
 {-@ measure realSize @-} realSize :: [a] -&gt; Int realSize [] = 0
 realSize (_:xs) = 1 + realSize xs<br />
 
+</div>
 </div>
 </div>
 <p>Now, we can specify a <em>refined</em> type for <code>SList</code>
@@ -422,6 +424,7 @@ badList = SL 1 []         -- rejected</div>
   <div id="program-5" class="programbox">{-@ type SListN a N = {v:SList a | size v = N} @-}</div>
 </div>
 
+<div class="interact">
 <p><br />
 <strong>Now define an alias</strong> for lists that are not empty:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
@@ -440,6 +443,7 @@ badList = SL 1 []         -- rejected</div>
 Answer</button>
 <div id="collapsibleDiv3">
 {-@ type NEList a = {v:SList a | size v &gt; 0} @-}
+</div>
 </div>
 </div>
 <p> Finally, we can define a basic API for <code>SList</code>.</p>
@@ -461,6 +465,7 @@ nil = SL 0 []
 cons x (SL n xs) = SL (n+1) (x:xs)</div>
 </div>
 
+<div class="interact">
 <div id="Destructing Lists" class="hwex">
 <p><br />
 <strong>Exercise: (Destructing Lists): </strong>We can destruct lists by
@@ -512,6 +517,7 @@ Answer</button>
 <p>{-@ tl :: xs:NEList a -&gt; SListN a {size xs - 1} @-} tl (SL n
 (_:xs)) = SL (n-1) xs</p>
 {-@ hd :: xs:NEList a -&gt; a @-} hd (SL _ (x:_)) = x
+</div>
 </div>
 </div>
 </section>
@@ -589,6 +595,7 @@ Okasaki’s (I prefer <code>front</code> and <code>back</code> to his
   <div id="program-13" class="programbox">emp = Q nil nil</div>
 </div>
 
+<div class="interact">
 <div id="Queue Sizes" class="hwex">
 <p><br />
 <strong>Exercise: (Queue Sizes): </strong>For the remaining operations
@@ -597,8 +604,7 @@ we need some more information. Do the following steps:</p>
 <li>Write a <em>measure</em> qsize to describe the queue size,</li>
 <li>Use it to complete the definition of <code>QueueN</code> below,
 and</li>
-<li>Use it to give <code>remove</code> a type that verifies the safety
-of the calls made to <code>hd</code> and <code>tl</code>.</li>
+<li>In the next step use QueueN.</li>
 </ol>
 <br />
 <br />
@@ -626,6 +632,16 @@ example2Q = Q (1 `cons` (2 `cons` nil)) nil
 example0Q = Q nil nil</div>
 </div>
 
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(2)">
+Answer</button>
+<div id="collapsibleDiv2">
+<p>{-@ measure qsize @-} qsize :: Queue a -&gt; Int qsize (Q l r) = size
+l + size r</p>
+{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}
+</div>
+</div>
+</div>
 <p><br />
 <strong>To Remove</strong> an element we pop it off the
 <code>front</code> by using <code>hd</code> and <code>tl</code>. Notice
@@ -633,6 +649,10 @@ that the <code>remove</code> is only called on non-empty
 <code>Queue</code>s, which together with the key balance invariant
 (<code>makeq</code> that we will see later), ensures that the calls to
 <code>hd</code> and <code>tl</code> are safe.</p>
+<div class="interact">
+<p>Add a LiquidHaskell signature to remove using QueueN. When you are
+done, <code>okRemove</code> should be accepted, <code>badRemove</code>
+should be rejected.</p>
 <div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -643,30 +663,25 @@ that the <code>remove</code> is only called on non-empty
  
   <div id="program-15" class="programbox">remove (Q f b)   = (hd f, makeq (tl f) b)
 
-{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}
-
 
 okRemove  = remove example2Q   -- accept
 badRemove = remove example0Q   -- reject</div>
 </div>
 
-<p><strong>Hint: </strong>When you are done, <code>okRemove</code>
-should be accepted, <code>badRemove</code> should be rejected.</p>
 <div>
 <button class="btn-answer" onclick="toggleCollapsible(4)">
 Answer</button>
 <div id="collapsibleDiv4">
-<p>{-@ measure qsize @-} qsize :: Queue a -&gt; Int qsize (Q l r) = size
-l + size r</p>
-<p>{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}</p>
-{-@ remove :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-} remove
-(Q f b) = (hd f, makeq (tl f) b)
+<code>{-@ remove       :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-}</code><br/>
+<code>remove (Q f b)   = (hd f, makeq (tl f) b)</code>
+</div>
 </div>
 </div>
 <p><br />
 <strong>To Insert</strong> an element we just <code>cons</code> it to
 the <code>back</code> list, and call the <em>smart constructor</em>
 <code>makeq</code> to ensure that the balance invariant holds:</p>
+<div class="interact">
 <div id="Insert" class="hwex">
 <p><br />
 <strong>Exercise: (Insert): </strong>Write down a type for
@@ -706,6 +721,7 @@ Answer</button>
 e (Q f b) = makeq f (e <code>cons</code> b)
 </div>
 </div>
+</div>
 <p><br />
 <strong>To Ensure the Invariant</strong> we use the smart constructor
 <code>makeq</code>, which is where the heavy lifting happens. The
@@ -731,16 +747,21 @@ makeq f b
 <div id="Rotate" class="hwex">
 <p><br />
 <strong>Exercise: (Rotate): </strong> The Rotate function
-<code>rot</code> is only called when the <code>back</code> is one larger
-than the <code>front</code> (we never let things drift beyond that). It
-is arranged so that it the <code>hd</code> is built up fast, before the
-entire computation finishes; which, combined with laziness provides the
-efficient worst-case guarantee. Write down a type for <code>rot</code>
-so that it typechecks and verifies the type for <code>makeq</code>.</p>
+<code>rot</code>:<br />
+1) is only called when <code>back</code> is one larger than the
+<code>front</code> (we never let things drift beyond that). 2) And the
+return size is the sum of the size in front, back and the additional to
+be rotated.</p>
+<p>It is arranged so that it the <code>hd</code> is built up fast,
+before the entire computation finishes; which, combined with laziness
+provides the efficient worst-case guarantee.</p>
 <br />
 <br />
 
 </div>
+<div class="interact">
+<p>As a last exercise, write down a type for <code>rot</code> so that it
+typechecks and verifies the type for <code>makeq</code>.</p>
 <div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -758,13 +779,16 @@ so that it typechecks and verifies the type for <code>makeq</code>.</p>
 <button class="btn-answer" onclick="toggleCollapsible(6)">
 Answer</button>
 <div id="collapsibleDiv6">
-{-@ rot :: f:SList a -&gt; b:SListN _ {1 + size f} -&gt; a:SList <em>
--&gt; SListN </em> {size f + size b + size a} @-}
+<code>{-@ rot :: f:SList a</code><br/>
+<code>-&gt; b:SListN _ {1 + size f}</code><br/>
+<code>-&gt; a:SList _</code><br/>
+<code>-&gt; SListN _ {size f + size b + size a}</code><br/> @-}`
+</div>
 </div>
 </div>
 </section>
-<section id="recap" class="level2">
-<h2>Recap</h2>
+<section id="recap-of-everyting" class="level2">
+<h2>Recap of everyting!</h2>
 <p>Well there you have it; Okasaki’s beautiful lazy Queue, with the
 invariants easily expressed and checked with LiquidHaskell. This example
 is particularly interesting because</p>
