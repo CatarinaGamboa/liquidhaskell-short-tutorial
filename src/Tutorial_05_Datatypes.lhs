@@ -216,53 +216,35 @@ and returns a `Bool` with the information if it is empty or not.
 We can now define a couple of useful aliases
 for describing lists of a given dimension.
 
-\newthought{To make signatures symmetric} let's define an alias for
-plain old (unrefined) lists:
-
-\begin{code}
-type List a = [a]
-\end{code}
-
 And now, we can define that a list has exactly `N` elements. 
-We can also define a list whose size is the same as another list `X`,
-by using `ListN`.
 
 \begin{code}
-{-@ type ListN a N = {v:List a | size v = N} @-}
-{-@ type ListX a X = ListN a {size X}@-}
+{-@ type ListN a N = {v:[a] | size v == N} @-}
 \end{code}
+
 Note that when defining refinement type aliases, we use uppercase variables
-like `N` and `X` to distinguish *value* parameters from the lowercase
+like `N` to distinguish *value* parameters from the lowercase
 *type* parameters like `a`.
 
 
-<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
-   <p>Using the previous aliases, which of the following pieces of code would show an error?</p>
-   <label class="container"> 
-   `{-@ li1 :: ListN Int 4 @-}`<br/>`li1 = [1,2,3,4] :: List Int`
-   <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+<div class="interact">
+Now, try to create an alias for an empty list, using the measure 
+`notEmpty` created before.
 
-   <label class="container"> 
-   `{-@ li2 :: y:ListN Int 2 -> ListX Int y @-}`<br/>`li2 = [19, 20, 38] :: List Int``
-   <input type="radio" name="q1" value="2"> <span class="checkmark"></span> </label><br>
+\begin{code}
+{-@ type NEList a = {TRUE} @-}
 
-   `{-@ li3 :: ListN Int 3 @-}`<br/>`li1 = [9898, 1284, 818] :: List Int`
-   <input type="radio" name="q1" value="3"> <span class="checkmark"></span> </label><br>
+{-@ ne1 :: NEList Int@-}
+ne1 = [] ::  [Int]
+{-@ ne1 :: NEList Int@-}
+ne2 = [1,2,3,4] :: [Int]
+\end{code}
 
-   <label class="container"> 
-   `{-@ li4 :: y:ListN Int 5 -> ListX Int y @-}`<br/>`li2 = [19, 20, 38, 9898] :: List Int``
-   <input type="radio" name="q1" value="4"> <span class="checkmark"></span> </label><br>
-
-   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p> <input type="hidden" id="correctAnswer1" value="4">
-
-   <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
-    <div id="collapsibleDiv3">
-The last option would be the incorrect one since `li4` has as a pre-condition that it
-receives a list with 5 elements and as a post-condition that the output list should have
-the same number of elements. However, this list only has 4 instead of 5 elements.  
-    </div>
+<button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
+    <div id="collapsibleDiv4">
+`{-@ type NEList a = {v:[a] | notEmpty v} @-}`
+   </div>
 </div>
-<br/>
 
 
 \newthought{Measures with Sparse Vectors}
@@ -271,21 +253,29 @@ Similarly, the sparse vector also has a *measure* for its dimension, but in this
 case it is already defined by `spDim`, so we can use it to create the new alias 
 of sparse vectors of size N.
 
-
-In this case we can create `spDim` as the *actual*
-dimension of the `Sparse` vector inside the refinement, and therefore create 
-an alias of a sparse vector of size N.
+<div class="interact">
+Now, following what we did with the lists, write the alias for sparse vector,
+using `spDim` instead of `size`.
 
 \begin{code}
-{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}
+{-@ type SparseN a N = {TRUE} @-}
 \end{code}
 
+<button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
+    <div id="collapsibleDiv5">
+`{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
+   </div>
+</div>
 
 
+`Vector`s are similar to Sparse Vectors, and therefore, have a
+*measure* of size named `vlen`.
 
 
 \newthought{Sparse Products}
-Let's write a function to compute a sparse product
+So, now, we can see that LiquidHaskell is able to compute a sparse product,
+making the product of all the same indexes and returning its sum.
+Run the code ahead.
 
 \begin{code}
 {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}

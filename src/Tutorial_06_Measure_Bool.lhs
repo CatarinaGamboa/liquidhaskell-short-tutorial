@@ -205,3 +205,35 @@ Of course, we can do a lot more with measures, so let's press on!
 <a href="Tutorial_07_Measure_Int.html" >
     <button class="btn-next">Next</button>
 </a> 
+
+
+
+EXTRA
+
+<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+   <p>Using the previous aliases, which of the following pieces of code would show an error?</p>
+   <label class="container"> 
+   `{-@ li1 :: ListN Int 4 @-}`<br/>`li1 = [1,2,3,4] :: List Int`
+   <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+
+   <label class="container"> 
+   `{-@ li2 :: y:ListN Int 2 -> ListX Int y @-}`<br/>`li2 = [19, 20, 38] :: List Int``
+   <input type="radio" name="q1" value="2"> <span class="checkmark"></span> </label><br>
+
+   `{-@ li3 :: ListN Int 3 @-}`<br/>`li1 = [9898, 1284, 818] :: List Int`
+   <input type="radio" name="q1" value="3"> <span class="checkmark"></span> </label><br>
+
+   <label class="container"> 
+   `{-@ li4 :: y:ListN Int 5 -> ListX Int y @-}`<br/>`li2 = [19, 20, 38, 9898] :: List Int``
+   <input type="radio" name="q1" value="4"> <span class="checkmark"></span> </label><br>
+
+   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p> <input type="hidden" id="correctAnswer1" value="4">
+
+   <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
+    <div id="collapsibleDiv3">
+The last option would be the incorrect one since `li4` has as a pre-condition that it
+receives a list with 5 elements and as a post-condition that the output list should have
+the same number of elements. However, this list only has 4 instead of 5 elements.  
+    </div>
+</div>
+<br/>

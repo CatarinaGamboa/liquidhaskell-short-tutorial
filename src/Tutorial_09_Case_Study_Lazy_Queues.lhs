@@ -145,8 +145,6 @@ Write a function to *measure* the real size:
 
 \end{code}
 
-
-
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
@@ -218,7 +216,7 @@ Now, fix the specification on both functions so the definitions typecheck.
 </div>
 
 \begin{code}
-{-@ tl           :: xs:SList a -> SListN a {size xs - 1}  @-}
+{-@ tl           :: xs:SList a -> SListN a {size xs + 1}  @-}
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
