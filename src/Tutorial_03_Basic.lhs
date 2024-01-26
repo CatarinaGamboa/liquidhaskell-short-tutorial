@@ -225,7 +225,7 @@ when `0 < n` and that in the `otherwise` case,
 the value `0 - n` is indeed non-negative. 
 
 
-Predicates with variables that depend on each other
+Dependent Refinements
 ---------------------------------------
 
 The predicates in pre- and post- conditions can also refer to previous arguments
