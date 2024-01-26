@@ -139,36 +139,19 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_03_Basic.html#'><b>2.3.</b> Subtyping</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.4.</b> Writing Specifications</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.5.</b> Refining Function Types: Post-conditions</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>2.6.</b> Predicates with variables that depend on each other</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>2.6.</b> Dependent Refinements</a></li>
 </ul>
-<li><a href='Tutorial_04_Polymorphism.html'><b>3.</b>Polymorphism {#polymorphism}</a></li>
+<li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>3.1.</b> Specification: Vector Bounds {#vectorbounds}</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>3.2.</b> Verification: Vector Lookup</a></li>
-<li><a href='Tutorial_04_Polymorphism.html#'><b>3.3.</b> Inference: Our First Recursive Function</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.1.</b> Sparse Vectors {#autosmart}</a></li>
 </ul>
-<li><a href='Tutorial_05_Datatypes.html'><b>4.</b>Refined Datatypes {#refineddatatypes}</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>4.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_05_Datatypes.html#'><b>4.1.</b> Sparse Vectors {#autosmart}</a></li>
-</ul>
-<li><a href='Tutorial_06_Measure_Bool.html'><b>5.</b>Boolean Measures {#boolmeasures}</a></li>
-<ul class='section'>
-<li><a href='Tutorial_06_Measure_Bool.html#'><b>5.1.</b> Partial Functions</a></li>
-<li><a href='Tutorial_06_Measure_Bool.html#'><b>5.2.</b> Lifting Functions to Measures {#usingmeasures}</a></li>
-</ul>
-<li><a href='Tutorial_07_Measure_Int.html'><b>6.</b>Numeric Measures {#numericmeasure}</a></li>
-<ul class='section'>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>6.1.</b> Wholemeal Programming</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>6.2.</b> Specifying List Dimensions</a></li>
-<li><a href='Tutorial_07_Measure_Int.html#'><b>6.3.</b> Lists: Size Preserving API</a></li>
-</ul>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>7.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
-<ul class='section'>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>7.1.</b> Queues</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>7.2.</b> Sized Lists</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>7.3.</b> Queue Type</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>7.4.</b> Queue Operations</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>7.5.</b> Recap</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.1.</b> Queues</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.2.</b> Sized Lists</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.3.</b> Queue Type</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.4.</b> Queue Operations</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.5.</b> Recap</a></li>
 </ul>
 </ul>
 
@@ -311,13 +294,12 @@ represent such vectors as a list of index-value tuples
 index-value tuples. Implicitly, all indices <em>other</em> than those in
 the list have the value <code>0</code> or the equivalent value type
 <code>a</code>.</p>
-<p><code>Sparse</code> vectors satisfy two crucial properties. First,
-the dimension stored in <code>spDim</code> is non-negative. Second,
-every index in <code>spElems</code> must be valid, i.e. between
-<code>0</code> and the dimension. Unfortunately, Haskell’s type system
-does not make it easy to ensure that <em>illegal vectors are not
-representable</em>.<a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a></p>
+<p><code>Sparse</code> vectors satisfy two crucial properties. 1) the
+dimension stored in <code>spDim</code> is non-negative; 2) every index
+in <code>spElems</code> must be valid, i.e. between <code>0</code> and
+the dimension.</p>
+<p>Unfortunately, Haskell’s type system does not make it easy to ensure
+that <em>illegal vectors are not representable</em>.</p>
 <p><br />
 <strong>Data Invariants</strong> LiquidHaskell lets us enforce these
 invariants with a refined data definition:</p>
@@ -343,19 +325,13 @@ invariants with a refined data definition:</p>
   </button>
  
   <div id="program-3" class="programbox">{-@ type Nat        = {v:Int | 0 <= v}            @-}
-{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-}</div>
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} </div>
 </div>
 
 <p><br />
 <strong>Refined Data Constructors</strong> The refined data definition
 is internally converted into refined types for the data constructor
-<code>SP</code>:</p>
-<pre class="spec"><code>-- Generated Internal representation
-data Sparse a where
-  SP :: spDim:Nat
-     -&gt; spElems:[(Btwn 0 spDim, a)]
-     -&gt; Sparse a</code></pre>
-<p>In other words, by using refined input types for <code>SP</code> we
+<code>SP</code>. So, by using refined input types for <code>SP</code> we
 have automatically converted it into a <em>smart</em> constructor that
 ensures that <em>every</em> instance of a <code>Sparse</code> is legal.
 Consequently, LiquidHaskell verifies:</p>
@@ -386,12 +362,8 @@ badSP = SP 5 [ (0, "cat")
              , (6, "dog") ]</div>
 </div>
 
-<p><br />
-<strong>Field Measures</strong> It is convenient to write an alias for
-sparse vectors of a given size <code>N</code>. We can use the field name
-<code>spDim</code> as a <em>measure</em>, like <code>vlen</code>. That
-is, we can use <code>spDim</code> inside refinements<a href="#fn2"
-class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="interact">
+Write another example of a Sparse data type that is invalid.
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -400,10 +372,32 @@ class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</div>
+  <div id="program-6" class="programbox">badSP' :: Sparse String</div>
 </div>
 
-<p>Let’s write a function to compute a sparse product</p>
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(1)">
+Answer</button>
+<div id="collapsibleDiv1">
+e.g., <code>badSP' = SP -1 [(0, "cat")]</code>
+</div>
+</div>
+</div>
+<p><br />
+<strong>Field Measures</strong> It is convenient to write an alias for
+sparse vectors of a given size <code>N</code>. So that we can easily say
+in a refinement that we have a sparse vector of a certain size.</p>
+<p>For this we can use <em>measures</em>.</p>
+<p><br />
+<strong>Measures</strong> are used to define <em>properties</em> of
+Haskell data values that are useful for specification and
+verification.</p>
+<p><br />
+<strong>A measure</strong> is a <em>total</em> Haskell function, 1. With
+a <em>single</em> equation per data constructor, and 2. Guaranteed to
+<em>terminate</em>, typically via structural recursion.</p>
+<p> We can tell LiquidHaskell to <em>lift</em> a function meeting the
+above requirements into the refinement logic by declaring:</p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -412,7 +406,154 @@ class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+  <div id="program-7" class="programbox">{-@ measure nameOfMeasure @-}</div>
+</div>
+
+<p>For example, for a list we can define a way to <em>measure</em> its
+size with the following function.</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">{-@ measure size @-}
+{-@ size :: [a] -> Nat @-}
+size []     = 0
+size (_:rs) = 1 + size rs</div>
+</div>
+
+<p>Then, we can use this measure to define aliases.</p>
+<div class="interact">
+<p>But first, let’s create another measure named <code>notEmpty</code>
+that takes a list as input and returns a <code>Bool</code> with the
+information if it is empty or not.</p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ measure notEmpty @-}</div>
+</div>
+
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(2)">
+Answer</button>
+<div id="collapsibleDiv2">
+<code>{-@ measure notEmpty @-}</code><br/>
+<code>notEmpty       :: [a] -&gt; Bool</code>
+<code>notEmpty []    = False</code> <code>notEmpty (_:_) = True</code>
+</div>
+</div>
+</div>
+<p>We can now define a couple of useful aliases for describing lists of
+a given dimension.</p>
+<p>And now, we can define that a list has exactly <code>N</code>
+elements.</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ type ListN a N = {v:[a] | size v == N} @-}</div>
+</div>
+
+<p>Note that when defining refinement type aliases, we use uppercase
+variables like <code>N</code> to distinguish <em>value</em> parameters
+from the lowercase <em>type</em> parameters like <code>a</code>.</p>
+<div class="interact">
+<p>Now, try to create an alias for an empty list, using the measure
+<code>notEmpty</code> created before.</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ type NEList a = {TRUE} @-}
+
+{-@ ne1 :: NEList Int@-}
+ne1 = [] ::  [Int]
+{-@ ne1 :: NEList Int@-}
+ne2 = [1,2,3,4] :: [Int]</div>
+</div>
+
+<button class="btn-answer" onclick="toggleCollapsible(4)">
+Answer
+</button>
+<pre><code>&lt;div id=&quot;collapsibleDiv4&quot;&gt;</code></pre>
+<code>{-@ type NEList a = {v:[a] | notEmpty v} @-}</code>
+</div>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">/div></div>
+</div>
+
+<p>Similarly, the sparse vector also has a <em>measure</em> for its
+dimension, but in this case it is already defined by <code>spDim</code>,
+so we can use it to create the new alias of sparse vectors of size
+N.</p>
+<div class="interact">
+<p>Now, following what we did with the lists, write the alias for sparse
+vector, using <code>spDim</code> instead of <code>size</code>.</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ type SparseN a N = {TRUE} @-}</div>
+</div>
+
+<button class="btn-answer" onclick="toggleCollapsible(5)">
+Answer
+</button>
+<pre><code>&lt;div id=&quot;collapsibleDiv5&quot;&gt;</code></pre>
+<code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
+</div>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">/div></div>
+</div>
+
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>.</p>
+<p>So, now, we can see that LiquidHaskell is able to compute a sparse
+product, making the product of all the same indexes and returning its
+sum. Run the code ahead.</p>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">{-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
 dotProd x (SP _ y) = go 0 y
   where
     go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
@@ -426,7 +567,7 @@ vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
 <p><br />
 <strong>Folded Product</strong> We can port the <code>fold</code>-based
 product to our new representation:</p>
-<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -434,7 +575,7 @@ product to our new representation:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">{-@ dotProd' :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+  <div id="program-16" class="programbox">{-@ dotProd' :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
 dotProd' x (SP _ y) = foldl' body 0 y
   where
     body sum (i, v) = sum + (x ! i)  * v</div>
@@ -445,25 +586,9 @@ href="#sparsetype">automatically instantiating refinements</a> for the
 type parameters of <code>foldl'</code>, saving us a fair bit of typing
 and enabling the use of the elegant polymorphic, higher-order
 combinators we know and love.</p>
-<p><a href="Tutorial_06_Measure_Bool.html" >
+<p><a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
 <button class="btn-next">Next</button> </a></p>
 </section>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>The standard approach is to use abstract types and <a
-href="https://www.haskell.org/haskellwiki/Smart_constructors">smart
-constructors</a> but even then there is only the informal guarantee that
-the smart constructor establishes the right invariants.<a href="#fnref1"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Note that <em>inside</em> a refined <code>data</code>
-definition, a field name like <code>spDim</code> refers to the value of
-the field, but <em>outside</em> it refers to the field selector measure
-or function.<a href="#fnref2" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-</ol>
 </section>
 
 </div>
