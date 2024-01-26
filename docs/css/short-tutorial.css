@@ -135,3 +135,9 @@ background: white;
     text-decoration: none;
   }
  
+.interact{
+  border-radius: 10px;
+    border-color: #ffc837;
+    background-color: #dc76001f;
+    padding: 10px;
+}
