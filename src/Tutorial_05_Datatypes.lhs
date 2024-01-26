@@ -194,13 +194,12 @@ size (_:rs) = 1 + size rs
 Then, we can use this measure to define aliases.
 
 <div class = "interact">
-But first, create another measure named `notEmpty` that takes a list as input
+But first, let's create another measure named `notEmpty` that takes a list as input
 and returns a `Bool` with the information if it is empty or not.
 
 \begin{code}
 {-@ measure notEmpty @-}
 \end{code}
-
 
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
@@ -214,29 +213,65 @@ and returns a `Bool` with the information if it is empty or not.
 
 </div>
 
+We can now define a couple of useful aliases
+for describing lists of a given dimension.
 
-
-And now, we can use this `size` to create an alias that defines
-lists of a certain size `N` and another that defines 
+\newthought{To make signatures symmetric} let's define an alias for
+plain old (unrefined) lists:
 
 \begin{code}
 type List a = [a]
-
-{-@ type ListN a N = {v:List a | size v = N} @-}
 \end{code}
 
-\newthought{A ListN} is a list with exactly `N` elements. 
-We can also create a list of and a
-`ListX` is a list whose size is the same as another list `X`.  Note
-that when defining refinement type aliases, we use uppercase variables
+And now, we can define that a list has exactly `N` elements. 
+We can also define a list whose size is the same as another list `X`,
+by using `ListN`.
+
+\begin{code}
+{-@ type ListN a N = {v:List a | size v = N} @-}
+{-@ type ListX a X = ListN a {size X}@-}
+\end{code}
+Note that when defining refinement type aliases, we use uppercase variables
 like `N` and `X` to distinguish *value* parameters from the lowercase
 *type* parameters like `a`.
 
 
+<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+   <p>Using the previous aliases, which of the following pieces of code would show an error?</p>
+   <label class="container"> 
+   `{-@ li1 :: ListN Int 4 @-}`<br/>`li1 = [1,2,3,4] :: List Int`
+   <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+
+   <label class="container"> 
+   `{-@ li2 :: y:ListN Int 2 -> ListX Int y @-}`<br/>`li2 = [19, 20, 38] :: List Int``
+   <input type="radio" name="q1" value="2"> <span class="checkmark"></span> </label><br>
+
+   `{-@ li3 :: ListN Int 3 @-}`<br/>`li1 = [9898, 1284, 818] :: List Int`
+   <input type="radio" name="q1" value="3"> <span class="checkmark"></span> </label><br>
+
+   <label class="container"> 
+   `{-@ li4 :: y:ListN Int 5 -> ListX Int y @-}`<br/>`li2 = [19, 20, 38, 9898] :: List Int``
+   <input type="radio" name="q1" value="4"> <span class="checkmark"></span> </label><br>
+
+   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p> <input type="hidden" id="correctAnswer1" value="4">
+
+   <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
+    <div id="collapsibleDiv3">
+The last option would be the incorrect one since `li4` has as a pre-condition that it
+receives a list with 5 elements and as a post-condition that the output list should have
+the same number of elements. However, this list only has 4 instead of 5 elements.  
+    </div>
+</div>
+<br/>
 
 
+\newthought{Measures with Sparse Vectors}
 
-Similarly, the sparse vector can also have a *measure* for its dimension.
+Similarly, the sparse vector also has a *measure* for its dimension, but in this
+case it is already defined by `spDim`, so we can use it to create the new alias 
+of sparse vectors of size N.
+
+
 In this case we can create `spDim` as the *actual*
 dimension of the `Sparse` vector inside the refinement, and therefore create 
 an alias of a sparse vector of size N.
