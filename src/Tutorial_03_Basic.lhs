@@ -258,7 +258,7 @@ calcPer       :: Int -> Int -> Int
 calcPer a b    = (b * 100) `div` a
 
 
-clacPer 10 5  -- should be correct
+calcPer 10 5  -- should be correct
 calcPer 10 11 -- should be incorrect
 
 \end{code}

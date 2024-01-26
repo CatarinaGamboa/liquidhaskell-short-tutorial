@@ -95,15 +95,13 @@ in the list have the value `0` or the equivalent value type `a`.
 
 \newthought{Legal}
 `Sparse` vectors satisfy two crucial properties.
-First, the dimension stored in `spDim` is non-negative.
-Second, every index in `spElems` must be valid, i.e.
-between `0` and the dimension. Unfortunately, Haskell's
+1) the dimension stored in `spDim` is non-negative;
+2) every index in `spElems` must be valid, i.e.
+between `0` and the dimension. 
+
+Unfortunately, Haskell's
 type system does not make it easy to ensure that
-*illegal vectors are not representable*.^[The standard
-approach is to use abstract types and
-[smart constructors][smart-ctr-wiki] but even
-then there is only the informal guarantee that the
-smart constructor establishes the right invariants.]
+*illegal vectors are not representable*.
 
 \newthought{Data Invariants} LiquidHaskell lets us enforce
 these invariants with a refined data definition:
@@ -117,22 +115,13 @@ these invariants with a refined data definition:
 
 \begin{code}
 {-@ type Nat        = {v:Int | 0 <= v}            @-}
-{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-}
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} 
 \end{code}
 
 \newthought{Refined Data Constructors} The refined data
 definition is internally converted into refined types
-for the data constructor `SP`:
-
-~~~~~{.spec}
--- Generated Internal representation
-data Sparse a where
-  SP :: spDim:Nat
-     -> spElems:[(Btwn 0 spDim, a)]
-     -> Sparse a
-~~~~~
-
-\noindent In other words, by using refined input types for `SP`
+for the data constructor `SP`.
+So, by using refined input types for `SP`
 we have automatically converted it into a *smart* constructor that
 ensures that *every* instance of a `Sparse` is legal.
 Consequently, LiquidHaskell verifies:
@@ -151,16 +140,80 @@ badSP = SP 5 [ (0, "cat")
              , (6, "dog") ]
 \end{code}
 
+
+<div class="interact">
+Write another example of a Sparse data type that is invalid.
+\begin{code}
+badSP' :: Sparse String
+\end{code}
+
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
+    <div id="collapsibleDiv1">
+e.g., `badSP' = SP -1 [(0, "cat")]`
+    </div>
+</div>
+
+</div>
+
+
+
+
 \newthought{Field Measures} It is convenient to write an alias
 for sparse vectors of a given size `N`. We can use the field name
-`spDim` as a *measure*, like `vlen`. That is, we can use `spDim`
-inside refinements^[Note that *inside* a refined `data` definition,
-a field name like `spDim` refers to the value of the field, but *outside*
-it refers to the field selector measure or function.]
+`spDim` as a *measure*. 
+
+\newthought{Measures} are used to define *properties* of
+Haskell data values that are useful for specification and
+verification. 
+
+For example, for a list we can define a way to *measure* its size
+that is valid inside the refinements.
+For this, we create a Haskell function that can be lifted into the refinements
+logic. 
+
+\begin{code}
+{-@ measure size @-}
+{-@ size :: [a] -> Nat @-}
+size []     = 0
+size (_:rs) = 1 + size rs
+\end{code}
+
+
+<div class = "interact">
+Can you create another measure `notEmpty` that takes a list as input
+and returns a `Bool` with the information if it is empty or not?
+
+\begin{code}
+{-@ measure notEmpty @-}
+\end{code}
+
+
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
+    <div id="collapsibleDiv2">
+`{-@ measure notEmpty @-}`<br/>
+`notEmpty       :: [a] -> Bool`
+`notEmpty []    = False`
+`notEmpty (_:_) = True`
+    </div>
+</div>
+
+</div>
+
+
+Similarly, the sparse vector can also have a *measure* for its dimension.
+In this case we can create `spDim` as the *actual*
+dimension of the `Sparse` vector inside the refinement, and therefore create 
+an alias of a sparse vector of size N.
 
 \begin{code}
 {-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}
 \end{code}
+
+
+
+
 
 \newthought{Sparse Products}
 Let's write a function to compute a sparse product
