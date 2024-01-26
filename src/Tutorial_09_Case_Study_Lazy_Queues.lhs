@@ -2,7 +2,7 @@
 Case Study: Okasaki's Lazy Queues {#lazyqueue}
 =================================
 
-Lets start with a case study that is simple enough to explain without
+Lets test what we learned so far in a case study that is simple enough to explain without
 pages of code, yet complex enough to show off whats cool about
 dependency: Chris Okasaki's beautiful [Lazy Queues][okasaki95].
 This structure leans heavily on an invariant to provide fast
@@ -137,6 +137,7 @@ have a linear time computation that wrecks Okasaki's careful
 analysis. (Actually, he presents a variant which does *not*
 require saving the size as well, but that's for another day.)
 
+<div class = "interact">
 How can we be sure that `size` is indeed the *real size* of `elems`?
 Write a function to *measure* the real size:
 
@@ -154,7 +155,7 @@ realSize []     = 0
 realSize (_:xs) = 1 + realSize xs   
     </div>
 </div>
-
+</div>
 
 Now, we can specify a *refined* type for `SList` that ensures
 that the *real* size is saved in the `size` field.
@@ -183,6 +184,8 @@ badList = SL 1 []         -- rejected
 {-@ type SListN a N = {v:SList a | size v = N} @-}
 \end{code}
 
+
+<div class = "interact">
 \newthought{Now define an alias} for lists that are not empty:
 
 \begin{code}
@@ -195,7 +198,7 @@ badList = SL 1 []         -- rejected
 {-@ type NEList a = {v:SList a | size v > 0} @-}
     </div>
 </div>
-
+</div>
 
 \noindent
 Finally, we can define a basic API for `SList`.
@@ -209,6 +212,10 @@ nil = SL 0 []
 {-@ cons :: a -> xs:SList a -> SListN a {size xs + 1} @-}
 cons x (SL n xs) = SL (n+1) (x:xs)
 \end{code}
+
+
+
+<div class = "interact">
 
 <div class="hwex" id="Destructing Lists">We can destruct lists by writing a `hd` and `tl`
 function as shown below. 
@@ -246,7 +253,7 @@ hd (SL _ (x:_))  = x
     </div>
 </div>
 
-
+</div>
 
 Queue Type
 -----------
@@ -297,14 +304,16 @@ and `back` to his `left` and `right`.)
 emp = Q nil nil
 \end{code}
 
+
+
+<div class = "interact">
 <div class="hwex" id="Queue Sizes">
 For the remaining operations we need some more information.
 Do the following steps:
 
 1. Write a *measure* qsize to describe the queue size,
 2. Use it to complete the definition of `QueueN` below, and
-3. Use it to give `remove` a type that verifies the safety of the
-   calls made to `hd` and `tl`.
+3. In the next step use QueueN.
 </div>
 
 \begin{code}
@@ -322,18 +331,31 @@ example2Q = Q (1 `cons` (2 `cons` nil)) nil
 example0Q = Q nil nil
 \end{code}
 
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
+    <div id="collapsibleDiv2">
+{-@ measure qsize @-}
+qsize         :: Queue a -> Int
+qsize (Q l r) = size l + size r
 
+{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}
+    </div>
+
+</div>
+
+</div>
 
 \newthought{To Remove} an element we pop it off the `front` by using
 `hd` and `tl`.  Notice that the `remove` is only called on non-empty
 `Queue`s, which together with the key balance invariant (`makeq` that we will see later), ensures that
 the calls to `hd` and `tl` are safe.
 
+<div class="interact">
+Add a LiquidHaskell signature to remove using QueueN. When you are done, `okRemove` should be accepted, `badRemove`
+should be rejected.
 
 \begin{code}
 remove (Q f b)   = (hd f, makeq (tl f) b)
-
-{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}
 
 
 okRemove  = remove example2Q   -- accept
@@ -341,21 +363,14 @@ badRemove = remove example0Q   -- reject
 \end{code}
 
 
-\hint When you are done, `okRemove` should be accepted, `badRemove`
-should be rejected.
-
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
-{-@ measure qsize @-}
-qsize         :: Queue a -> Int
-qsize (Q l r) = size l + size r
-
-{-@ type QueueN a N = {v:Queue a | N = qsize v} @-}
-
-{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}
-remove (Q f b)   = (hd f, makeq (tl f) b)
+`{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}`<br/>
+`remove (Q f b)   = (hd f, makeq (tl f) b)`
     </div>
+</div>
+
 </div>
 
 
@@ -363,6 +378,7 @@ remove (Q f b)   = (hd f, makeq (tl f) b)
 \newthought{To Insert} an element we just `cons` it to the `back` list, and call
 the *smart constructor* `makeq` to ensure that the balance invariant holds:
 
+<div class="interact">
 <div class="hwex" id="Insert">Write down a type for `insert` such
 that `replicate` and `okReplicate` are accepted by LiquidHaskell, but `badReplicate`
 is rejected.
@@ -390,6 +406,8 @@ insert e (Q f b) = makeq f (e `cons` b)
     </div>
 </div>
 
+</div>
+
 
 \newthought{To Ensure the Invariant} we use the smart constructor
 `makeq`, which is where the heavy lifting happens.  The constructor
@@ -405,13 +423,18 @@ makeq f b
 \end{code}
 
 <div class="hwex" id="Rotate"> \doublestar
-The Rotate function `rot` is only called when the `back` is one
-larger than the `front` (we never let things drift beyond that). It is
-arranged so that it the `hd` is built up fast, before the entire
+The Rotate function `rot`:  
+1) is only called when `back` is one larger than the `front` (we never let things drift beyond that). 
+2) And the return size is the sum of the size in front, back and the additional to be rotated.
+
+It is arranged so that it the `hd` is built up fast, before the entire
 computation finishes; which, combined with laziness provides the
-efficient worst-case guarantee. Write down a type for `rot` so
-that it typechecks and verifies the type for `makeq`.
+efficient worst-case guarantee. 
 </div>
+
+<div class = "interact">
+As a last exercise, write down a type for `rot` so
+that it typechecks and verifies the type for `makeq`.
 
 \begin{code}
 rot f b acc
@@ -422,16 +445,16 @@ rot f b acc
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(6)"> Answer</button>
     <div id="collapsibleDiv6">
-{-@ rot :: f:SList a
-        -> b:SListN _ {1 + size f}
-        -> a:SList _
-        -> SListN _ {size f + size b + size a}
-@-}
+`{-@ rot :: f:SList a`<br/>
+`         -> b:SListN _ {1 + size f}`<br/>
+`         -> a:SList _`<br/>
+`         -> SListN _ {size f + size b + size a}`<br/>
+@-}`
     </div>
 </div>
+</div>
 
-
-Recap
+Recap of everyting!
 -----
 
 Well there you have it; Okasaki's beautiful lazy Queue, with the
@@ -441,7 +464,6 @@ This example is particularly interesting because
 1. The refinements express invariants that are critical for efficiency,
 2. The code introspects on the `size` to guarantee the invariants, and
 3. The code is quite simple and we hope, easy to follow!
-
 
 This exercise concludes the Short Tutorial of LiquidHaskell. 
 Thank you for tagging along!
