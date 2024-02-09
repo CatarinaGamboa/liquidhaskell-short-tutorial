@@ -216,6 +216,7 @@ module Cheat_sheet where
 main = putStrLn "Intro"
 
 -- {-@ ignore average @-}
+-- {-@ ignore mySize @-}
 
 </div>
 </div>
@@ -238,7 +239,7 @@ For example:
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">`{-@ calcPer ::  a:Int -> {b:Int | 0 <= b && b <= a} -> c:Int @-}`
+  <div id="program-1" class="programbox">{-@ calcPer    ::  {a:Int | a > 0} -> {b:Int | 0 <= b && b <= a} -> c:Int @-}
 calcPer       :: Int -> Int -> Int
 calcPer a b    = (b * 100) `div` a</div>
 </div>
@@ -257,7 +258,7 @@ For example:
   </button>
  
   <div id="program-2" class="programbox">{-@ type Nat      = {v:Int | 0 <= v}        @-}
-{-@ type Positive = {v:Int | 0 < v}         @-}</div>
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} </div>
 </div>
 
 </section>
@@ -310,10 +311,11 @@ refinements.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ measure size @-}
-{-@ size :: [a] -> Nat @-}
-size []     = 0
-size (_:rs) = 1 + size rs</div>
+  <div id="program-5" class="programbox">{-@ measure mySize @-}
+{-@ mySize :: [a] -> Nat @-}
+mySize :: [a] -> Int
+mySize []     = 0
+mySize (_:rs) = 1 + mySize rs</div>
 </div>
 
 <p>And then, <code>size</code> can be used in:</p>
