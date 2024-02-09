@@ -498,12 +498,21 @@ ne1 = [] ::  [Int]
 ne2 = [1,2,3,4] :: [Int]</div>
 </div>
 
-<button class="btn-answer" onclick="toggleCollapsible(4)">
-Answer
-</button>
-<pre><code>&lt;div id=&quot;collapsibleDiv4&quot;&gt;</code></pre>
+<div>
+<p><button class="btn-answer" onclick="toggleCollapsible(40)">
+Answer</button></p>
+<div id="collapsibleDiv40">
 <code>{-@ type NEList a = {v:[a] | notEmpty v} @-}</code>
 </div>
+</div>
+</div>
+<p>Similarly, the sparse vector also has a <em>measure</em> for its
+dimension, but in this case it is already defined by <code>spDim</code>,
+so we can use it to create the new alias of sparse vectors of size
+N.</p>
+<div class="interact">
+<p>Now, following what we did with the lists, write the alias for sparse
+vector, using <code>spDim</code> instead of <code>size</code>.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -512,16 +521,17 @@ Answer
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">/div></div>
+  <div id="program-12" class="programbox">{-@ type SparseN a N = {true} @-}</div>
 </div>
 
-<p>Similarly, the sparse vector also has a <em>measure</em> for its
-dimension, but in this case it is already defined by <code>spDim</code>,
-so we can use it to create the new alias of sparse vectors of size
-N.</p>
-<div class="interact">
-<p>Now, following what we did with the lists, write the alias for sparse
-vector, using <code>spDim</code> instead of <code>size</code>.</p>
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(5)">
+Answer
+</button>
+<pre><code>&lt;div id=&quot;collapsibleDiv5&quot;&gt;</code></pre>
+<code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
+</div>
+</div>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -530,15 +540,14 @@ vector, using <code>spDim</code> instead of <code>size</code>.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-13" class="programbox">{-@ type SparseN a N = {true} @-}</div>
+  <div id="program-13" class="programbox">/div></div>
 </div>
 
-<button class="btn-answer" onclick="toggleCollapsible(5)">
-Answer
-</button>
-<pre><code>&lt;div id=&quot;collapsibleDiv5&quot;&gt;</code></pre>
-<code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
-</div>
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>.</p>
+<p>So, now, we can see that LiquidHaskell is able to compute a sparse
+product, making the product of all the same indexes and returning its
+sum. Run the code ahead.</p>
 <div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -547,23 +556,7 @@ Answer
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-14" class="programbox">/div></div>
-</div>
-
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>.</p>
-<p>So, now, we can see that LiquidHaskell is able to compute a sparse
-product, making the product of all the same indexes and returning its
-sum. Run the code ahead.</p>
-<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-15" class="programbox">{-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+  <div id="program-14" class="programbox">{-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
 dotProd x (SP _ y) = go 0 y
   where
     go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
