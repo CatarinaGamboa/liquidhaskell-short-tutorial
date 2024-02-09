@@ -141,3 +141,10 @@ background: white;
     background-color: #dc76001f;
     padding: 10px;
 }
+
+.thinkaloud{
+  border-radius: 10px;
+    border-color: #ff37b260;
+    background-color: #dc00841f;
+    padding: 10px;
+}

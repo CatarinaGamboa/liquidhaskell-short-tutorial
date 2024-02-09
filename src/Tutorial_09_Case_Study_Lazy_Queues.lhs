@@ -109,9 +109,14 @@ all we need to do is to enforce a simple *balance invariant*:
 
 $$\mbox{Size of front} \geq \mbox{Size of back}$$
 
-\noindent If the lists are lazy i.e. only constructed as the head
-value is demanded, then a single `remove` needs only a tiny `O(log n)`
-in the worst case, and so no single `remove` is stuck paying the bill.
+% \noindent If the lists are lazy i.e. only constructed as the head
+% value is demanded, then a single `remove` needs only a tiny `O(log n)`
+% in the worst case, and so no single `remove` is stuck paying the bill.
+
+
+
+\newthought{This is a good moment to see if you understood the idea of these Queues, 
+we will start implement them now.}
 
 
 \newthought{Lets implement Queues} and ensure the crucial invariant(s)
@@ -137,6 +142,21 @@ have a linear time computation that wrecks Okasaki's careful
 analysis. (Actually, he presents a variant which does *not*
 require saving the size as well, but that's for another day.)
 
+
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
+
+
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 <div class = "interact">
 How can we be sure that `size` is indeed the *real size* of `elems`?
 Write a function to *measure* the real size:
@@ -184,6 +204,12 @@ badList = SL 1 []         -- rejected
 {-@ type SListN a N = {v:SList a | size v = N} @-}
 \end{code}
 
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 
 <div class = "interact">
 \newthought{Now define an alias} for lists that are not empty:
@@ -214,6 +240,12 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 \end{code}
 
 
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 
 <div class = "interact">
 
@@ -304,7 +336,12 @@ emp = Q nil nil
 \end{code}
 
 
+<div class = "thinkaloud">
+Think Aloud:
 
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 <div class = "interact">
 <div class="hwex" id="Queue Sizes">
 For the remaining operations we need some more information.
@@ -349,6 +386,13 @@ example0Q = Q nil nil
 `Queue`s, which together with the key balance invariant (`makeq` that we will see later), ensures that
 the calls to `hd` and `tl` are safe.
 
+
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 <div class="interact">
 Add a LiquidHaskell signature to remove using QueueN. When you are done, `okRemove` should be accepted, `badRemove`
 should be rejected.
@@ -378,6 +422,12 @@ badRemove = remove example0Q   -- reject
 \newthought{To Insert} an element we just `cons` it to the `back` list, and call
 the *smart constructor* `makeq` to ensure that the balance invariant holds:
 
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 <div class="interact">
 <div class="hwex" id="Insert">Write down a type for `insert` such
 that `replicate` and `okReplicate` are accepted by LiquidHaskell, but `badReplicate`
@@ -434,6 +484,13 @@ computation finishes; which, combined with laziness provides the
 efficient worst-case guarantee. 
 </div>
 
+
+<div class = "thinkaloud">
+Think Aloud:
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
 <div class = "interact">
 As a last exercise, write down a type for `rot` so
 that it typechecks and verifies the type for `makeq`.
