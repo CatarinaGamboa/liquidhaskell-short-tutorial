@@ -325,17 +325,17 @@ more refinements of <code>Int</code></p>
   <div id="program-4" class="programbox">{-@ type Nat      = {v:Int | 0 <= v}        @-}
 {-@ type Positive = {v:Int | 0 < v}         @-}
 {-@ type Even     = {v:Int | v mod 2 == 0 } @-}
-{-@ type Lt100  = {v:Int | v < 100}         @-}</div>
+{-@ type BtwZeroHundred = {v:Int | v >= 0 && v <= 100}         @-}</div>
 </div>
 
 <p><code>Zero</code> is the most precise type for <code>0::Int</code>,
 as it is a <em>subtype</em> of <code>Nat</code>, <code>Even</code> and
-<code>Lt100</code>. However, it is not a subtype of
+<code>BtwZeroHundred</code>. However, it is not a subtype of
 <code>Positive</code>.</p>
 <div class="interact">
 <p>Now let us try a new predicate. Write a type for the numbers that
 represent a percentage (between 0 and 100) by replacing the
-<code>TRUE</code> predicate. Then run the code, and the first example
+<code>true</code> predicate. Then run the code, and the first example
 should be correct and the second should not.</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
@@ -345,7 +345,7 @@ should be correct and the second should not.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ type Percentage = TRUE  @-}
+  <div id="program-5" class="programbox">{-@ type Percentage = true  @-}
 
 {-@ percentT  :: Percentage  @-}
 percentT    = 10 :: Int
@@ -354,6 +354,13 @@ percentF :: Int
 percentF    = 10 + 99 :: Int</div>
 </div>
 
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(11)">
+Answer</button>
+<div id="collapsibleDiv11">
+{-@ type Percentage = {v:Int | 0 &lt;= v &amp;&amp; v &lt;= 100} @-}
+</div>
+</div>
 </div>
 <p><br />
 <strong>In Summary</strong> the key points about refinement types
@@ -495,9 +502,12 @@ plus1 a = a + 1</div>
 <p><br />
 <strong>Exercise: (List Average): </strong>Can you now put everything
 together?</p>
-<p>Write a specification for the method <code>calcPer</code> that: 1)
-first receives a positive int; 2) then an int with a value between zero
-and the first int; 3) returns a percentage;</p>
+<p>Write a specification for the method <code>calcPer</code> that:</p>
+<ol type="1">
+<li><p>first receives a positive int;</p></li>
+<li><p>then an int with a value between zero and the first int;</p></li>
+<li><p>returns a percentage;</p></li>
+</ol>
 <p>Try using the aliases created before.</p>
 <br />
 <br />
@@ -527,6 +537,8 @@ Answer</button>
 </div>
 </div>
 </div>
+<p>Before moving to the next part, answer some questions from our
+team.</p>
 <p><a href="Tutorial_05_Datatypes.html" >
 <button class="btn-next">Next</button> </a></p>
 </section>
