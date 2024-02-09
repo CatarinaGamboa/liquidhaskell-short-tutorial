@@ -245,12 +245,9 @@ badHd = hd (tl okList)  -- rejected
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(9)"> Answer</button>
     <div id="collapsibleDiv9">
-`{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}`
-
-`tl (SL n (_:xs)) = SL (n-1) xs`
-
-`{-@ hd           :: xs:NEList a -> a @-}`
-
+`{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}`<br/>
+`tl (SL n (_:xs)) = SL (n-1) xs`<br/>
+`{-@ hd           :: xs:NEList a -> a @-}`<br/>
 `hd (SL _ (x:_))  = x `
     </div>
 </div>
@@ -334,13 +331,13 @@ example0Q = Q nil nil
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(7)"> Answer</button>
-    <div id="collapsibleDiv7">
-{-@ measure qsize @-}
-qsize         :: Queue a -> Int
-qsize (Q l r) = size l + size r
-
-{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}
+   <button class="btn-answer" onclick="toggleCollapsible(71)"> Answer</button>
+    <div id="collapsibleDiv71">
+`{-@ measure qsize @-}`
+`qsize         :: Queue a -> Int`<br/>
+`qsize (Q l r) = size l + size r`<br/>
+<br/>
+`{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}`
     </div>
 
 </div>
@@ -448,8 +445,8 @@ rot f b acc
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(6)"> Answer</button>
-    <div id="collapsibleDiv6">
+   <button class="btn-answer" onclick="toggleCollapsible(61)"> Answer</button>
+    <div id="collapsibleDiv61">
 `{-@ rot :: f:SList a`<br/>
 `         -> b:SListN _ {1 + size f}`<br/>
 `         -> a:SList _`<br/>
