@@ -116,22 +116,22 @@ What is this business of *subtyping*? Suppose we have some more refinements of `
 {-@ type Nat      = {v:Int | 0 <= v}        @-}
 {-@ type Positive = {v:Int | 0 < v}         @-}
 {-@ type Even     = {v:Int | v mod 2 == 0 } @-}
-{-@ type Lt100  = {v:Int | v < 100}         @-}
+{-@ type BtwZeroHundred = {v:Int | v >= 0 && v <= 100}         @-}
 
 \end{code}
 
 \newthought{Subtyping and Implication}
 `Zero` is the most precise type for `0::Int`, as it is a *subtype* of `Nat`,
-`Even` and `Lt100`. However, it is not a subtype of `Positive`.
+`Even` and `BtwZeroHundred`. However, it is not a subtype of `Positive`.
 
 <div class = "interact">
 Now let us try a new predicate.
 Write a type for the numbers that represent a percentage (between 0 and 100) 
-by replacing the `TRUE` predicate.
+by replacing the `true` predicate.
 Then run the code, and the first example should be correct and the second should not.
 
 \begin{code}
-{-@ type Percentage = TRUE  @-}
+{-@ type Percentage = true  @-}
 
 {-@ percentT  :: Percentage  @-}
 percentT    = 10 :: Int
@@ -139,6 +139,15 @@ percentT    = 10 :: Int
 percentF :: Int
 percentF    = 10 + 99 :: Int
 \end{code}
+
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(11)"> Answer</button>
+    <div id="collapsibleDiv11">
+{-@ type Percentage = {v:Int | 0 <= v && v <= 100}  @-}
+    </div>
+</div>
+
+
 
 </div>
 
@@ -244,8 +253,11 @@ And the same could be done between input values.
 Can you now put everything together?
 
 Write a specification for the method `calcPer` that:
+
 1) first receives a positive int;
+
 2) then an int with a value between zero and the first int;
+
 3) returns a percentage;
 
 Try using the aliases created before.
@@ -269,6 +281,9 @@ cpi = calcPer 10 11 :: Int -- should be incorrect
 </div>
 
 </div>
+
+\newthought{You finished the first part of the Tutorial!}
+Before moving to the next part, answer some questions from our team.
 
 <a href="Tutorial_05_Datatypes.html" >
     <button class="btn-next">Next</button>
