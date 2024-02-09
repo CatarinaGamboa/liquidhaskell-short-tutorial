@@ -53,6 +53,7 @@ test2 :: Sparse Int
 die msg = error msg
 
 -- {-@ fail badSP @-}
+-- {-@ fail badSP' @-}
 -- {-@ fail test1 @-}
 -- {-@ fail test2 @-}
 -- {-@ fail badList @-}

@@ -15,6 +15,10 @@ die     :: String -> a
 -- {-@ fail canDie    @-}
 -- {-@ fail divide'   @-}
 -- {-@ fail avg       @-}
+-- {-@ fail percentT  @-}
+-- {-@ fail percentF  @-}
+-- {-@ fail cpc  @-}
+-- {-@ fail cpi  @-}
 -- {-@ ignore lAssert @-}
 
 \end{code}
@@ -269,7 +273,7 @@ calcPer a b    = (b * 100) `div` a
 
 
 cpc = calcPer 10 5 :: Int  -- should be correct
-cpi = calcPer 10 11 :: Int -- should be incorrect
+cpc = calcPer 10 11 :: Int -- should be incorrect
 
 \end{code}
 
