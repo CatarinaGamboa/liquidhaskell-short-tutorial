@@ -59,6 +59,7 @@ die msg = error msg
 -- {-@ fail badList @-}
 -- {-@ ignore append @-}
 -- {-@ fail badBST @-}
+-- {-@ fail ne1 @-}
 -- {-@ ignore delMin @-}
 
 
@@ -158,8 +159,6 @@ e.g., `badSP' = SP -1 [(0, "cat")]`
 </div>
 
 
-
-
 \newthought{Field Measures} It is convenient to write an alias
 for sparse vectors of a given size `N`. So that we can easily say in
 a refinement that we have a sparse vector of a certain size.
@@ -230,10 +229,11 @@ like `N` to distinguish *value* parameters from the lowercase
 
 <div class="interact">
 Now, try to create an alias for an empty list, using the measure 
-`notEmpty` created before.
+`notEmpty` created before. The first example should raise an error while the
+second should not.
 
 \begin{code}
-{-@ type NEList a = {TRUE} @-}
+{-@ type NEList a = {true} @-}
 
 {-@ ne1 :: NEList Int@-}
 ne1 = [] ::  [Int]
@@ -259,7 +259,7 @@ Now, following what we did with the lists, write the alias for sparse vector,
 using `spDim` instead of `size`.
 
 \begin{code}
-{-@ type SparseN a N = {TRUE} @-}
+{-@ type SparseN a N = {true} @-}
 \end{code}
 
 <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
@@ -292,21 +292,32 @@ to conclude that for each tuple `(i, v)` in the list `y`, the
 value of `i` is within the bounds of the vector `x`, thereby
 proving `x ! i` safe.
 
-\newthought{Folded Product} We can port the `fold`-based product
-to our new representation:
+% \newthought{Folded Product} We can port the `fold`-based product
+% to our new representation:
 
-\begin{code}
-{-@ dotProd' :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
-dotProd' x (SP _ y) = foldl' body 0 y
-  where
-    body sum (i, v) = sum + (x ! i)  * v
-\end{code}
+% \begin{code}
+% {-@ dotProd' :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+% dotProd' x (SP _ y) = foldl' body 0 y
+%   where
+%     body sum (i, v) = sum + (x ! i)  * v
+% \end{code}
 
-\noindent As before, LiquidHaskell checks the above by
-[automatically instantiating refinements](#sparsetype)
-for the type parameters of `foldl'`, saving us a fair
-bit of typing and enabling the use of the elegant
-polymorphic, higher-order combinators we know and love.
+% \noindent As before, LiquidHaskell checks the above by
+% [automatically instantiating refinements](#sparsetype)
+% for the type parameters of `foldl'`, saving us a fair
+% bit of typing and enabling the use of the elegant
+% polymorphic, higher-order combinators we know and love.
+
+
+\newthought{You finished the second part of the Tutorial!}
+Before moving to the next part, answer some questions from our team.
+
+
+\newthought{Next Exercise!}
+Now that you have learned the main blocks of LiquidHaskell, lets complete
+an exercise using all the concepts.
+
+You can open a <a href="cheat_sheet.html" >Cheat Sheet</a> with examples of the main concepts on the side.
 
 
 <a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
