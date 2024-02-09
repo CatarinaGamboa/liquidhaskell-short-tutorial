@@ -324,9 +324,9 @@ that all we need to do is to enforce a simple <em>balance
 invariant</em>:</p>
 <p><span class="math display">\[\mbox{Size of front} \geq \mbox{Size of
 back}\]</span></p>
-<p>If the lists are lazy i.e. only constructed as the head value is
+<p>% If the lists are lazy i.e. only constructed as the head % value is
 demanded, then a single <code>remove</code> needs only a tiny
-<code>O(log n)</code> in the worst case, and so no single
+<code>O(log n)</code> % in the worst case, and so no single
 <code>remove</code> is stuck paying the bill.</p>
 <p><br />
 <strong>Lets implement Queues</strong> and ensure the crucial
@@ -360,6 +360,16 @@ otherwise, we have a linear time computation that wrecks Okasaki’s
 careful analysis. (Actually, he presents a variant which does
 <em>not</em> require saving the size as well, but that’s for another
 day.)</p>
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
 <div class="interact">
 <p>How can we be sure that <code>size</code> is indeed the <em>real
 size</em> of <code>elems</code>? Write a function to <em>measure</em>
@@ -432,6 +442,11 @@ badList = SL 1 []         -- rejected</div>
   <div id="program-5" class="programbox">{-@ type SListN a N = {v:SList a | size v = N} @-}</div>
 </div>
 
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
 <div class="interact">
 <p><br />
 <strong>Now define an alias</strong> for lists that are not empty:</p>
@@ -473,6 +488,11 @@ nil = SL 0 []
 cons x (SL n xs) = SL (n+1) (x:xs)</div>
 </div>
 
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
 <div class="interact">
 <div id="Destructing Lists" class="hwex">
 <p><br />
@@ -604,6 +624,11 @@ Okasaki’s (I prefer <code>front</code> and <code>back</code> to his
   <div id="program-13" class="programbox">emp = Q nil nil</div>
 </div>
 
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
 <div class="interact">
 <div id="Queue Sizes" class="hwex">
 <p><br />
@@ -659,6 +684,11 @@ that the <code>remove</code> is only called on non-empty
 <code>Queue</code>s, which together with the key balance invariant
 (<code>makeq</code> that we will see later), ensures that the calls to
 <code>hd</code> and <code>tl</code> are safe.</p>
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
 <div class="interact">
 <p>Add a LiquidHaskell signature to remove using QueueN. When you are
 done, <code>okRemove</code> should be accepted, <code>badRemove</code>
@@ -691,6 +721,11 @@ Answer</button>
 <strong>To Insert</strong> an element we just <code>cons</code> it to
 the <code>back</code> list, and call the <em>smart constructor</em>
 <code>makeq</code> to ensure that the balance invariant holds:</p>
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
 <div class="interact">
 <div id="Insert" class="hwex">
 <p><br />
@@ -770,6 +805,11 @@ provides the efficient worst-case guarantee.</p>
 <br />
 <br />
 
+</div>
+<div class="thinkaloud">
+<p>Think Aloud:</p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
 </div>
 <div class="interact">
 <p>As a last exercise, write down a type for <code>rot</code> so that it
