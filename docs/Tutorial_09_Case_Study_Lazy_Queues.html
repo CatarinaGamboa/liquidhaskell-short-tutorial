@@ -522,9 +522,9 @@ badHd = hd (tl okList)  -- rejected</div>
 <button class="btn-answer" onclick="toggleCollapsible(9)">
 Answer</button>
 <div id="collapsibleDiv9">
-<p><code>{-@ tl           :: xs:NEList a -&gt; SListN a {size xs - 1}  @-}</code></p>
-<p><code>tl (SL n (_:xs)) = SL (n-1) xs</code></p>
-<p><code>{-@ hd           :: xs:NEList a -&gt; a @-}</code></p>
+<code>{-@ tl           :: xs:NEList a -&gt; SListN a {size xs - 1}  @-}</code><br/>
+<code>tl (SL n (_:xs)) = SL (n-1) xs</code><br/>
+<code>{-@ hd           :: xs:NEList a -&gt; a @-}</code><br/>
 <code>hd (SL _ (x:_))  = x</code>
 </div>
 </div>
@@ -642,12 +642,13 @@ example0Q = Q nil nil</div>
 </div>
 
 <div>
-<button class="btn-answer" onclick="toggleCollapsible(7)">
+<button class="btn-answer" onclick="toggleCollapsible(71)">
 Answer</button>
-<div id="collapsibleDiv7">
-<p>{-@ measure qsize @-} qsize :: Queue a -&gt; Int qsize (Q l r) = size
-l + size r</p>
-{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}
+<div id="collapsibleDiv71">
+<code>{-@ measure qsize @-}</code>
+<code>qsize         :: Queue a -&gt; Int</code><br/>
+<code>qsize (Q l r) = size l + size r</code><br/> <br/>
+<code>{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}</code>
 </div>
 </div>
 </div>
@@ -787,9 +788,9 @@ typechecks and verifies the type for <code>makeq</code>.</p>
 </div>
 
 <div>
-<button class="btn-answer" onclick="toggleCollapsible(6)">
+<button class="btn-answer" onclick="toggleCollapsible(61)">
 Answer</button>
-<div id="collapsibleDiv6">
+<div id="collapsibleDiv61">
 <code>{-@ rot :: f:SList a</code><br/>
 <code>-&gt; b:SListN _ {1 + size f}</code><br/>
 <code>-&gt; a:SList _</code><br/>
