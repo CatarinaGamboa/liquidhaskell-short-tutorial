@@ -127,31 +127,38 @@ MathJax.Hub.Config({
 
 <div id='toc' class='mobile-hidden'>
 <ul class='chapter'>
-<li><a href='Tutorial_01_Introduction.html'><b>1.</b>Introduction {#intro}</a></li>
+<li><a href='Cheat_sheet.html'><b>1.</b>Introduction {#intro}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_01_Introduction.html#'><b>1.1.</b> Well-Typed Programs Do Go Wrong {#gowrong}</a></li>
-<li><a href='Tutorial_01_Introduction.html#'><b>1.2.</b> Refinement Types</a></li>
+<li><a href='Cheat_sheet.html#'><b>1.1.</b> Adding Specifications</a></li>
+<li><a href='Cheat_sheet.html#'><b>1.2.</b> Alias</a></li>
+<li><a href='Cheat_sheet.html#'><b>1.3.</b> Liquid types in Datatypes</a></li>
+<li><a href='Cheat_sheet.html#'><b>1.4.</b> Measures</a></li>
 </ul>
-<li><a href='Tutorial_03_Basic.html'><b>2.</b>Refinement Types</a></li>
+<li><a href='Tutorial_01_Introduction.html'><b>2.</b>Introduction {#intro}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_03_Basic.html#'><b>2.1.</b> Defining Types {#definetype}</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>2.2.</b> Errors</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>2.3.</b> Subtyping</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>2.4.</b> Writing Specifications</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>2.5.</b> Refining Function Types: Post-conditions</a></li>
-<li><a href='Tutorial_03_Basic.html#'><b>2.6.</b> Dependent Refinements</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>2.1.</b> Well-Typed Programs Do Go Wrong {#gowrong}</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>2.2.</b> Refinement Types</a></li>
 </ul>
-<li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refined Datatypes {#refineddatatypes}</a></li>
+<li><a href='Tutorial_03_Basic.html'><b>3.</b>Refinement Types</a></li>
 <ul class='section'>
-<li><a href='Tutorial_05_Datatypes.html#'><b>3.1.</b> Sparse Vectors {#autosmart}</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.1.</b> Defining Types {#definetype}</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.2.</b> Errors</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.3.</b> Subtyping</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.4.</b> Writing Specifications</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.5.</b> Refining Function Types: Post-conditions</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>3.6.</b> Dependent Refinements</a></li>
 </ul>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>4.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
+<li><a href='Tutorial_05_Datatypes.html'><b>4.</b>Refined Datatypes {#refineddatatypes}</a></li>
 <ul class='section'>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.1.</b> Queues</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.2.</b> Sized Lists</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.3.</b> Queue Type</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.4.</b> Queue Operations</a></li>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.5.</b> Recap of everyting!</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>4.1.</b> Sparse Vectors {#autosmart}</a></li>
+</ul>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>5.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
+<ul class='section'>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>5.1.</b> Queues</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>5.2.</b> Sized Lists</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>5.3.</b> Queue Type</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>5.4.</b> Queue Operations</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>5.5.</b> Recap of everyting!</a></li>
 </ul>
 </ul>
 
@@ -257,6 +264,7 @@ die msg = error msg
 -- {-@ fail badList @-}
 -- {-@ ignore append @-}
 -- {-@ fail badBST @-}
+-- {-@ fail ne1 @-}
 -- {-@ ignore delMin @-}
 
 
@@ -472,7 +480,8 @@ variables like <code>N</code> to distinguish <em>value</em> parameters
 from the lowercase <em>type</em> parameters like <code>a</code>.</p>
 <div class="interact">
 <p>Now, try to create an alias for an empty list, using the measure
-<code>notEmpty</code> created before.</p>
+<code>notEmpty</code> created before. The first example should raise an
+error while the second should not.</p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -481,7 +490,7 @@ from the lowercase <em>type</em> parameters like <code>a</code>.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">{-@ type NEList a = {TRUE} @-}
+  <div id="program-11" class="programbox">{-@ type NEList a = {true} @-}
 
 {-@ ne1 :: NEList Int@-}
 ne1 = [] ::  [Int]
@@ -521,7 +530,7 @@ vector, using <code>spDim</code> instead of <code>size</code>.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-13" class="programbox">{-@ type SparseN a N = {TRUE} @-}</div>
+  <div id="program-13" class="programbox">{-@ type SparseN a N = {true} @-}</div>
 </div>
 
 <button class="btn-answer" onclick="toggleCollapsible(5)">
@@ -565,28 +574,23 @@ dotProd x (SP _ y) = go 0 y
 conclude that for each tuple <code>(i, v)</code> in the list
 <code>y</code>, the value of <code>i</code> is within the bounds of the
 vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
-<p><br />
+<p>% <br />
 <strong>Folded Product</strong> We can port the <code>fold</code>-based
-product to our new representation:</p>
-<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-16" class="programbox">{-@ dotProd' :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
-dotProd' x (SP _ y) = foldl' body 0 y
-  where
-    body sum (i, v) = sum + (x ! i)  * v</div>
-</div>
-
-<p>As before, LiquidHaskell checks the above by <a
-href="#sparsetype">automatically instantiating refinements</a> for the
-type parameters of <code>foldl'</code>, saving us a fair bit of typing
-and enabling the use of the elegant polymorphic, higher-order
+product % to our new representation:</p>
+<p>% \begin{code} % {-@ dotProd’ :: x:Vector Int -&gt; SparseN Int (vlen
+x) -&gt; Int @-} % dotProd’ x (SP _ y) = foldl’ body 0 y % where % body
+sum (i, v) = sum + (x ! i) * v % \end{code}</p>
+<p>% As before, LiquidHaskell checks the above by % <a
+href="#sparsetype">automatically instantiating refinements</a> % for the
+type parameters of <code>foldl'</code>, saving us a fair % bit of typing
+and enabling the use of the elegant % polymorphic, higher-order
 combinators we know and love.</p>
+<p>Before moving to the next part, answer some questions from our
+team.</p>
+<p>Now that you have learned the main blocks of LiquidHaskell, lets
+complete an exercise using all the concepts.</p>
+<p>You can open a <a href="cheat_sheet.html" >Cheat Sheet</a> with
+examples of the main concepts on the side.</p>
 <p><a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
 <button class="btn-next">Next</button> </a></p>
 </section>

@@ -212,7 +212,7 @@ MathJax.Hub.Config({
  
   <div id="program-0" class="programbox">{-# LANGUAGE CPP #-}
 
-module Tutorial_01_Introduction where
+module Cheat_sheet where
 main = putStrLn "Intro"
 
 -- {-@ ignore average @-}
@@ -222,22 +222,14 @@ main = putStrLn "Intro"
 
 </div>
 
-<p>Welcome to the LiquidHaskell Short Tutorial, where you will learn the
-basic workings of LiquidHaskell and complete some exercises. The full
-version of the tutorial can be found in the <a
-href="https://ucsd-progsys.github.io/liquidhaskell-tutorial/Tutorial_01_Introduction.html">project’s
-website</a>.</p>
-<p>One of the great things about Haskell is its brainy type system that
-allows one to enforce a variety of invariants at compile time, thereby
-nipping in the bud a large swathe of run-time <a
-href="#getting-started">errors</a>.</p>
-<section id="gowrong" class="level2">
-<h2>Well-Typed Programs Do Go Wrong</h2>
-<p>Alas, well-typed programs <em>do</em> go quite wrong, in a variety of
-ways.</p>
-<p><br />
-<strong>Division by Zero</strong> This innocuous function computes the
-average of a list of integers:</p>
+<p>Welcome to the LiquidHaskell Short Tutorial Cheat Sheet!</p>
+<p>Here are the main concepts and examples you can use to complete the
+exercises.</p>
+<section id="adding-specifications" class="level2">
+<h2>Adding Specifications</h2>
+<p>LiquidHaskell specifications in functions are written between
+<code>{-@ spec @-}</code>.</p>
+For example:
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -246,83 +238,16 @@ average of a list of integers:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">average    :: [Int] -> Int
-average xs = sum xs `div` length xs</div>
+  <div id="program-1" class="programbox">`{-@ calcPer ::  a:Int -> {b:Int | 0 <= b && b <= a} -> c:Int @-}`
+calcPer       :: Int -> Int -> Int
+calcPer a b    = (b * 100) `div` a</div>
 </div>
 
-<p>We get the desired result on a non-empty list of numbers:</p>
-<pre class="ghci"><code>ghci&gt; average [10, 20, 30, 40]
-25</code></pre>
-<div id="question1" class="interact"
-style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
-<p>
-However, this program crashes with certain arguments. From the following
-options, what argument would make <code>average</code> crash?
-</p>
-<label class="container"> [1] <input type="radio" name="q1" value="1">
-<span class="checkmark"></span> </label><br> <label class="container">
-[] <input type="radio" name="q1" value="2"><span
-class="checkmark"></span> </label><br> <label class="container">
-[1,1,1,1,1,1,1,1,1,1,1] <input type="radio" name="q1" value="3"><span
-class="checkmark"></span> </label><br>
-<button class="btn-select" onclick="checkAnswer(1)">Submit</button>
-<p id="result1">
-</p>
-<p><input type="hidden" id="correctAnswer1" value="2"></p>
-<button class="btn-answer" onclick="toggleCollapsible(1)">
-Answer</button>
-<div id="collapsibleDiv1">
-If we call it with an empty list, we get a rather unpleasant crash: ***
-Exception: divide by zero. We could write <code>average</code> more
-<em>defensively</em>, returning a <code>Maybe</code> or
-<code>Either</code> value. However, this merely kicks the can down the
-road. Ultimately, we will want to extract the <code>Int</code> from the
-<code>Maybe</code> and if the inputs were invalid to start with, then at
-that point we’d be stuck.<br />
-
-</div>
-</div>
-<p><br/></p>
-<p>For certain kinds of programs, there is a fate worse than death.
-<code>text</code> is a high-performance string processing library for
-Haskell, that is used, for example, to build web services.</p>
-<pre class="ghci"><code>ghci&gt; :m +Data.Text Data.Text.Unsafe
-ghci&gt; let t = pack &quot;Voltage&quot;
-ghci&gt; takeWord16 5 t
-&quot;Volta&quot;</code></pre>
-<p>A cunning adversary can use invalid, or rather,
-<em>well-crafted</em>, inputs that go well outside the size of the given
-<code>text</code> to read extra bytes and thus <em>extract secrets</em>
-without anyone being any the wiser.</p>
-<pre class="ghci"><code>ghci&gt; takeWord16 20 t
-&quot;Voltage\1912\3148\SOH\NUL\15928\2486\SOH\NUL&quot;</code></pre>
-<p>The above call returns the bytes residing in memory <em>immediately
-after</em> the string <code>Voltage</code>. These bytes could be junk,
-or could be either the name of your favorite TV show, or, more
-worryingly, your bank account password.</p>
 </section>
-<section id="refinement-types" class="level2">
-<h2>Refinement Types</h2>
-<p>Refinement types allow us to enrich Haskell’s type system with
-<em>predicates</em> that precisely describe the sets of <em>valid</em>
-inputs and outputs of functions, values held inside containers, and so
-on. These predicates are drawn from special <em>logics</em> for which
-there are fast <em>decision procedures</em> called SMT solvers.</p>
-<p><br />
-<strong>By combining types with predicates</strong> you can specify
-<em>contracts</em> which describe valid inputs and outputs of functions.
-The refinement type system <em>guarantees at compile-time</em> that
-functions adhere to their contracts. That is, you can rest assured that
-the above calamities <em>cannot occur at run-time</em>.</p>
-<p><br />
-<strong>LiquidHaskell</strong> is a Refinement Type Checker for Haskell,
-and in this tutorial we’ll describe how you can use it to make programs
-better and programming even more fun.</p>
-As a glimpse of what LiquidHaskell can do, run the average example below
-by pushing the green triangle on the top, and try to read the error
-message. Since <code>div</code> cannot take a zero value as the second
-argument, and LiquidHaskell sees that it is a possibility in this
-function, an error will be raised.
+<section id="alias" class="level2">
+<h2>Alias</h2>
+<p>To reuse a specification we can use aliases.</p>
+For example:
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -331,15 +256,78 @@ function, an error will be raised.
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">average'    :: [Int] -> Int
-average' xs =  sum xs `div` length xs</div>
+  <div id="program-2" class="programbox">{-@ type Nat      = {v:Int | 0 <= v}        @-}
+{-@ type Positive = {v:Int | 0 < v}         @-}</div>
 </div>
 
-<p>In this tutorial you will learn how to add and reason about
-refinement types in Haskell, and how it can increase the realiability of
-Haskell problems.</p>
-<p><a href="Tutorial_03_Basic.html" >
-<button class="btn-next">Next</button> </a></p>
+</section>
+<section id="liquid-types-in-datatypes" class="level2">
+<h2>Liquid types in Datatypes</h2>
+<p>To add a specification to the datatypes, first create the datatype in
+Haskell and then add the specification inside <code>{-@ @-}</code>.</p>
+<p>For example:</p>
+<ol type="1">
+<li>In Haskell
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">data Sparse a = SP { spDim   :: Int
+                , spElems :: [(Int, a)] }</div>
+</div>
+</li>
+<li>Adding the LiquidHaskell specifiaction
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ data Sparse a = SP { spDim   :: Nat
+                    , spElems :: [(Btwn 0 spDim, a)]} @-}</div>
+</div>
+</li>
+</ol>
+</section>
+<section id="measures" class="level2">
+<h2>Measures</h2>
+<p>Measures lift an Haskell function to the refinements logic. It is
+first created as a Haskell function, sinalizing that it is a measure and
+adding liquid types to the signature. Then, it can be used inside other
+refinements.</p>
+<p>For example:</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">{-@ measure size @-}
+{-@ size :: [a] -> Nat @-}
+size []     = 0
+size (_:rs) = 1 + size rs</div>
+</div>
+
+<p>And then, <code>size</code> can be used in:</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">{-@ type ListN a N = {v:[a] | size v == N} @-}</div>
+</div>
+
 </section>
 </section>
 
