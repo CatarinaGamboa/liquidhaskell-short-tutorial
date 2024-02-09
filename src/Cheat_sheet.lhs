@@ -10,6 +10,7 @@ module Cheat_sheet where
 main = putStrLn "Intro"
 
 -- {-@ ignore average @-}
+-- {-@ ignore mySize @-}
 
 \end{code}
 \end{comment}
@@ -25,7 +26,7 @@ LiquidHaskell specifications in functions are written between `{-@ spec @-}`.
 
 For example:
 \begin{code}
-`{-@ calcPer ::  a:Int -> {b:Int | 0 <= b && b <= a} -> c:Int @-}`
+{-@ calcPer    ::  {a:Int | a > 0} -> {b:Int | 0 <= b && b <= a} -> c:Int @-}
 calcPer       :: Int -> Int -> Int
 calcPer a b    = (b * 100) `div` a
 \end{code}
@@ -38,7 +39,7 @@ To reuse a specification we can use aliases.
 For example:
 \begin{code}
 {-@ type Nat      = {v:Int | 0 <= v}        @-}
-{-@ type Positive = {v:Int | 0 < v}         @-}
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} 
 \end{code}
 
 
@@ -73,10 +74,11 @@ inside other refinements.
 For example:
 
 \begin{code}
-{-@ measure size @-}
-{-@ size :: [a] -> Nat @-}
-size []     = 0
-size (_:rs) = 1 + size rs
+{-@ measure mySize @-}
+{-@ mySize :: [a] -> Nat @-}
+mySize :: [a] -> Int
+mySize []     = 0
+mySize (_:rs) = 1 + mySize rs
 \end{code}
 
 And then, `size` can be used in:
