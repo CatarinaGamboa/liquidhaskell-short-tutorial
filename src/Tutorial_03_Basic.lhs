@@ -152,8 +152,8 @@ percentF    = 10 + 99 :: Int
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(11)"> Answer</button>
-    <div id="collapsibleDiv11">
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
+    <div id="collapsibleDiv1">
 {-@ type Percentage = {v:Int | 0 <= v && v <= 100}  @-}
     </div>
 </div>
