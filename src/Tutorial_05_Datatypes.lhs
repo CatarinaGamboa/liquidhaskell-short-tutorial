@@ -241,10 +241,14 @@ ne1 = [] ::  [Int]
 ne2 = [1,2,3,4] :: [Int]
 \end{code}
 
-<button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
-    <div id="collapsibleDiv4">
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(40)"> Answer</button>
+   
+   <div id="collapsibleDiv40">
 `{-@ type NEList a = {v:[a] | notEmpty v} @-}`
    </div>
+</div>
+
 </div>
 
 
@@ -262,10 +266,13 @@ using `spDim` instead of `size`.
 {-@ type SparseN a N = {true} @-}
 \end{code}
 
+<div>
 <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
+
     <div id="collapsibleDiv5">
 `{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
    </div>
+</div>
 </div>
 
 
