@@ -259,11 +259,11 @@ case it is already defined by `spDim`, so we can use it to create the new alias
 of sparse vectors of size N.
 
 <div class="interact">
-Now, following what we did with the lists, write the alias for sparse vector,
-using `spDim` instead of `size`.
+Now, following what we did with the lists, write the alias `SparseN` for sparse vector of
+length N, using `spDim` instead of `size`.
 
 \begin{code}
-{-@ type SparseN a N = {true} @-}
+-- write the alias here
 \end{code}
 
 <div>
@@ -273,8 +273,10 @@ using `spDim` instead of `size`.
 `{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
    </div>
 </div>
-</div>
 
+
+\hint When you are done, you can see how we can use `SparseN` in the following example
+</div>
 
 `Vector`s are similar to Sparse Vectors, and therefore, have a
 *measure* of size named `vlen`.
