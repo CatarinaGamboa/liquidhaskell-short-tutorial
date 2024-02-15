@@ -512,8 +512,9 @@ dimension, but in this case it is already defined by <code>spDim</code>,
 so we can use it to create the new alias of sparse vectors of size
 N.</p>
 <div class="interact">
-<p>Now, following what we did with the lists, write the alias for sparse
-vector, using <code>spDim</code> instead of <code>size</code>.</p>
+<p>Now, following what we did with the lists, write the alias
+<code>SparseN</code> for sparse vector of length N, using
+<code>spDim</code> instead of <code>size</code>.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -522,7 +523,7 @@ vector, using <code>spDim</code> instead of <code>size</code>.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">{-@ type SparseN a N = {true} @-}</div>
+  <div id="program-12" class="programbox">-- write the alias here</div>
 </div>
 
 <div>
@@ -533,6 +534,8 @@ Answer
 <code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
 </div>
 </div>
+<strong>Hint: </strong>When you are done, you can see how we can use
+<code>SparseN</code> in the following example
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
