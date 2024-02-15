@@ -455,8 +455,9 @@ information if it is empty or not.</p>
 Answer</button>
 <div id="collapsibleDiv2">
 <code>{-@ measure notEmpty @-}</code><br/>
-<code>notEmpty       :: [a] -&gt; Bool</code>
-<code>notEmpty []    = False</code> <code>notEmpty (_:_) = True</code>
+<code>notEmpty       :: [a] -&gt; Bool</code><br/>
+<code>notEmpty []    = False</code><br/>
+<code>notEmpty (_:_) = True</code>
 </div>
 </div>
 </div>
@@ -567,17 +568,6 @@ dotProd x (SP _ y) = go 0 y
 conclude that for each tuple <code>(i, v)</code> in the list
 <code>y</code>, the value of <code>i</code> is within the bounds of the
 vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
-<p>% <br />
-<strong>Folded Product</strong> We can port the <code>fold</code>-based
-product % to our new representation:</p>
-<p>% \begin{code} % {-@ dotProd’ :: x:Vector Int -&gt; SparseN Int (vlen
-x) -&gt; Int @-} % dotProd’ x (SP _ y) = foldl’ body 0 y % where % body
-sum (i, v) = sum + (x ! i) * v % \end{code}</p>
-<p>% As before, LiquidHaskell checks the above by % <a
-href="#sparsetype">automatically instantiating refinements</a> % for the
-type parameters of <code>foldl'</code>, saving us a fair % bit of typing
-and enabling the use of the elegant % polymorphic, higher-order
-combinators we know and love.</p>
 <p>Before moving to the next part, answer some questions from our
 team.</p>
 <p>Now that you have learned the main blocks of LiquidHaskell, lets

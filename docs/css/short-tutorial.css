@@ -1,5 +1,7 @@
 /* Add some basic styling */
-#collapsibleDiv1,#collapsibleDiv2,#collapsibleDiv3,#collapsibleDiv4,#collapsibleDiv5 {
+#collapsibleDiv1,#collapsibleDiv2,#collapsibleDiv3,#collapsibleDiv4,
+#collapsibleDiv5, #collapsibleDiv9, #collapsibleDiv40,#collapsibleDiv71, #collapsibleDiv61
+ {
   display: none;
   padding: 20px;
   border: 1px solid #ddd;
