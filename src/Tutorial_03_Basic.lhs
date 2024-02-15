@@ -139,12 +139,14 @@ meaning that `Even` is a *subtype* of it but all the other ones are not.
 
 <div class = "interact">
 Now let us try a new predicate.
+
+
 Write a type for the numbers that represent a percentage (between 0 and 100) 
 by replacing the `true` predicate.
 Then run the code, and the first example should be correct and the second should not.
 
 \begin{code}
-{-@ type Percentage = true  @-}
+-- write the alias here
 
 {-@ percentT  :: Percentage  @-}
 percentT    = 10 :: Int

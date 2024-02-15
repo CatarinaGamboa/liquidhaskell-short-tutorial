@@ -205,8 +205,8 @@ and returns a `Bool` with the information if it is empty or not.
    <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
     <div id="collapsibleDiv2">
 `{-@ measure notEmpty @-}`<br/>
-`notEmpty       :: [a] -> Bool`
-`notEmpty []    = False`
+`notEmpty       :: [a] -> Bool`<br/>
+`notEmpty []    = False`<br/>
 `notEmpty (_:_) = True`
     </div>
 </div>
