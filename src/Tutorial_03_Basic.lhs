@@ -158,7 +158,7 @@ percentF    = 10 + 99 :: Int
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
-{-@ type Percentage = {v:Int | 0 <= v && v <= 100}  @-}
+`{-@ type Percentage = {v:Int | 0 <= v && v <= 100}  @-}`
     </div>
 </div>
 
@@ -215,7 +215,6 @@ The above signature forces us to ensure that that when we
    <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
     <div id="collapsibleDiv3">
     `hij` is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
-    
     </div>
 </div>
 <br/>
