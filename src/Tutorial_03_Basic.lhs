@@ -127,13 +127,15 @@ What is this business of *subtyping*? Suppose we have some more refinements of `
 {-@ type Nat      = {v:Int | 0 <= v}        @-}
 {-@ type Positive = {v:Int | 0 < v}         @-}
 {-@ type Even     = {v:Int | v mod 2 == 0 } @-}
-{-@ type BtwZeroHundred = {v:Int | v >= 0 && v <= 100}         @-}
+{-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100}         @-}
 
 \end{code}
 
 \newthought{Subtyping and Implication}
 `Zero` is the most precise type for `0::Int`, as it is a *subtype* of `Nat`,
-`Even` and `BtwZeroHundred`. However, it is not a subtype of `Positive`.
+`Even`. However, it is not a subtype of `Positive`.
+The alias `TensToHundred` represents the multiples of 10 smaller than 100,
+meaning that `Even` is a *subtype* of it but all the other ones are not. 
 
 <div class = "interact">
 Now let us try a new predicate.
@@ -286,7 +288,7 @@ cpi = calcPer 10 11 :: Int -- should be incorrect
 
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
-    <div id="collapsibleDiv1">
+    <div id="collapsibleDiv5">
 `{-@ calcPer :: a:Positive -> {b:Int | 0 <= b && b <= a} -> c:Percentage @-}`
     </div>
 </div>
