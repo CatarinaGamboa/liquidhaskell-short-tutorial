@@ -299,22 +299,6 @@ to conclude that for each tuple `(i, v)` in the list `y`, the
 value of `i` is within the bounds of the vector `x`, thereby
 proving `x ! i` safe.
 
-% \newthought{Folded Product} We can port the `fold`-based product
-% to our new representation:
-
-% \begin{code}
-% {-@ dotProd' :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
-% dotProd' x (SP _ y) = foldl' body 0 y
-%   where
-%     body sum (i, v) = sum + (x ! i)  * v
-% \end{code}
-
-% \noindent As before, LiquidHaskell checks the above by
-% [automatically instantiating refinements](#sparsetype)
-% for the type parameters of `foldl'`, saving us a fair
-% bit of typing and enabling the use of the elegant
-% polymorphic, higher-order combinators we know and love.
-
 
 \newthought{You finished the second part of the Tutorial!}
 Before moving to the next part, answer some questions from our team.
