@@ -379,7 +379,7 @@ percentF    = 10 + 99 :: Int</div>
 <button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
-{-@ type Percentage = {v:Int | 0 &lt;= v &amp;&amp; v &lt;= 100} @-}
+<code>{-@ type Percentage = {v:Int | 0 &lt;= v &amp;&amp; v &lt;= 100}  @-}</code>
 </div>
 </div>
 </div>
@@ -457,7 +457,6 @@ class="checkmark"></span> </label><br>
 Answer</button>
 <div id="collapsibleDiv3">
 <pre><code>`hij` is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
-
 &lt;/div&gt;</code></pre>
 </div>
 <p><br/></p>
