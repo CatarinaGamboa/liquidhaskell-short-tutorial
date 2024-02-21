@@ -143,16 +143,9 @@ analysis. (Actually, he presents a variant which does *not*
 require saving the size as well, but that's for another day.)
 
 
-<div class = "thinkaloud">
-Think Aloud:
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
-</div>
-
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
@@ -205,7 +198,7 @@ badList = SL 1 []         -- rejected
 \end{code}
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
@@ -241,7 +234,7 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
@@ -337,7 +330,7 @@ emp = Q nil nil
 
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
@@ -388,7 +381,7 @@ the calls to `hd` and `tl` are safe.
 
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
@@ -423,7 +416,7 @@ badRemove = remove example0Q   -- reject
 the *smart constructor* `makeq` to ensure that the balance invariant holds:
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
@@ -486,7 +479,7 @@ efficient worst-case guarantee.
 
 
 <div class = "thinkaloud">
-Think Aloud:
+<b>Think Aloud:</b>
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
