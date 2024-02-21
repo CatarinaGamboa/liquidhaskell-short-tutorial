@@ -355,9 +355,8 @@ the other ones are not.</p>
 <div class="interact">
 <p>Now let us try a new predicate.</p>
 <p>Write a type for the numbers that represent a percentage (between 0
-and 100) by replacing the <code>true</code> predicate. Then run the
-code, and the first example should be correct and the second should
-not.</p>
+and 100). Then, decoment the liquid type signatures and run the code.
+The first example should be correct and the second should not.</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -368,9 +367,9 @@ not.</p>
  
   <div id="program-5" class="programbox">-- write the alias here
 
-{-@ percentT  :: Percentage  @-}
+-- {-@ percentT  :: Percentage  @-}
 percentT    = 10 :: Int
-{-@ percentF  :: Percentage  @-}
+-- {-@ percentF  :: Percentage  @-}
 percentF :: Int
 percentF    = 10 + 99 :: Int</div>
 </div>
@@ -456,7 +455,7 @@ class="checkmark"></span> </label><br>
 <button class="btn-answer" onclick="toggleCollapsible(3)">
 Answer</button>
 <div id="collapsibleDiv3">
-<pre><code>`hij` is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
+<pre><code>hij is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
 &lt;/div&gt;</code></pre>
 </div>
 <p><br/></p>
