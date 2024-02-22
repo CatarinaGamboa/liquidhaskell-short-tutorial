@@ -66,13 +66,110 @@ die msg = error msg
 \end{code}
 \end{comment}
 
-
 So far, we have seen how to refine the types of *functions*, to
 specify, for example, pre-conditions on the inputs, or post-conditions
-on the outputs. Very often, we wish to define *datatypes* that satisfy
-certain invariants. In these cases, it is handy to be able to directly
+on the outputs. 
+In this section we will see how to apply these in datatypes.
+First, by defining properties of data values, and then by defining *datatypes* that satisfy
+certain invariants. In the latter, it is handy to be able to directly
 refine the `data` definition, making it impossible to create
 illegal inhabitants.
+
+
+\newthought{Measures} are used to define *properties* of
+Haskell data values that are useful for specification and
+verification. 
+
+\newthought{A measure} is a *total* Haskell function,
+1. With a *single* equation per data constructor, and
+2. Guaranteed to *terminate*, typically via structural recursion.
+
+\noindent
+We can tell LiquidHaskell to *lift* a function meeting
+the above requirements into the refinement logic by declaring:
+
+\begin{code}
+{-@ measure nameOfMeasure @-}
+\end{code}
+
+For example, for a list we can define a way to *measure* its size with 
+the following function.
+
+\begin{code}
+{-@ measure size @-}
+{-@ size :: [a] -> Nat @-}
+size []     = 0
+size (_:rs) = 1 + size rs
+\end{code}
+
+Then, we can use this measure to define aliases.
+
+<div class = "interact">
+Let's create another measure named `notEmpty` that takes a list as input
+and returns a `Bool` with the information if it is empty or not.
+
+\begin{code}
+-- write notEmpty measure
+\end{code}
+
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
+    <div id="collapsibleDiv2">
+`{-@ measure notEmpty @-}`<br/>
+`notEmpty       :: [a] -> Bool`<br/>
+`notEmpty []    = False`<br/>
+`notEmpty (_:_) = True`
+    </div>
+</div>
+
+</div>
+
+We can now define a couple of useful aliases
+for describing lists of a given dimension.
+
+For example, we can define that a list has exactly `N` elements. 
+
+\begin{code}
+{-@ type ListN a N = {v:[a] | size v == N} @-}
+\end{code}
+
+Note that when defining refinement type aliases, we use uppercase variables
+like `N` to distinguish *value* parameters from the lowercase
+*type* parameters like `a`.
+
+<div class="interact">
+Now, try to create an alias `NEList` for an empty list, using the measure 
+`notEmpty` created before. When removed from comment, the first example should raise an error while the
+second should not.
+
+\begin{code}
+-- write the alias here
+
+-- {-@ ne1 :: NEList Int@-}
+-- ne1 = [] ::  [Int]
+-- {-@ ne1 :: NEList Int@-}
+-- ne2 = [1,2,3,4] :: [Int]
+\end{code}
+
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(40)"> Answer</button>
+   
+   <div id="collapsibleDiv40">
+`{-@ type NEList a = {v:[a] | notEmpty v} @-}`
+   </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
 
 Sparse Vectors {#autosmart}
 -------------------------------------
@@ -164,92 +261,6 @@ for sparse vectors of a given size `N`. So that we can easily say in
 a refinement that we have a sparse vector of a certain size.
 
 For this we can use *measures*.
-
-\newthought{Measures} are used to define *properties* of
-Haskell data values that are useful for specification and
-verification. 
-
-\newthought{A measure} is a *total* Haskell function,
-1. With a *single* equation per data constructor, and
-2. Guaranteed to *terminate*, typically via structural recursion.
-
-\noindent
-We can tell LiquidHaskell to *lift* a function meeting
-the above requirements into the refinement logic by declaring:
-
-\begin{code}
-{-@ measure nameOfMeasure @-}
-\end{code}
-
-For example, for a list we can define a way to *measure* its size with 
-the following function.
-
-\begin{code}
-{-@ measure size @-}
-{-@ size :: [a] -> Nat @-}
-size []     = 0
-size (_:rs) = 1 + size rs
-\end{code}
-
-Then, we can use this measure to define aliases.
-
-<div class = "interact">
-But first, let's create another measure named `notEmpty` that takes a list as input
-and returns a `Bool` with the information if it is empty or not.
-
-\begin{code}
-{-@ measure notEmpty @-}
-\end{code}
-
-<div>
-   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
-    <div id="collapsibleDiv2">
-`{-@ measure notEmpty @-}`<br/>
-`notEmpty       :: [a] -> Bool`<br/>
-`notEmpty []    = False`<br/>
-`notEmpty (_:_) = True`
-    </div>
-</div>
-
-</div>
-
-We can now define a couple of useful aliases
-for describing lists of a given dimension.
-
-And now, we can define that a list has exactly `N` elements. 
-
-\begin{code}
-{-@ type ListN a N = {v:[a] | size v == N} @-}
-\end{code}
-
-Note that when defining refinement type aliases, we use uppercase variables
-like `N` to distinguish *value* parameters from the lowercase
-*type* parameters like `a`.
-
-
-<div class="interact">
-Now, try to create an alias for an empty list, using the measure 
-`notEmpty` created before. The first example should raise an error while the
-second should not.
-
-\begin{code}
-{-@ type NEList a = {true} @-}
-
-{-@ ne1 :: NEList Int@-}
-ne1 = [] ::  [Int]
-{-@ ne1 :: NEList Int@-}
-ne2 = [1,2,3,4] :: [Int]
-\end{code}
-
-<div>
-   <button class="btn-answer" onclick="toggleCollapsible(40)"> Answer</button>
-   
-   <div id="collapsibleDiv40">
-`{-@ type NEList a = {v:[a] | notEmpty v} @-}`
-   </div>
-</div>
-
-</div>
 
 
 \newthought{Measures with Sparse Vectors}
