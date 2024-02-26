@@ -444,7 +444,8 @@ when thinking about how to resolve the exercise.</p>
 </div>
 <div class="interact">
 <p><br />
-<strong>Now define an alias</strong> for lists that are not empty:</p>
+<strong>Now define an alias</strong> <code>NEList</code> for lists that
+are not empty:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -453,7 +454,7 @@ when thinking about how to resolve the exercise.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">{-@ type NEList a = ?? @-}</div>
+  <div id="program-6" class="programbox">-- write the NEList alias</div>
 </div>
 
 <div>
@@ -492,9 +493,13 @@ when thinking about how to resolve the exercise.</p>
 <div id="Destructing Lists" class="hwex">
 <p><br />
 <strong>Exercise: (Destructing Lists): </strong>We can destruct lists by
-writing a <code>hd</code> and <code>tl</code> function as shown below.
-Now, fix the specification on both functions so the definitions
-typecheck.</p>
+writing a <code>hd</code> (head) and <code>tl</code> (tail) function as
+shown below. For <code>tl</code>, write the signature using
+<code>SList</code> andd <code>SListN</code> such that it receives a
+non-empty list and returns another without the first element.</p>
+<p>For <code>hd</code>, do the opposite. From the presented signature,
+writr the implementation. This function returns just the element at the
+front of the list.</p>
 <br />
 <br />
 
@@ -507,13 +512,12 @@ typecheck.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">{-@ tl           :: xs:SList a -> SListN a {size xs + 1}  @-}
+  <div id="program-8" class="programbox">-- write signature
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
-{-@ hd           :: xs:SList a -> a @-}
-hd (SL _ (x:_))  = x
-hd _             = die "empty SList"</div>
+{-@ hd           :: xs:NEList a -> a @-}
+-- implement hd</div>
 </div>
 
 <p><strong>Hint: </strong>When you are done, <code>okHd</code> should be
@@ -538,9 +542,8 @@ badHd = hd (tl okList)  -- rejected</div>
 Answer</button>
 <div id="collapsibleDiv9">
 <code>{-@ tl           :: xs:NEList a -&gt; SListN a {size xs - 1}  @-}</code><br/>
-<code>tl (SL n (_:xs)) = SL (n-1) xs</code><br/>
-<code>{-@ hd           :: xs:NEList a -&gt; a @-}</code><br/>
-<code>hd (SL _ (x:_))  = x</code>
+<br/> <code>hd (SL _ (x:_))  = x</code>
+<code>hd _             = die "empty SList"</code>
 </div>
 </div>
 </div>
