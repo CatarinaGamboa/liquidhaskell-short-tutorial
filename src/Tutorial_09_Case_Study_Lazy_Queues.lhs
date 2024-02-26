@@ -466,6 +466,17 @@ makeq f b
   | otherwise        = Q (rot f b nil) nil
 \end{code}
 
+
+
+<div class = "thinkaloud">
+<b>Think Aloud:</b>
+
+For the following exercise, read the question aloud and try to speak when
+thinking about how to resolve the exercise.
+</div>
+
+<div class = "interact">
+
 <div class="hwex" id="Rotate"> \doublestar
 The Rotate function `rot`:  
 1) is only called when `back` is one larger than the `front` (we never let things drift beyond that). 
@@ -475,18 +486,9 @@ The Rotate function `rot`:
 It is arranged so that it the `hd` is built up fast, before the entire
 computation finishes; which, combined with laziness provides the
 efficient worst-case guarantee. 
+The implementation of `rot` is the following:
 </div>
 
-
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
-</div>
-<div class = "interact">
-As a last exercise, write down a type for `rot` so
-that it typechecks and verifies the type for `makeq`.
 
 \begin{code}
 rot f b acc
@@ -494,16 +496,41 @@ rot f b acc
   | otherwise   = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)
 \end{code}
 
-<div>
-   <button class="btn-answer" onclick="toggleCollapsible(61)"> Answer</button>
-    <div id="collapsibleDiv61">
-`{-@ rot :: f:SList a`<br/>
-`         -> b:SListN _ {1 + size f}`<br/>
-`         -> a:SList _`<br/>
-`         -> SListN _ {size f + size b + size a}`<br/>
-`@-}`
+
+<div id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+   <p>From the several annotations below, choose what is the INCORRECT annotation for the `rot` function.</p>
+   <label class="container"> 
+    `{-@ rot :: f:SList a`<br/>
+    `         -> b:SListN _ {1 + size f}`<br/>
+    `         -> ac:SList _`<br/>
+    `         -> SListN _ {size f + size b + size ac}`<br/>
+    `@-}`
+   <input type="radio" name="q1" value="1"> <span class="checkmark"></span> </label><br>
+   <label class="container">  
+    `{-@ rot ::  front:SList a`<br/>
+    `         -> {back:SList a | size back = (size front + 1)}`<br/>
+    `         -> add:SList a`<br/>
+    `         -> {r:SList a| size r = (size f + size b + size a)}`<br/>
+    `@-}`
+   <input type="radio" name="q1" value="2"><span class="checkmark"></span> </label><br>
+   <label class="container"> 
+    `{-@ rot ::  f:SList a`<br/>
+    `         -> b:SListN _ {size f + 1}`<br/>
+    `         -> a:SList _`<br/>
+    `         -> {r:SList _| size r = (size f + size b + size a)}`<br/>
+    `@-}`
+   <input type="radio" name="q1" value="3"><span class="checkmark"></span> </label><br>
+   <button class="btn-select" onclick="checkAnswer(1)">Submit</button> <p id="result1"></p> <input type="hidden" id="correctAnswer1" value="3">
+
+   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
+    <div id="collapsibleDiv1">
+The first and second answers are correct. The first makes use of the aliases created before, while the 
+second has the predicates written without the aliases.
+The last option is incorrect since `a` is used for both the type of the list and a name given to one of the 
+parameters.
     </div>
 </div>
+
 </div>
 
 Recap of everyting!
