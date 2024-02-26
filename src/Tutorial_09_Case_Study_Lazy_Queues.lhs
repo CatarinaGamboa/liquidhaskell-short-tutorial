@@ -403,8 +403,6 @@ badRemove = remove example0Q   -- reject
    <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
 `{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}`
-
-`remove (Q f b)   = (hd f, makeq (tl f) b)`
     </div>
 </div>
 
@@ -413,24 +411,28 @@ badRemove = remove example0Q   -- reject
 
 
 \newthought{To Insert} an element we just `cons` it to the `back` list, and call
-the *smart constructor* `makeq` to ensure that the balance invariant holds:
+the *smart constructor* `makeq` to ensure that the balance invariant holds.
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
+
+Now, write the liquid type signature for replicate such that it adds the same element
+n times to the queue. 
 
 For the following exercise, read the question aloud and try to speak when
 thinking about how to resolve the exercise.
 </div>
 <div class="interact">
-<div class="hwex" id="Insert">Write down a type for `insert` such
-that `replicate` and `okReplicate` are accepted by LiquidHaskell, but `badReplicate`
+<div class="hwex" id="Insert">Write down a type for `replicate` (that uses `insert``),
+so that `okReplicate` is accepted by LiquidHaskell, but `badReplicate`
 is rejected.
 </div>
 
 \begin{code}
+`{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}`
 insert e (Q f b) = makeq f (e `cons` b)
 
-{-@ replicate :: n:Nat -> a -> QueueN a n @-}
+-- write liquid type signature
 replicate 0 _ = emp
 replicate n x = insert x (replicate (n-1) x)
 
@@ -444,9 +446,7 @@ badReplicate = replicate 1 "No!"   -- reject
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
     <div id="collapsibleDiv5">
-`{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}`
-
-`insert e (Q f b) = makeq f (e `cons` b)`
+`{-@ replicate :: n:Nat -> a -> QueueN a n @-}`
     </div>
 </div>
 
