@@ -205,10 +205,10 @@ thinking about how to resolve the exercise.
 </div>
 
 <div class = "interact">
-\newthought{Now define an alias} for lists that are not empty:
+\newthought{Now define an alias} `NEList` for lists that are not empty:
 
 \begin{code}
-{-@ type NEList a = ?? @-}
+-- write the NEList alias
 \end{code}
 
 <div>
@@ -242,19 +242,23 @@ thinking about how to resolve the exercise.
 
 <div class = "interact">
 
-<div class="hwex" id="Destructing Lists">We can destruct lists by writing a `hd` and `tl`
+<div class="hwex" id="Destructing Lists">
+We can destruct lists by writing a `hd` (head) and `tl` (tail)
 function as shown below. 
-Now, fix the specification on both functions so the definitions typecheck.
+For `tl`, write the signature using `SList` andd `SListN` such that it receives
+a non-empty list and returns another without the first element.
+
+For `hd`, do the opposite. From the presented signature, writr the implementation.
+This function returns just the element at the front of the list. 
 </div>
 
 \begin{code}
-{-@ tl           :: xs:SList a -> SListN a {size xs + 1}  @-}
+-- write signature
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
-{-@ hd           :: xs:SList a -> a @-}
-hd (SL _ (x:_))  = x
-hd _             = die "empty SList"
+{-@ hd           :: xs:NEList a -> a @-}
+-- implement hd
 \end{code}
 
 \hint When you are done, `okHd` should be verified, but `badHd` should be rejected.
@@ -271,9 +275,9 @@ badHd = hd (tl okList)  -- rejected
    <button class="btn-answer" onclick="toggleCollapsible(9)"> Answer</button>
     <div id="collapsibleDiv9">
 `{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}`<br/>
-`tl (SL n (_:xs)) = SL (n-1) xs`<br/>
-`{-@ hd           :: xs:NEList a -> a @-}`<br/>
-`hd (SL _ (x:_))  = x `
+<br/>
+`hd (SL _ (x:_))  = x`
+`hd _             = die "empty SList"`
     </div>
 </div>
 
