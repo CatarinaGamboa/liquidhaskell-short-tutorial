@@ -707,17 +707,18 @@ badRemove = remove example0Q   -- reject</div>
 <button class="btn-answer" onclick="toggleCollapsible(4)">
 Answer</button>
 <div id="collapsibleDiv4">
-<p><code>{-@ remove       :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-}</code></p>
-<code>remove (Q f b)   = (hd f, makeq (tl f) b)</code>
+<code>{-@ remove       :: q:NEQueue a -&gt; (a, QueueN a {qsize q - 1}) @-}</code>
 </div>
 </div>
 </div>
 <p><br />
 <strong>To Insert</strong> an element we just <code>cons</code> it to
 the <code>back</code> list, and call the <em>smart constructor</em>
-<code>makeq</code> to ensure that the balance invariant holds:</p>
+<code>makeq</code> to ensure that the balance invariant holds.</p>
 <div class="thinkaloud">
 <p><b>Think Aloud:</b></p>
+<p>Now, write the liquid type signature for replicate such that it adds
+the same element n times to the queue.</p>
 <p>For the following exercise, read the question aloud and try to speak
 when thinking about how to resolve the exercise.</p>
 </div>
@@ -725,9 +726,9 @@ when thinking about how to resolve the exercise.</p>
 <div id="Insert" class="hwex">
 <p><br />
 <strong>Exercise: (Insert): </strong>Write down a type for
-<code>insert</code> such that <code>replicate</code> and
-<code>okReplicate</code> are accepted by LiquidHaskell, but
-<code>badReplicate</code> is rejected.</p>
+<code>replicate</code> (that uses
+<code>insert``), so that</code>okReplicate<code>is accepted by LiquidHaskell, but</code>badReplicate`
+is rejected.</p>
 <br />
 <br />
 
@@ -740,9 +741,10 @@ when thinking about how to resolve the exercise.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-16" class="programbox">insert e (Q f b) = makeq f (e `cons` b)
+  <div id="program-16" class="programbox">`{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}`
+insert e (Q f b) = makeq f (e `cons` b)
 
-{-@ replicate :: n:Nat -> a -> QueueN a n @-}
+-- write liquid type signature
 replicate 0 _ = emp
 replicate n x = insert x (replicate (n-1) x)
 
@@ -757,8 +759,7 @@ badReplicate = replicate 1 "No!"   -- reject</div>
 <button class="btn-answer" onclick="toggleCollapsible(5)">
 Answer</button>
 <div id="collapsibleDiv5">
-<p><code>{-@ insert       :: a -&gt; q:Queue a -&gt; QueueN a {qsize q + 1}   @-}</code></p>
-<code>insert e (Q f b) = makeq f (e</code>cons<code>b)</code>
+<code>{-@ replicate :: n:Nat -&gt; a -&gt; QueueN a n @-}</code>
 </div>
 </div>
 </div>
@@ -784,6 +785,12 @@ makeq f b
   | otherwise        = Q (rot f b nil) nil</div>
 </div>
 
+<div class="thinkaloud">
+<p><b>Think Aloud:</b></p>
+<p>For the following exercise, read the question aloud and try to speak
+when thinking about how to resolve the exercise.</p>
+</div>
+<div class="interact">
 <div id="Rotate" class="hwex">
 <p><br />
 <strong>Exercise: (Rotate): </strong> The Rotate function
@@ -796,19 +803,12 @@ additional to be rotated.</li>
 </ol>
 <p>It is arranged so that it the <code>hd</code> is built up fast,
 before the entire computation finishes; which, combined with laziness
-provides the efficient worst-case guarantee.</p>
+provides the efficient worst-case guarantee. The implementation of
+<code>rot</code> is the following:</p>
 <br />
 <br />
 
 </div>
-<div class="thinkaloud">
-<p><b>Think Aloud:</b></p>
-<p>For the following exercise, read the question aloud and try to speak
-when thinking about how to resolve the exercise.</p>
-</div>
-<div class="interact">
-<p>As a last exercise, write down a type for <code>rot</code> so that it
-typechecks and verifies the type for <code>makeq</code>.</p>
 <div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -822,15 +822,42 @@ typechecks and verifies the type for <code>makeq</code>.</p>
   | otherwise   = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)</div>
 </div>
 
-<div>
-<button class="btn-answer" onclick="toggleCollapsible(61)">
-Answer</button>
-<div id="collapsibleDiv61">
-<code>{-@ rot :: f:SList a</code><br/>
+<div id="question1"
+style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<p>
+From the several annotations below, choose what is the INCORRECT
+annotation for the <code>rot</code> function.
+</p>
+<label class="container"> <code>{-@ rot :: f:SList a</code><br/>
 <code>-&gt; b:SListN _ {1 + size f}</code><br/>
+<code>-&gt; ac:SList _</code><br/>
+<code>-&gt; SListN _ {size f + size b + size ac}</code><br/>
+<code>@-}</code> <input type="radio" name="q1" value="1"> <span
+class="checkmark"></span> </label><br> <label class="container"><br />
+<code>{-@ rot ::  front:SList a</code><br/>
+<code>-&gt; {back:SList a | size back = (size front + 1)}</code><br/>
+<code>-&gt; add:SList a</code><br/>
+<code>-&gt; {r:SList a| size r = (size f + size b + size a)}</code><br/>
+<code>@-}</code> <input type="radio" name="q1" value="2"><span
+class="checkmark"></span> </label><br> <label class="container">
+<code>{-@ rot ::  f:SList a</code><br/>
+<code>-&gt; b:SListN _ {size f + 1}</code><br/>
 <code>-&gt; a:SList _</code><br/>
-<code>-&gt; SListN _ {size f + size b + size a}</code><br/>
-<code>@-}</code>
+<code>-&gt; {r:SList _| size r = (size f + size b + size a)}</code><br/>
+<code>@-}</code> <input type="radio" name="q1" value="3"><span
+class="checkmark"></span> </label><br>
+<button class="btn-select" onclick="checkAnswer(1)">Submit</button>
+<p id="result1">
+</p>
+<p><input type="hidden" id="correctAnswer1" value="3"></p>
+<button class="btn-answer" onclick="toggleCollapsible(1)">
+Answer</button>
+<div id="collapsibleDiv1">
+The first and second answers are correct. The first makes use of the
+aliases created before, while the second has the predicates written
+without the aliases. The last option is incorrect since <code>a</code>
+is used for both the type of the list and a name given to one of the
+parameters.
 </div>
 </div>
 </div>
