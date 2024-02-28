@@ -245,7 +245,7 @@ thinking about how to resolve the exercise.
 <div class="hwex" id="Destructing Lists">
 We can destruct lists by writing a `hd` (head) and `tl` (tail)
 function as shown below. 
-For `tl`, write the signature using `SList` andd `SListN` such that it receives
+For `tl`, fix the signature such that it receives
 a non-empty list and returns another without the first element.
 
 For `hd`, do the opposite. From the presented signature, writr the implementation.
@@ -253,7 +253,7 @@ This function returns just the element at the front of the list.
 </div>
 
 \begin{code}
--- write signature
+{-@ tl           :: {xs:NEList a| size xs < 0 }-> SListN a {size xs}  @-}
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
@@ -506,7 +506,7 @@ The Rotate function `rot`:
 \begin{code}
 {-@ rot :: f:SList a
           -> b:SList a {1 - size f}
-          -> acc:List a_
+          -> acc:List a
           -> SListN a {size acc}
 @-}
 rot f b acc
@@ -520,7 +520,7 @@ rot f b acc
     <div id="collapsibleDiv6">
     `{-@ rot :: f:SList a`<br/>
     `         -> b:SListN a {1 + size f}`<br/>
-    `         -> ac:SList a`<br/>
+    `         -> acc:SList a`<br/>
     `         -> SListN a {size f + size b + size ac}`<br/>
     `@-}`
     </div>
