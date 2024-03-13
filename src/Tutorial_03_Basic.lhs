@@ -207,15 +207,16 @@ The above signature forces us to ensure that that when we
 
 
 <div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+   <b> Exercise:</b>
    <p>Select which of the following functions that call divide would <b>raise an error:</b> </p>
-   <label class="container"> abc x y   = divide (x + y) 2 <input type="radio" name="q3" value="1"> <span class="checkmark"></span> </label><br>
-   <label class="container"> efg x y z = divide (divide (x + y) 3) 10 <input type="radio" name="q3" value="2"><span class="checkmark"></span> </label><br>
-   <label class="container"> hij x y z = divide (x + y) z  <input type="radio" name="q3" value="3"><span class="checkmark"></span> </label><br>
+   <label class="container"> foo x y   = divide (x + y) 2 <input type="radio" name="q3" value="1"> <span class="checkmark"></span> </label><br>
+   <label class="container"> foo' x y z = divide (divide (x + y) 3) 10 <input type="radio" name="q3" value="2"><span class="checkmark"></span> </label><br>
+   <label class="container"> foo'' x y z = divide (x + y) z  <input type="radio" name="q3" value="3"><span class="checkmark"></span> </label><br>
    <button class="btn-select" onclick="checkAnswer(3)">Submit</button> <p id="result3"></p> <input type="hidden" id="correctAnswer3" value="3">
 
    <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
     <div id="collapsibleDiv3">
-    hij is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
+    foo'' is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
     </div>
 </div>
 <br/>
