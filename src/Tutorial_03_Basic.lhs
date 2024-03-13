@@ -298,8 +298,8 @@ cpi = calcPer 10 11 :: Int -- should be incorrect
 
 </div>
 
-\newthought{You finished the first part of the Tutorial!}
-Before moving to the next part, answer some questions from our team.
+You finished the first part of the Tutorial!
+Tell the interviewers you got to the end of the page, and answer some questions from our team before moving to the next section.
 
 <a href="Tutorial_05_Datatypes.html" >
     <button class="btn-next">Next</button>
