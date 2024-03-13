@@ -57,7 +57,7 @@ that are equal to `0`, that is, the singleton set containing just `0`, and
 `NonZero` describes the set of `Int` values that are *not* equal to `0`,
 that is, the set `{1, -1, 2, -2, ...}` and so on.
 
-To indicate that these specifications are for LiquidHaskell specifications we write them like `{-@ spec @-}`.
+To indicate that these specifications are for LiquidHaskell we write them like `{-@ spec @-}`.
 
 \newthought{Now, to use} these types we can write:
 
