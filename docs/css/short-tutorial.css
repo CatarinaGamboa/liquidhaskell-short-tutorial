@@ -74,7 +74,7 @@ background: white;
 }
          
 .btn-select {
-    background-image: linear-gradient(to right, #4CB8C4 0%, #3CD3AD  51%, #4CB8C4  100%);
+    background-image: linear-gradient(to right, #4CB8C4 0%, #000d6e  51%, #4CB8C4  100%);
     margin: 10px;
     padding: 15px 45px;
     text-align: center;
@@ -93,10 +93,9 @@ background: white;
     text-decoration: none;
   }
  
-
          
 .btn-answer {
-    background-image: linear-gradient(to right, #FF8008 0%, #FFC837  51%, #FF8008  100%);
+    background-image: linear-gradient(to right, rgb(255 72 8) 0%, #ffa543 51%, rgb(255, 72, 8) 100%);
     margin: 10px;
     padding: 15px 45px;
     text-align: center;
