@@ -265,8 +265,9 @@ plus1 a = a + 1
 And the same could be done between input values.
 
 <div class="interact">
-<div class="hwex" id="List Average">
-Can you now put everything together?
+<b>Exercise:</b>
+
+Let's put everything together now.
 
 Write a specification for the method `calcPer` that:
 
@@ -277,7 +278,6 @@ Write a specification for the method `calcPer` that:
 3) returns a percentage;
 
 Use the aliases created in the exercises you have completed before.
-</div>
 
 \begin{code}
 calcPer       :: Int -> Int -> Int
