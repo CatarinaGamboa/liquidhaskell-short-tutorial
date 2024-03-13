@@ -1,4 +1,4 @@
-Introduction {#intro}
+Cheat Sheet
 ============
 
 
@@ -20,7 +20,7 @@ Welcome to the LiquidHaskell Short Tutorial  Cheat Sheet!
 Here are the main concepts and examples you can use to complete the exercises.
 
 
-Adding Specifications 
+Specifications 
 ------------------------------------------
 LiquidHaskell specifications in functions are written between `{-@ spec @-}`.
 
