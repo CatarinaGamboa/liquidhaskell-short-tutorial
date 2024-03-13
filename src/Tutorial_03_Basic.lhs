@@ -138,11 +138,13 @@ The alias `TensToHundred` represents the multiples of 10 smaller than 100,
 meaning that `Even` is a *subtype* of it but all the other ones are not. 
 
 <div class = "interact">
+<b>Exercise:</b>
 Now let us try a new predicate.
 
+Write a type `Percentage` for the numbers that represent a percentage (between 0 and 100).
 
-Write a type for the numbers that represent a percentage (between 0 and 100).
-Then, decoment the liquid type signatures and run the code. The first example should be correct and the second should not.
+Then, remove the comment the liquid type signatures and run the code. 
+The first example should be correct and the second should not.
 
 \begin{code}
 -- write the alias here
