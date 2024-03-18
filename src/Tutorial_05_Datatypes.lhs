@@ -245,7 +245,7 @@ of sparse vectors of size N.
 
 
 <div class="think-aloud">
-<b>Think Aloud:</b>
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 
 For the following exercise, we will use a technique called Think Aloud, where you
 should try to say everything that comes to your mind while you engage with the exercise.
