@@ -144,9 +144,12 @@ background: white;
     padding: 10px;
 }
 
-.thinkaloud{
+.think-aloud{
   border-radius: 10px;
-    border-color: #ff37b260;
-    background-color: #dc00841f;
+    background-color: rgb(53 135 217 / 13%);
     padding: 10px;
+}
+
+.think-aloud-text{
+  color: rgb(3 105 207);
 }
