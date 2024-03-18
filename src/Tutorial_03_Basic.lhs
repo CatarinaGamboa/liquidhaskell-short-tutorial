@@ -289,7 +289,7 @@ cpi = calcPer 10 11 :: Int -- should be incorrect
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
+   <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
     <div id="collapsibleDiv5">
 `{-@ calcPer :: a:Positive -> {b:Int | 0 <= b && b <= a} -> c:Percentage @-}`
     </div>
