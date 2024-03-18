@@ -148,8 +148,7 @@ require saving the size as well, but that's for another day.)
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
 
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class = "interact">
 How can we be sure that `size` is indeed the *real size* of `elems`?
@@ -199,9 +198,7 @@ badList = SL 1 []         -- rejected
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
 <div class = "interact">
@@ -235,9 +232,7 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
 <div class = "interact">
@@ -336,9 +331,7 @@ emp = Q nil nil
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class = "interact">
 <div class="hwex" id="Queue Sizes">
@@ -387,9 +380,7 @@ the calls to `hd` and `tl` are safe.
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
 Add a LiquidHaskell signature to remove using QueueN. When you are done, `okRemove` should be accepted, `badRemove`
@@ -420,16 +411,11 @@ the *smart constructor* `makeq` to ensure that the balance invariant holds.
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
-
-Now, write the liquid type signature for replicate such that it adds the same element
-n times to the queue. 
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
-<div class="hwex" id="Insert">Write down a type for `replicate` (that uses `insert``),
-so that `okReplicate` is accepted by LiquidHaskell, but `badReplicate`
+<div class="hwex" id="Insert">Write down a liquid type signature for `replicate` (that uses `insert``),
+so that it adds the same element n times to the queue, and `okReplicate` is accepted by LiquidHaskell, but `badReplicate`
 is rejected.
 </div>
 
@@ -486,9 +472,7 @@ efficient worst-case guarantee.
 
 <div class = "thinkaloud">
 <b>Think Aloud:</b>
-
-For the following exercise, read the question aloud and try to speak when
-thinking about how to resolve the exercise.
+Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
 <div class = "interact">
