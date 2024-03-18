@@ -24,7 +24,7 @@ library:
     - src
 
   exposed-modules:
-    - Cheat_sheet
+    - Tutorial_Cheat_sheet
     - ShortTutorial_01
     - Tutorial_01_Introduction
     - Tutorial_02_Logic

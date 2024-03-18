@@ -11,7 +11,7 @@ mkHTML() {
 
 mkLHS() { 
    echo "Build single LHS file"
-   cat src/ShortTutorial_01.lhs src/Cheat_sheet.lhs src/Tutorial_01_Introduction.lhs src/Tutorial_02_Logic.lhs src/Tutorial_03_Basic.lhs src/Tutorial_04_Polymorphism.lhs src/Tutorial_05_Datatypes.lhs src/Tutorial_06_Measure_Bool.lhs src/Tutorial_07_Measure_Int.lhs src/Tutorial_08_Measure_Set.lhs src/Tutorial_09_Case_Study_Lazy_Queues.lhs > dist/pbook.lhs
+   cat src/ShortTutorial_01.lhs src/Tutorial_Cheat_sheet.lhs src/Tutorial_01_Introduction.lhs src/Tutorial_02_Logic.lhs src/Tutorial_03_Basic.lhs src/Tutorial_04_Polymorphism.lhs src/Tutorial_05_Datatypes.lhs src/Tutorial_06_Measure_Bool.lhs src/Tutorial_07_Measure_Int.lhs src/Tutorial_08_Measure_Set.lhs src/Tutorial_09_Case_Study_Lazy_Queues.lhs > dist/pbook.lhs
 }
 
 mkPDF () {
@@ -21,7 +21,7 @@ mkPDF () {
 
 mkWeb() {
   mkHTML ShortTutorial_01
-  mkHTML Cheat_sheet
+  mkHTML Tutorial_Cheat_sheet
   mkHTML Tutorial_01_Introduction
   mkHTML Tutorial_02_Logic
   mkHTML Tutorial_03_Basic

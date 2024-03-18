@@ -6,7 +6,7 @@ Cheat Sheet
 \begin{code}
 {-# LANGUAGE CPP #-}
 
-module Cheat_sheet where
+module Tutorial_Cheat_sheet where
 main = putStrLn "Intro"
 
 -- {-@ ignore average @-}

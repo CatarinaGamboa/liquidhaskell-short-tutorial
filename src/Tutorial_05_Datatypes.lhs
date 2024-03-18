@@ -317,7 +317,7 @@ Tell the interviewers you got to the end of the page, and answer some questions 
 Now that you have learned the main blocks of LiquidHaskell, let's complete
 an exercise using all the concepts.
 
-You can open a <a href="cheat_sheet.html" >Cheat Sheet</a> with examples of the main concepts on another tab on the side.
+You can open a <a href="Tutorial_Cheat_sheet.html" >Cheat Sheet</a> with examples of the main concepts on another tab on the side.
 
 
 <a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
