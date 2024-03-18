@@ -437,7 +437,8 @@ the first case will not be called.</p>
 <p>The above signature forces us to ensure that that when we
 <em>use</em> <code>divide</code>, we only supply provably
 <code>NonZero</code> arguments.</p>
-<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<div id="question1" class="interact"
+style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
 <b> Exercise:</b>
 <p>
 Select which of the following functions that call divide would <b>raise
@@ -457,10 +458,10 @@ class="checkmark"></span> </label><br>
 <button class="btn-answer" onclick="toggleCollapsible(3)">
 Answer</button>
 <div id="collapsibleDiv3">
-<pre><code>foo&#39;&#39; is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
-&lt;/div&gt;</code></pre>
+<code>foo''</code> is the invocation that could trigger a crash since we
+have no guarantees that z is a <code>NonZero</code> value.
 </div>
-<p><br/></p>
+</div>
 </section>
 <section id="refining-function-types-post-conditions" class="level2">
 <h2>Refining Function Types: Post-conditions</h2>
