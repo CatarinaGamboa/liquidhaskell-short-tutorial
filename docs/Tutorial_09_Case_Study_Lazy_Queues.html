@@ -221,7 +221,7 @@ invariant with LiquidHaskell.</p>
 {-@ LIQUID "--maxparams=3"    @-}
 
 module Tutorial_09_Case_Study_Lazy_Queues 
-  (Queue, insert, remove, emp, realSize) 
+  (Queue, insert, remove, emp) 
   where
 
 import Prelude hiding (replicate, take, length)
@@ -245,6 +245,12 @@ replicate :: Int -> a -> Queue a
 -- {-@ ignore hd   @-}
 -- {-@ ignore tl   @-}
 -- {-@ ignore badQ @-}
+
+-- {-@ fail hd   @-}
+-- {-@ fail tl   @-}
+-- {-@ fail badHd   @-}
+-- {-@ fail badReplicate   @-}
+
 
 </div>
 </div>
@@ -324,10 +330,6 @@ that all we need to do is to enforce a simple <em>balance
 invariant</em>:</p>
 <p><span class="math display">\[\mbox{Size of front} \geq \mbox{Size of
 back}\]</span></p>
-<p>% If the lists are lazy i.e. only constructed as the head % value is
-demanded, then a single <code>remove</code> needs only a tiny
-<code>O(log n)</code> % in the worst case, and so no single
-<code>remove</code> is stuck paying the bill.</p>
 <p><br />
 <strong>Lets implement Queues</strong> and ensure the crucial
 invariant(s) with LiquidHaskell. What we need are the following
@@ -367,8 +369,8 @@ when thinking about how to resolve the exercise.</p>
 </div>
 <div class="interact">
 <p>How can we be sure that <code>size</code> is indeed the <em>real
-size</em> of <code>elems</code>? Write a function to <em>measure</em>
-the real size:</p>
+size</em> of <code>elems</code>? Write a measure <code>realSize</code>
+to get the number of elements in any list:</p>
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -377,16 +379,16 @@ the real size:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">{-@ measure realSize @-}</div>
+  <div id="program-2" class="programbox">-- write measure realSize in here</div>
 </div>
 
 <div>
 <button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
-<code>{-@ measure realSize @-}</code>
-<code>realSize      :: [a] -&gt; Int</code>
-<code>realSize []     = 0</code>
+<code>{-@ measure realSize @-}</code><br/>
+<code>realSize      :: [a] -&gt; Int</code><br/>
+<code>realSize []     = 0</code><br/>
 <code>realSize (_:xs) = 1 + realSize xs</code>
 </div>
 </div>
@@ -494,12 +496,12 @@ when thinking about how to resolve the exercise.</p>
 <p><br />
 <strong>Exercise: (Destructing Lists): </strong>We can destruct lists by
 writing a <code>hd</code> (head) and <code>tl</code> (tail) function as
-shown below. For <code>tl</code>, fix the signature such that it
-receives a non-empty list and returns another without the first
-element.</p>
+shown below.</p>
+<p>For <code>tl</code>, fix the signature such that it receives a
+non-empty list and returns another without the first element.</p>
 <p>For <code>hd</code>, do the opposite. From the presented signature,
-writr the implementation. This function returns just the element at the
-front of the list.</p>
+remove the comment from the signature and write the implementation. This
+function returns just the element at the front of the list.</p>
 <br />
 <br />
 
@@ -516,7 +518,7 @@ front of the list.</p>
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
-{-@ hd           :: xs:NEList a -> a @-}
+-- {-@ hd           :: xs:NEList a -> a @-}
 -- implement hd</div>
 </div>
 
@@ -542,7 +544,7 @@ badHd = hd (tl okList)  -- rejected</div>
 Answer</button>
 <div id="collapsibleDiv9">
 <code>{-@ tl           :: xs:NEList a -&gt; SListN a {size xs - 1}  @-}</code><br/>
-<br/> <code>hd (SL _ (x:_))  = x</code>
+<br/> <code>hd (SL _ (x:_))  = x</code><br/>
 <code>hd _             = die "empty SList"</code>
 </div>
 </div>
@@ -668,7 +670,7 @@ example0Q = Q nil nil</div>
 <button class="btn-answer" onclick="toggleCollapsible(71)">
 Answer</button>
 <div id="collapsibleDiv71">
-<code>{-@ measure qsize @-}</code>
+<code>{-@ measure qsize @-}</code><br/>
 <code>qsize         :: Queue a -&gt; Int</code><br/>
 <code>qsize (Q l r) = size l + size r</code><br/> <br/>
 <code>{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}</code>
@@ -744,7 +746,7 @@ is rejected.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-16" class="programbox">`{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}`
+  <div id="program-16" class="programbox">{-@ insert :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}
 insert e (Q f b) = makeq f (e `cons` b)
 
 -- write liquid type signature
@@ -845,12 +847,11 @@ rot f b acc
 <button class="btn-answer" onclick="toggleCollapsible(6)">
 Answer</button>
 <div id="collapsibleDiv6">
-<pre><code>`{-@ rot :: f:SList a`&lt;br/&gt;
-`         -&gt; b:SListN a {1 + size f}`&lt;br/&gt;
-`         -&gt; acc:SList a`&lt;br/&gt;
-`         -&gt; SListN a {size f + size b + size ac}`&lt;br/&gt;
-`@-}`
-&lt;/div&gt;</code></pre>
+<code>{-@ rot :: f:SList a</code><br/>
+<code>-&gt; b:SListN a {1 + size f}</code><br/>
+<code>-&gt; acc:SList a</code><br/>
+<code>-&gt; SListN a {size f + size b + size ac}</code><br/>
+<code>@-}</code>
 </div>
 </div>
 </section>
