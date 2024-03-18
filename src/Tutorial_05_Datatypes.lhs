@@ -270,6 +270,8 @@ solving the exercise.
 Following what we did with the lists, write the alias `SparseN` for sparse vector of
 length N, using `spDim` instead of `size`.
 
+\hint When you are done, you can see how we can use `SparseN` in the example below.
+
 \begin{code}
 -- write the alias here
 \end{code}
@@ -281,8 +283,8 @@ length N, using `spDim` instead of `size`.
    </div>
 </div>
 
+</div>
 
-\hint When you are done, you can see how we can use `SparseN` in the following example
 
 \newthought{Sparse Products}
 `Vector`s are similar to Sparse Vectors, and therefore, have a
