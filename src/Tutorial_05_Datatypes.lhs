@@ -244,7 +244,7 @@ case it is already defined by `spDim`, so we can use it to create the new alias
 of sparse vectors of size N.
 
 
-<div class="thinkaloud">
+<div class="think-aloud">
 <b>Think Aloud:</b>
 
 For the following exercise, we will use a technique called Think Aloud, where you

@@ -145,8 +145,8 @@ require saving the size as well, but that's for another day.)
 
 
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
@@ -196,8 +196,8 @@ badList = SL 1 []         -- rejected
 {-@ type SListN a N = {v:SList a | size v = N} @-}
 \end{code}
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
@@ -230,8 +230,8 @@ cons x (SL n xs) = SL (n+1) (x:xs)
 \end{code}
 
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
@@ -329,8 +329,8 @@ emp = Q nil nil
 \end{code}
 
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class = "interact">
@@ -378,8 +378,8 @@ example0Q = Q nil nil
 the calls to `hd` and `tl` are safe.
 
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
@@ -409,8 +409,8 @@ badRemove = remove example0Q   -- reject
 \newthought{To Insert} an element we just `cons` it to the `back` list, and call
 the *smart constructor* `makeq` to ensure that the balance invariant holds.
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
@@ -470,8 +470,8 @@ efficient worst-case guarantee.
 </div>
 
 
-<div class = "thinkaloud">
-<b>Think Aloud:</b>
+<div class = "think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
