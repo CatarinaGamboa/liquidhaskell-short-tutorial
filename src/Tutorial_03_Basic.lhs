@@ -216,10 +216,9 @@ The above signature forces us to ensure that that when we
 
    <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
     <div id="collapsibleDiv3">
-    foo'' is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
+`foo''` is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
     </div>
 </div>
-<br/>
 
 
 Refining Function Types: Post-conditions
