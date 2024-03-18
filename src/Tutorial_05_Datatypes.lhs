@@ -1,5 +1,5 @@
 
-Refined Datatypes {#refineddatatypes}
+Refined Datatypes
 =================
 
 
@@ -22,7 +22,7 @@ import Prelude      hiding (abs, length, min)
 import Data.List    (foldl')
 import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
 import Data.Maybe   (fromJust)
-
+ 
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -143,7 +143,7 @@ second should not.
 
 
 
-Sparse Vectors {#autosmart}
+Sparse Vectors
 -------------------------------------
 
 As our first example of a refined datatype, let's see 
@@ -278,13 +278,12 @@ length N, using `spDim` instead of `size`.
 
 <div>
 <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
-    <div id="collapsibleDiv5">
-`{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
+   <div id="collapsibleDiv5">
+e.g., `{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
    </div>
 </div>
 
 </div>
-
 
 \newthought{Sparse Products}
 `Vector`s are similar to Sparse Vectors, and therefore, have a

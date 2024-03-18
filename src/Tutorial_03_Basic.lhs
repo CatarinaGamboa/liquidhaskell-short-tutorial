@@ -41,7 +41,7 @@ Haskell expressions, that constrain the set of values described
 by the type. This lets us specify sophisticated invariants of
 the underlying values.
 
-Defining Types {#definetype}
+Defining Types
 --------------
 
 Let us define some refinement types:
