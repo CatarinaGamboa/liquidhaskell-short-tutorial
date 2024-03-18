@@ -250,11 +250,16 @@ of sparse vectors of size N.
 For the following exercise, we will use a technique called Think Aloud, where you
 should try to say everything that comes to your mind while you engage with the exercise.
 
-In specific, try:
+In specific, aim:
+
 a) to speak all thoughts, even if they are unrelated to the task;
+
 b) to refrain from  explaining the  thoughts; 
+
 c) to not try to plan out what to say; 
+
 d) to imagine that you are alone and speaking to yourself; and  
+
 e) to speak continuously. 
 
 For the following exercise, read the question aloud and remeber to voice your thoughts while 
