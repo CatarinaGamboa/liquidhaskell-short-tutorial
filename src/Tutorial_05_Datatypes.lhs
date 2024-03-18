@@ -13,30 +13,8 @@ module Tutorial_05_Datatypes
          -- * Sparse: Data
          Sparse (..)
 
-         -- * Sparse: Functions
-       , dotProd, dotProd', plus, fromList
-
          -- * Sparse: Examples
-       , okSP, badSP, test1, test2
-
-          -- * OrdList: Data
-       , IncList  (..)
-
-          -- * OrdList: Examples
-       , okList, badList
-
-          -- * OrdList: Functions
-       ,  insertSort, insertSort', mergeSort, quickSort
-
-          -- * BST: Data
-       , BST (..)
-
-          -- * BST: Functions
-       , mem, add, delMin, del, bstSort, toBST, toIncList
-
-          -- * BST: Examples
-       , okBST, badBST
-
+       , okSP, badSP
        )
       where
 
@@ -45,17 +23,12 @@ import Data.List    (foldl')
 import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
 import Data.Maybe   (fromJust)
 
-dotProd, dotProd' :: Vector Int -> Sparse Int -> Int
-test1 :: Sparse String
-test2 :: Sparse Int
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
 
 -- {-@ fail badSP @-}
 -- {-@ fail badSP' @-}
--- {-@ fail test1 @-}
--- {-@ fail test2 @-}
 -- {-@ fail badList @-}
 -- {-@ ignore append @-}
 -- {-@ fail badBST @-}
@@ -88,9 +61,7 @@ verification.
 We can tell LiquidHaskell to *lift* a function meeting
 the above requirements into the refinement logic by declaring:
 
-\begin{code}
-{-@ measure nameOfMeasure @-}
-\end{code}
+`{-@ measure nameOfMeasure @-}`
 
 For example, for a list we can define a way to *measure* its size with 
 the following function.
@@ -98,6 +69,7 @@ the following function.
 \begin{code}
 {-@ measure size @-}
 {-@ size :: [a] -> Nat @-}
+size :: [a]->Int
 size []     = 0
 size (_:rs) = 1 + size rs
 \end{code}
@@ -194,8 +166,9 @@ in the list have the value `0` or the equivalent value type `a`.
 
 \newthought{Legal}
 `Sparse` vectors satisfy two crucial properties.
-1) the dimension stored in `spDim` is non-negative;
-2) every index in `spElems` must be valid, i.e.
+1. the dimension stored in `spDim` is non-negative;
+
+2. every index in `spElems` must be valid, i.e.
 between `0` and the dimension. 
 
 Unfortunately, Haskell's
@@ -242,8 +215,9 @@ badSP = SP 5 [ (0, "cat")
 
 <div class="interact">
 Write another example of a Sparse data type that is invalid.
+Remove the comment from the type signature below and complete the implementation with the example.
 \begin{code}
-badSP' :: Sparse String
+-- badSP' :: Sparse String
 \end{code}
 
 <div>
@@ -296,14 +270,15 @@ length N, using `spDim` instead of `size`.
 \newthought{Sparse Products}
 So, now, we can see that LiquidHaskell is able to compute a sparse product,
 making the product of all the same indexes and returning its sum.
-Run the code ahead.
+Remove the comments and run the code ahead.
 
 \begin{code}
-{-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
-dotProd x (SP _ y) = go 0 y
-  where
-    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
-    go sum []            = sum
+-- dotProd :: Vector Int -> Sparse Int -> Int
+-- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+-- dotProd x (SP _ y) = go 0 y
+--  where
+--    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
+--    go sum []            = sum
 \end{code}
 
 \noindent
