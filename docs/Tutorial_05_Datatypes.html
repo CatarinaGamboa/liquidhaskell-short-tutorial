@@ -129,23 +129,23 @@ MathJax.Hub.Config({
 <ul class='chapter'>
 <li><a href='Tutorial_01_Introduction.html'><b>1.</b>Introduction</a></li>
 <ul class='section'>
-<li><a href='Tutorial_01_Introduction.html#'><b>1.1.</b> Well-Typed Programs Do Go Wrong {#gowrong}</a></li>
+<li><a href='Tutorial_01_Introduction.html#'><b>1.1.</b> Well-Typed Programs Do Go Wrong</a></li>
 <li><a href='Tutorial_01_Introduction.html#'><b>1.2.</b> Refinement Types</a></li>
 </ul>
 <li><a href='Tutorial_03_Basic.html'><b>2.</b>Refinement Types</a></li>
 <ul class='section'>
-<li><a href='Tutorial_03_Basic.html#'><b>2.1.</b> Defining Types {#definetype}</a></li>
+<li><a href='Tutorial_03_Basic.html#'><b>2.1.</b> Defining Types</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.2.</b> Errors</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.3.</b> Subtyping</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.4.</b> Writing Specifications</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.5.</b> Refining Function Types: Post-conditions</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.6.</b> Dependent Refinements</a></li>
 </ul>
-<li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refined Datatypes {#refineddatatypes}</a></li>
+<li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refined Datatypes</a></li>
 <ul class='section'>
-<li><a href='Tutorial_05_Datatypes.html#'><b>3.1.</b> Sparse Vectors {#autosmart}</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.1.</b> Sparse Vectors</a></li>
 </ul>
-<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>4.</b>Case Study: Okasaki's Lazy Queues {#lazyqueue}</a></li>
+<li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>4.</b>Case Study: Okasaki's Lazy Queues</a></li>
 <ul class='section'>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.1.</b> Queues</a></li>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html#'><b>4.2.</b> Sized Lists</a></li>
@@ -199,7 +199,7 @@ MathJax.Hub.Config({
 <div id='page-wrapper'>
 <div id='page'>
 
-<section id="refineddatatypes" class="level1">
+<section id="refined-datatypes" class="level1">
 <h1>Refined Datatypes</h1>
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
@@ -227,7 +227,7 @@ import Prelude      hiding (abs, length, min)
 import Data.List    (foldl')
 import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
 import Data.Maybe   (fromJust)
-
+ 
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -356,7 +356,7 @@ Answer</button></p>
 </div>
 </div>
 </div>
-<section id="autosmart" class="level2">
+<section id="sparse-vectors" class="level2">
 <h2>Sparse Vectors</h2>
 <p>As our first example of a refined datatype, let’s see Sparse Vectors.
 While the standard Vector is great for dense arrays, often we have to
@@ -521,10 +521,17 @@ voice your thoughts while solving the exercise.</p>
 <button class="btn-answer" onclick="toggleCollapsible(5)">
 Answer
 </button>
-<pre><code>&lt;div id=&quot;collapsibleDiv5&quot;&gt;</code></pre>
+<div id="collapsibleDiv5">
+e.g.,
 <code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
 </div>
 </div>
+</div>
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
+see that LiquidHaskell is able to compute a sparse product, making the
+product of all the same indexes and returning its sum. Remove the
+comments and run the code ahead.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -533,23 +540,7 @@ Answer
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">/div></div>
-</div>
-
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
-see that LiquidHaskell is able to compute a sparse product, making the
-product of all the same indexes and returning its sum. Remove the
-comments and run the code ahead.</p>
-<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-13" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
+  <div id="program-12" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
 -- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
 -- dotProd x (SP _ y) = go 0 y
 --  where
