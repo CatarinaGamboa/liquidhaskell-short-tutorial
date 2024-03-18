@@ -105,7 +105,7 @@ A work list of TODO items can be found in the [bug tracker](https://github.com/u
 
 ## Feedback and Gotchas
 
-Editing feedback and various gotchas can be found in [feedback.md](feedback.md) -->
+Editing feedback and various gotchas can be found in [feedback.md](feedback.md) 
 
 ## Solutions
-Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/
+Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/-->
