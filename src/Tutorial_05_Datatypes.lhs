@@ -271,7 +271,6 @@ length N, using `spDim` instead of `size`.
 
 <div>
 <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
-
     <div id="collapsibleDiv5">
 `{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
    </div>
@@ -279,13 +278,10 @@ length N, using `spDim` instead of `size`.
 
 
 \hint When you are done, you can see how we can use `SparseN` in the following example
-</div>
-
-`Vector`s are similar to Sparse Vectors, and therefore, have a
-*measure* of size named `vlen`.
-
 
 \newthought{Sparse Products}
+`Vector`s are similar to Sparse Vectors, and therefore, have a
+*measure* of size named `vlen`.
 So, now, we can see that LiquidHaskell is able to compute a sparse product,
 making the product of all the same indexes and returning its sum.
 Remove the comments and run the code ahead.
