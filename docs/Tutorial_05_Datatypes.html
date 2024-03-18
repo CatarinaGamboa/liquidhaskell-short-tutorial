@@ -518,8 +518,13 @@ Answer
 <code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
 </div>
 </div>
-<strong>Hint: </strong>When you are done, you can see how we can use
-<code>SparseN</code> in the following example
+<p><strong>Hint: </strong>When you are done, you can see how we can use
+<code>SparseN</code> in the following example</p>
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
+see that LiquidHaskell is able to compute a sparse product, making the
+product of all the same indexes and returning its sum. Remove the
+comments and run the code ahead.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -528,23 +533,7 @@ Answer
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">/div></div>
-</div>
-
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>.</p>
-<p>So, now, we can see that LiquidHaskell is able to compute a sparse
-product, making the product of all the same indexes and returning its
-sum. Remove the comments and run the code ahead.</p>
-<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-13" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
+  <div id="program-12" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
 -- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
 -- dotProd x (SP _ y) = go 0 y
 --  where
