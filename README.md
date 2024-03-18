@@ -2,10 +2,13 @@
 
 This is a short version of the full LiquidHaskell Tutorial.
 
-To access the tutorial, follow the following steps:
-1. Clone the repo
-2. On the command line change to the "publishing branch" `git checkout gh-pages`
-3. Open the html files in the folder `docs`, starting with `Tutorial_01_Introduction.html`
+To access the tutorial use the link [https://catarinagamboa.github.io/liquidhaskell-short-tutorial/].
+
+To make changes in the tutorial:
+1. Clone the repo.
+2. Access the `src` folder, where the literate haskell documents are located.
+3. Make changes on the `.hls` files.
+4. Commit changes and see the results in the webpage.
 
 <!-- 
 
@@ -105,7 +108,7 @@ A work list of TODO items can be found in the [bug tracker](https://github.com/u
 
 ## Feedback and Gotchas
 
-Editing feedback and various gotchas can be found in [feedback.md](feedback.md) -->
+Editing feedback and various gotchas can be found in [feedback.md](feedback.md) 
 
 ## Solutions
-Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/
+Solution to Lazy Queues https://ucsd-progsys.github.io/liquidhaskell/blogposts/2015-01-30-okasakis-lazy-queue.lhs/-->
