@@ -15,7 +15,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Programming with Refinement Types</title>
+    <title>Programming with Refinement Types - a short tutorial</title>
 
     <link href="./css/bootstrap.css" rel="stylesheet">
     <link href="./css/bootstrap-theme.css" rel="stylesheet">
@@ -487,11 +487,16 @@ N.</p>
 <p>For the following exercise, we will use a technique called Think
 Aloud, where you should try to say everything that comes to your mind
 while you engage with the exercise.</p>
-<p>In specific, try: a) to speak all thoughts, even if they are
-unrelated to the task; b) to refrain from explaining the thoughts; c) to
-not try to plan out what to say; d) to imagine that you are alone and
-speaking to yourself; and<br />
-e) to speak continuously.</p>
+<p>In specific, aim:</p>
+<ol type="a">
+<li><p>to speak all thoughts, even if they are unrelated to the
+task;</p></li>
+<li><p>to refrain from explaining the thoughts;</p></li>
+<li><p>to not try to plan out what to say;</p></li>
+<li><p>to imagine that you are alone and speaking to yourself;
+and</p></li>
+<li><p>to speak continuously.</p></li>
+</ol>
 <p>For the following exercise, read the question aloud and remeber to
 voice your thoughts while solving the exercise.</p>
 </div>
@@ -499,6 +504,8 @@ voice your thoughts while solving the exercise.</p>
 <p>Following what we did with the lists, write the alias
 <code>SparseN</code> for sparse vector of length N, using
 <code>spDim</code> instead of <code>size</code>.</p>
+<p><strong>Hint: </strong>When you are done, you can see how we can use
+<code>SparseN</code> in the example below.</p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -518,13 +525,6 @@ Answer
 <code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
 </div>
 </div>
-<p><strong>Hint: </strong>When you are done, you can see how we can use
-<code>SparseN</code> in the following example</p>
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
-see that LiquidHaskell is able to compute a sparse product, making the
-product of all the same indexes and returning its sum. Remove the
-comments and run the code ahead.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -533,7 +533,23 @@ comments and run the code ahead.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
+  <div id="program-12" class="programbox">/div></div>
+</div>
+
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
+see that LiquidHaskell is able to compute a sparse product, making the
+product of all the same indexes and returning its sum. Remove the
+comments and run the code ahead.</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
 -- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
 -- dotProd x (SP _ y) = go 0 y
 --  where
