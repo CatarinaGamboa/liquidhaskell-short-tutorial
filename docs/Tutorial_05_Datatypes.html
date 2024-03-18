@@ -218,30 +218,8 @@ module Tutorial_05_Datatypes
          -- * Sparse: Data
          Sparse (..)
 
-         -- * Sparse: Functions
-       , dotProd, dotProd', plus, fromList
-
          -- * Sparse: Examples
-       , okSP, badSP, test1, test2
-
-          -- * OrdList: Data
-       , IncList  (..)
-
-          -- * OrdList: Examples
-       , okList, badList
-
-          -- * OrdList: Functions
-       ,  insertSort, insertSort', mergeSort, quickSort
-
-          -- * BST: Data
-       , BST (..)
-
-          -- * BST: Functions
-       , mem, add, delMin, del, bstSort, toBST, toIncList
-
-          -- * BST: Examples
-       , okBST, badBST
-
+       , okSP, badSP
        )
       where
 
@@ -250,17 +228,12 @@ import Data.List    (foldl')
 import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
 import Data.Maybe   (fromJust)
 
-dotProd, dotProd' :: Vector Int -> Sparse Int -> Int
-test1 :: Sparse String
-test2 :: Sparse Int
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
 
 -- {-@ fail badSP @-}
 -- {-@ fail badSP' @-}
--- {-@ fail test1 @-}
--- {-@ fail test2 @-}
 -- {-@ fail badList @-}
 -- {-@ ignore append @-}
 -- {-@ fail badBST @-}
@@ -291,6 +264,9 @@ a <em>single</em> equation per data constructor, and 2. Guaranteed to
 <em>terminate</em>, typically via structural recursion.</p>
 <p> We can tell LiquidHaskell to <em>lift</em> a function meeting the
 above requirements into the refinement logic by declaring:</p>
+<p><code>{-@ measure nameOfMeasure @-}</code></p>
+<p>For example, for a list we can define a way to <em>measure</em> its
+size with the following function.</p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -299,21 +275,9 @@ above requirements into the refinement logic by declaring:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">{-@ measure nameOfMeasure @-}</div>
-</div>
-
-<p>For example, for a list we can define a way to <em>measure</em> its
-size with the following function.</p>
-<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-2" class="programbox">{-@ measure size @-}
+  <div id="program-1" class="programbox">{-@ measure size @-}
 {-@ size :: [a] -> Nat @-}
+size :: [a]->Int
 size []     = 0
 size (_:rs) = 1 + size rs</div>
 </div>
@@ -323,7 +287,7 @@ size (_:rs) = 1 + size rs</div>
 <p>Let’s create another measure named <code>notEmpty</code> that takes a
 list as input and returns a <code>Bool</code> with the information if it
 is empty or not.</p>
-<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -331,7 +295,7 @@ is empty or not.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">-- write notEmpty measure</div>
+  <div id="program-2" class="programbox">-- write notEmpty measure</div>
 </div>
 
 <div>
@@ -349,7 +313,7 @@ Answer</button>
 a given dimension.</p>
 <p>For example, we can define that a list has exactly <code>N</code>
 elements.</p>
-<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -357,7 +321,7 @@ elements.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">{-@ type ListN a N = {v:[a] | size v == N} @-}</div>
+  <div id="program-3" class="programbox">{-@ type ListN a N = {v:[a] | size v == N} @-}</div>
 </div>
 
 <p>Note that when defining refinement type aliases, we use uppercase
@@ -368,7 +332,7 @@ from the lowercase <em>type</em> parameters like <code>a</code>.</p>
 using the measure <code>notEmpty</code> created before. When removed
 from comment, the first example should raise an error while the second
 should not.</p>
-<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -376,7 +340,7 @@ should not.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">-- write the alias here
+  <div id="program-4" class="programbox">-- write the alias here
 
 -- {-@ ne1 :: NEList Int@-}
 -- ne1 = [] ::  [Int]
@@ -400,6 +364,33 @@ manipulate sparse vectors where most elements are just 0. We might
 represent such vectors as a list of index-value tuples
 <code>[(Int, a)]</code>.</p>
 <p>Let’s create a new datatype to represent such vectors:</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">data Sparse a = SP { spDim   :: Int
+                   , spElems :: [(Int, a)] }</div>
+</div>
+
+<p> Thus, a sparse vector is a pair of a dimension and a list of
+index-value tuples. Implicitly, all indices <em>other</em> than those in
+the list have the value <code>0</code> or the equivalent value type
+<code>a</code>.</p>
+<p><code>Sparse</code> vectors satisfy two crucial properties. 1. the
+dimension stored in <code>spDim</code> is non-negative;</p>
+<ol start="2" type="1">
+<li>every index in <code>spElems</code> must be valid, i.e. between
+<code>0</code> and the dimension.</li>
+</ol>
+<p>Unfortunately, Haskell’s type system does not make it easy to ensure
+that <em>illegal vectors are not representable</em>.</p>
+<p><br />
+<strong>Data Invariants</strong> LiquidHaskell lets us enforce these
+invariants with a refined data definition:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -408,23 +399,11 @@ represent such vectors as a list of index-value tuples
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">data Sparse a = SP { spDim   :: Int
-                   , spElems :: [(Int, a)] }</div>
+  <div id="program-6" class="programbox">{-@ data Sparse a = SP { spDim   :: Nat
+                       , spElems :: [(Btwn 0 spDim, a)]} @-}</div>
 </div>
 
-<p> Thus, a sparse vector is a pair of a dimension and a list of
-index-value tuples. Implicitly, all indices <em>other</em> than those in
-the list have the value <code>0</code> or the equivalent value type
-<code>a</code>.</p>
-<p><code>Sparse</code> vectors satisfy two crucial properties. 1) the
-dimension stored in <code>spDim</code> is non-negative; 2) every index
-in <code>spElems</code> must be valid, i.e. between <code>0</code> and
-the dimension.</p>
-<p>Unfortunately, Haskell’s type system does not make it easy to ensure
-that <em>illegal vectors are not representable</em>.</p>
-<p><br />
-<strong>Data Invariants</strong> LiquidHaskell lets us enforce these
-invariants with a refined data definition:</p>
+<p>Where, as before, we use the aliases:</p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -433,20 +412,7 @@ invariants with a refined data definition:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ data Sparse a = SP { spDim   :: Nat
-                       , spElems :: [(Btwn 0 spDim, a)]} @-}</div>
-</div>
-
-<p>Where, as before, we use the aliases:</p>
-<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-8" class="programbox">{-@ type Nat        = {v:Int | 0 <= v}            @-}
+  <div id="program-7" class="programbox">{-@ type Nat        = {v:Int | 0 <= v}            @-}
 {-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} </div>
 </div>
 
@@ -457,6 +423,20 @@ is internally converted into refined types for the data constructor
 have automatically converted it into a <em>smart</em> constructor that
 ensures that <em>every</em> instance of a <code>Sparse</code> is legal.
 Consequently, LiquidHaskell verifies:</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">okSP :: Sparse String
+okSP = SP 5 [ (0, "cat")
+            , (3, "dog") ]</div>
+</div>
+
+<p>but rejects, due to the invalid index:</p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -465,12 +445,15 @@ Consequently, LiquidHaskell verifies:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">okSP :: Sparse String
-okSP = SP 5 [ (0, "cat")
-            , (3, "dog") ]</div>
+  <div id="program-9" class="programbox">badSP :: Sparse String
+badSP = SP 5 [ (0, "cat")
+             , (6, "dog") ]</div>
 </div>
 
-<p>but rejects, due to the invalid index:</p>
+<div class="interact">
+Write another example of a Sparse data type that is invalid. Remove the
+comment from the type signature below and complete the implementation
+with the example.
 <div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -479,22 +462,7 @@ okSP = SP 5 [ (0, "cat")
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-10" class="programbox">badSP :: Sparse String
-badSP = SP 5 [ (0, "cat")
-             , (6, "dog") ]</div>
-</div>
-
-<div class="interact">
-Write another example of a Sparse data type that is invalid.
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-11" class="programbox">badSP' :: Sparse String</div>
+  <div id="program-10" class="programbox">-- badSP' :: Sparse String</div>
 </div>
 
 <div>
@@ -518,7 +486,7 @@ N.</p>
 <p>Now, following what we did with the lists, write the alias
 <code>SparseN</code> for sparse vector of length N, using
 <code>spDim</code> instead of <code>size</code>.</p>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -526,7 +494,7 @@ N.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">-- write the alias here</div>
+  <div id="program-11" class="programbox">-- write the alias here</div>
 </div>
 
 <div>
@@ -539,6 +507,22 @@ Answer
 </div>
 <strong>Hint: </strong>When you are done, you can see how we can use
 <code>SparseN</code> in the following example
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">/div></div>
+</div>
+
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>.</p>
+<p>So, now, we can see that LiquidHaskell is able to compute a sparse
+product, making the product of all the same indexes and returning its
+sum. Remove the comments and run the code ahead.</p>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -547,27 +531,12 @@ Answer
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-13" class="programbox">/div></div>
-</div>
-
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>.</p>
-<p>So, now, we can see that LiquidHaskell is able to compute a sparse
-product, making the product of all the same indexes and returning its
-sum. Run the code ahead.</p>
-<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-14" class="programbox">{-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
-dotProd x (SP _ y) = go 0 y
-  where
-    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
-    go sum []            = sum</div>
+  <div id="program-13" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
+-- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+-- dotProd x (SP _ y) = go 0 y
+--  where
+--    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
+--    go sum []            = sum</div>
 </div>
 
 <p> LiquidHaskell verifies the above by using the specification to
