@@ -15,7 +15,7 @@ invariant with LiquidHaskell.
 {-@ LIQUID "--maxparams=3"    @-}
 
 module Tutorial_09_Case_Study_Lazy_Queues 
-  (Queue, insert, remove, emp, realSize) 
+  (Queue, insert, remove, emp) 
   where
 
 import Prelude hiding (replicate, take, length)
@@ -39,6 +39,12 @@ replicate :: Int -> a -> Queue a
 -- {-@ ignore hd   @-}
 -- {-@ ignore tl   @-}
 -- {-@ ignore badQ @-}
+
+-- {-@ fail hd   @-}
+-- {-@ fail tl   @-}
+-- {-@ fail badHd   @-}
+-- {-@ fail badReplicate   @-}
+
 
 \end{code}
 \end{comment}
@@ -109,11 +115,6 @@ all we need to do is to enforce a simple *balance invariant*:
 
 $$\mbox{Size of front} \geq \mbox{Size of back}$$
 
-% \noindent If the lists are lazy i.e. only constructed as the head
-% value is demanded, then a single `remove` needs only a tiny `O(log n)`
-% in the worst case, and so no single `remove` is stuck paying the bill.
-
-
 
 \newthought{This is a good moment to see if you understood the idea of these Queues, 
 we will start implement them now.}
@@ -152,20 +153,19 @@ thinking about how to resolve the exercise.
 </div>
 <div class = "interact">
 How can we be sure that `size` is indeed the *real size* of `elems`?
-Write a function to *measure* the real size:
+Write a measure `realSize` to get the number of elements in any list:
 
 \begin{code}
-{-@ measure realSize @-}
-
+-- write measure realSize in here
 \end{code}
 
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
-`{-@ measure realSize @-}`
-`realSize      :: [a] -> Int`
-`realSize []     = 0`
-`realSize (_:xs) = 1 + realSize xs   `
+`{-@ measure realSize @-}`<br/>
+`realSize      :: [a] -> Int`<br/>
+`realSize []     = 0`<br/>
+`realSize (_:xs) = 1 + realSize xs`
     </div>
 </div>
 </div>
@@ -245,11 +245,12 @@ thinking about how to resolve the exercise.
 <div class="hwex" id="Destructing Lists">
 We can destruct lists by writing a `hd` (head) and `tl` (tail)
 function as shown below. 
+
 For `tl`, fix the signature such that it receives
 a non-empty list and returns another without the first element.
 
-For `hd`, do the opposite. From the presented signature, writr the implementation.
-This function returns just the element at the front of the list. 
+For `hd`, do the opposite. From the presented signature, remove the comment from the signature and write the implementation.
+This function returns just the element at the front of the list.
 </div>
 
 \begin{code}
@@ -257,7 +258,7 @@ This function returns just the element at the front of the list.
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
-{-@ hd           :: xs:NEList a -> a @-}
+-- {-@ hd           :: xs:NEList a -> a @-}
 -- implement hd
 \end{code}
 
@@ -276,7 +277,7 @@ badHd = hd (tl okList)  -- rejected
     <div id="collapsibleDiv9">
 `{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}`<br/>
 <br/>
-`hd (SL _ (x:_))  = x`
+`hd (SL _ (x:_))  = x`<br/>
 `hd _             = die "empty SList"`
     </div>
 </div>
@@ -367,7 +368,7 @@ example0Q = Q nil nil
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(71)"> Answer</button>
     <div id="collapsibleDiv71">
-`{-@ measure qsize @-}`
+`{-@ measure qsize @-}`<br/>
 `qsize         :: Queue a -> Int`<br/>
 `qsize (Q l r) = size l + size r`<br/>
 <br/>
@@ -433,7 +434,7 @@ is rejected.
 </div>
 
 \begin{code}
-`{-@ insert       :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}`
+{-@ insert :: a -> q:Queue a -> QueueN a {qsize q + 1}   @-}
 insert e (Q f b) = makeq f (e `cons` b)
 
 -- write liquid type signature
@@ -518,13 +519,13 @@ rot f b acc
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(6)"> Answer</button>
     <div id="collapsibleDiv6">
-    `{-@ rot :: f:SList a`<br/>
-    `         -> b:SListN a {1 + size f}`<br/>
-    `         -> acc:SList a`<br/>
-    `         -> SListN a {size f + size b + size ac}`<br/>
-    `@-}`
+`{-@ rot :: f:SList a`<br/>
+`         -> b:SListN a {1 + size f}`<br/>
+`         -> acc:SList a`<br/>
+`         -> SListN a {size f + size b + size ac}`<br/>
+`@-}`
     </div>
-</div>
+
 
 </div>
 
