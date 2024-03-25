@@ -19,5 +19,10 @@ function toggleCollapsibleDiv() {
 
 function toggleCollapsible(number) {
     var div = document.getElementById(`collapsibleDiv${number}`);
-    div.style.display = (div.style.display === 'none') ? 'block' : 'none';
+
+    if (!div.style.display || div.style.display === 'none') {
+        div.style.display = 'block';
+    } else {
+        div.style.display = 'none';
+    }
 }
