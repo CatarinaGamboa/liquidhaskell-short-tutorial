@@ -253,8 +253,9 @@ This function returns just the element at the front of the list.
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
--- {-@ hd           :: xs:NEList a -> a @-}
--- implement hd
+{-@ hd           :: xs:NEList a -> a @-}
+hd (SL _ (x:_))  = x
+hd _             = die "empty SList"
 \end{code}
 
 \hint When you are done, `okHd` should be verified, but `badHd` should be rejected.
