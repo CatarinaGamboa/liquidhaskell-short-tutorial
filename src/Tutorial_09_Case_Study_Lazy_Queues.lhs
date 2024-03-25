@@ -419,7 +419,7 @@ badRemove = remove example0Q   -- reject
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
-`{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}`
+`{-@ remove       :: {q:Queue a | qsize q > 0} a -> (a, QueueN a {qsize q - 1}) @-}`
     </div>
 </div>
 
