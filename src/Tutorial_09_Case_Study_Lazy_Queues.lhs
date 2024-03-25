@@ -35,15 +35,31 @@ die x = error x
 replicate :: Int -> a -> Queue a
 
 
--- {-@ ignore badList @-}
--- {-@ ignore hd   @-}
--- {-@ ignore tl   @-}
--- {-@ ignore badQ @-}
 
--- {-@ fail hd   @-}
+
+-- {-@ fail okList   @-}
+-- {-@ fail badList   @-}
+-- {-@ fail nil   @-}
+-- {-@ fail cons   @-}
 -- {-@ fail tl   @-}
+-- {-@ fail hd   @-}
+-- {-@ fail okHd   @-}
 -- {-@ fail badHd   @-}
+-- {-@ fail okQ   @-}
+-- {-@ fail badQ   @-}
+-- {-@ fail emp   @-}
+-- {-@ fail example2Q   @-}
+-- {-@ fail example0Q   @-}
+-- {-@ fail remove   @-}
+-- {-@ fail okRemove   @-}
+-- {-@ fail badRemove   @-}
+-- {-@ fail insert   @-}
+-- {-@ fail replicate   @-}
+-- {-@ fail okReplicate   @-}
 -- {-@ fail badReplicate   @-}
+-- {-@ fail makeq   @-}
+-- {-@ fail rot   @-}
+
 
 
 \end{code}
@@ -399,7 +415,7 @@ badRemove = remove example0Q   -- reject
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
-`{-@ remove       :: q:NEQueue a -> (a, QueueN a {qsize q - 1}) @-}`
+`{-@ remove       :: {q:Queue a | qsize q > 0} a -> (a, QueueN a {qsize q - 1}) @-}`
     </div>
 </div>
 
@@ -507,7 +523,7 @@ rot f b acc
 `{-@ rot :: f:SList a`<br/>
 `         -> b:SListN a {1 + size f}`<br/>
 `         -> acc:SList a`<br/>
-`         -> SListN a {size f + size b + size ac}`<br/>
+`         -> SListN a {size f + size b + size acc}`<br/>
 `@-}`
     </div>
 
