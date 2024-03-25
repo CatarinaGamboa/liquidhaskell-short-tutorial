@@ -1,308 +1,346 @@
 
-Refinement Types
-================
+Refined Datatypes
+=================
+
 
 \begin{comment}
 \begin{code}
-{-@ LIQUID "--short-names" @-}
+{-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-termination" @-}
-module Tutorial_05_Datatypes where
 
-import Prelude hiding (abs)
-divide  :: Int -> Int -> Int
+module Tutorial_05_Datatypes
+       (
+         -- * Sparse: Data
+         Sparse (..)
 
-die     :: String -> a
-{-@ die :: {v:String | false} -> a  @-}
+         -- * Sparse: Functions
+       , dotProd, dotProd', plus, fromList
+
+         -- * Sparse: Examples
+       , okSP, badSP, test1, test2
+
+          -- * OrdList: Data
+       , IncList  (..)
+
+          -- * OrdList: Examples
+       , okList, badList
+
+          -- * OrdList: Functions
+       ,  insertSort, insertSort', mergeSort, quickSort
+
+          -- * BST: Data
+       , BST (..)
+
+          -- * BST: Functions
+       , mem, add, delMin, del, bstSort, toBST, toIncList
+
+          -- * BST: Examples
+       , okBST, badBST
+
+       )
+      where
+
+import Prelude      hiding (abs, length, min)
+import Data.List    (foldl')
+import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
+import Data.Maybe   (fromJust)
+ 
+
+{-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
 
+-- {-@ fail badSP @-}
+-- {-@ fail badSP' @-}
+-- {-@ fail badList @-}
+-- {-@ ignore append @-}
+-- {-@ fail badBST @-}
+-- {-@ fail ne1 @-}
+-- {-@ ignore delMin @-}
 
--- {-@ fail nonsense  @-}
--- {-@ fail canDie    @-}
--- {-@ fail divide'   @-}
--- {-@ fail avg       @-}
--- {-@ fail percentT  @-}
--- {-@ fail percentF  @-}
--- {-@ fail cpc  @-}
--- {-@ fail cpi  @-}
--- {-@ ignore lAssert @-}
 
 \end{code}
 \end{comment}
 
-\newthought{What is a Refinement Type?} In a nutshell,
+So far, we have seen how to refine the types of *functions*, to
+specify, for example, pre-conditions on the inputs, or post-conditions
+on the outputs. 
+In this section we will see how to apply these in datatypes.
+First, by defining properties of data values, and then by defining *datatypes* that satisfy
+certain invariants. In the latter, it is handy to be able to directly
+refine the `data` definition, making it impossible to create
+illegal inhabitants.
 
- > *Refinement Types* = *Types* + *Predicates*
 
+\newthought{Measures} are used to define *properties* of
+Haskell data values that are useful for specification and
+verification. 
+
+\newthought{A measure} is a *total* Haskell function,
+1. With a *single* equation per data constructor, and
+2. Guaranteed to *terminate*, typically via structural recursion.
 
 \noindent
-That is, refinement types allow us to decorate types with
-*logical predicates*, which you can think of as *boolean-valued*
-Haskell expressions, that constrain the set of values described
-by the type. This lets us specify sophisticated invariants of
-the underlying values.
+We can tell LiquidHaskell to *lift* a function meeting
+the above requirements into the refinement logic by declaring:
 
-Defining Types
---------------
+`{-@ measure nameOfMeasure @-}`
 
-Let us define some refinement types:
+For example, for a list we can define a way to *measure* its size with 
+the following function.
 
 \begin{code}
-{-@ type Zero    = {v:Int | v == 0} @-}
-{-@ type NonZero = {v:Int | v /= 0} @-}
+{-@ measure size @-}
+{-@ size :: [a] -> Nat @-}
+size :: [a] -> Int
+size []     = 0
+size (_:rs) = 1 + size rs
 \end{code}
 
-\newthought{The Value Variable} `v` denotes the set of valid inhabitants
-of each refinement type. Hence, `Zero` describes the *set of* `Int` values
-that are equal to `0`, that is, the singleton set containing just `0`, and
-`NonZero` describes the set of `Int` values that are *not* equal to `0`,
-that is, the set `{1, -1, 2, -2, ...}` and so on.
-
-To indicate that these specifications are for LiquidHaskell we write them like `{-@ spec @-}`.
-
-\newthought{Now, to use} these types we can write:
-
-\begin{code}
-{-@ zero :: Zero @-}
-zero  = 0 :: Int
-
-{-@ one, two, three :: NonZero @-}
-one   = 1 :: Int
-two   = 2 :: Int
-three = 3 :: Int
-\end{code}
-
-
-Errors
-------
-
-If we try to say nonsensical things like:
-
-\begin{code}
-nonsense :: Int
-nonsense = one'
-  where
-  {-@ one' :: Zero @-}
-  one' = 1 
-\end{code}
-
-\noindent
-LiquidHaskell will complain with an error message:
-
-~~~~~{.sh}
-../liquidhaskell-tutorial/src/03-basic.lhs:72:3-6: Error: Liquid Type Mismatch
-
-72 |   one' = 1 :: Int
-       ^^^^
-
-  Inferred type
-    VV : {VV : Int | VV == (1 : int)}
-
-  not a subtype of Required type
-    VV : {VV : Int | VV == 0}
-~~~~~
-
-\noindent
-The message says that the expression `1 :: Int` has the type
-
-~~~~~{.sh}
-    {v:Int | v == 1}
-~~~~~
-
-\noindent
-which is *not* (a subtype of) the *required* type
-
-~~~~~{.sh}
-    {v:Int | v == 0}
-~~~~~
-
-\noindent
-as `1` is not equal to `0`.
-
-Subtyping
----------
-
-What is this business of *subtyping*? Suppose we have some more refinements of `Int`
-
-\begin{code}
-{-@ type Nat      = {v:Int | 0 <= v}        @-}
-
-{-@ type Positive = {v:Int | 0 < v}         @-}
-
-{-@ type Even     = {v:Int | v mod 2 == 0 } @-}
-
-{-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100} @-}
-
-\end{code}
-
-\newthought{Subtyping and Implication}
-`Zero` is the most precise type for `0::Int`, as it is a *subtype* of `Nat`,
-`Even`. However, it is not a subtype of `Positive`.
-The alias `TensToHundred` represents the multiples of 10 smaller than 100,
-meaning that `Even` is a *subtype* of it but all the other ones are not. 
+Then, we can use this measure to define aliases.
 
 <div class = "interact">
-<b>Exercise:</b>
-Now let us try a new predicate.
+Let's create another measure named `notEmpty` that takes a list as input
+and returns a `Bool` with the information if it is empty or not.
 
-Write a type `Percentage` for the numbers that represent a percentage (between 0 and 100).
+\begin{code}
+-- write notEmpty measure
+\end{code}
 
-Then, remove the comment the liquid type signatures and run the code. 
-The first example should be correct and the second should not.
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(2)"> Answer</button>
+    <div id="collapsibleDiv2">
+`{-@ measure notEmpty @-}`<br/>
+`notEmpty       :: [a] -> Bool`<br/>
+`notEmpty []    = False`<br/>
+`notEmpty (_:_) = True`
+    </div>
+</div>
+
+</div>
+
+We can now define a couple of useful aliases
+for describing lists of a given dimension.
+
+For example, we can define that a list has exactly `N` elements. 
+
+\begin{code}
+{-@ type ListN a N = {v:[a] | size v == N} @-}
+\end{code}
+
+Note that when defining refinement type aliases, we use uppercase variables
+like `N` to distinguish *value* parameters from the lowercase
+*type* parameters like `a`.
+
+<div class="interact">
+Now, try to create an alias `NEList` for an empty list, using the measure 
+`notEmpty` created before. When removed from comment, the first example should raise an error while the
+second should not.
 
 \begin{code}
 -- write the alias here
 
--- {-@ percentT  :: Percentage  @-}
-percentT    = 10 :: Int
--- {-@ percentF  :: Percentage  @-}
-percentF :: Int
-percentF    = 10 + 99 :: Int
+-- {-@ ne1 :: NEList Int@-}
+-- ne1 = [] ::  [Int]
+-- {-@ ne1 :: NEList Int@-}
+-- ne2 = [1,2,3,4] :: [Int]
+\end{code}
+
+<div>
+   <button class="btn-answer" onclick="toggleCollapsible(40)"> Answer</button>
+   
+   <div id="collapsibleDiv40">
+`{-@ type NEList a = {v:[a] | notEmpty v} @-}`
+   </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+Sparse Vectors
+-------------------------------------
+
+As our first example of a refined datatype, let's see 
+Sparse Vectors.
+While the standard Vector is great for dense arrays, often we have to 
+manipulate sparse vectors where most elements are just 0. We might represent 
+such vectors as a list of index-value tuples `[(Int, a)]`.
+
+Let's create a new datatype to represent such vectors:
+
+\begin{code}
+data Sparse a = SP { spDim   :: Int
+                   , spElems :: [(Int, a)] }
+\end{code}
+
+\noindent
+Thus, a sparse vector is a pair of a dimension and a list of
+index-value tuples. Implicitly, all indices *other* than those
+in the list have the value `0` or the equivalent value type `a`.
+
+\newthought{Legal}
+`Sparse` vectors satisfy two crucial properties.
+1. the dimension stored in `spDim` is non-negative;
+
+2. every index in `spElems` must be valid, i.e.
+between `0` and the dimension. 
+
+Unfortunately, Haskell's
+type system does not make it easy to ensure that
+*illegal vectors are not representable*.
+
+\newthought{Data Invariants} LiquidHaskell lets us enforce
+these invariants with a refined data definition:
+
+\begin{code}
+{-@ data Sparse a = SP { spDim   :: Nat
+                       , spElems :: [(Btwn 0 spDim, a)]} @-}
+\end{code}
+
+\noindent Where, as before, we use the aliases:
+
+\begin{code}
+{-@ type Nat        = {v:Int | 0 <= v}            @-}
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} 
+\end{code}
+
+\newthought{Refined Data Constructors} The refined data
+definition is internally converted into refined types
+for the data constructor `SP`.
+So, by using refined input types for `SP`
+we have automatically converted it into a *smart* constructor that
+ensures that *every* instance of a `Sparse` is legal.
+Consequently, LiquidHaskell verifies:
+
+\begin{code}
+okSP :: Sparse String
+okSP = SP 5 [ (0, "cat")
+            , (3, "dog") ]
+\end{code}
+
+\noindent but rejects, due to the invalid index:
+
+\begin{code}
+badSP :: Sparse String
+badSP = SP 5 [ (0, "cat")
+             , (6, "dog") ]
+\end{code}
+
+
+<div class="interact">
+Write another example of a Sparse data type that is invalid.
+Remove the comment from the type signature below and complete the implementation with the example.
+\begin{code}
+-- badSP' :: Sparse String
 \end{code}
 
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
-`{-@ type Percentage = {v:Int | 0 <= v && v <= 100}  @-}`
+e.g., `badSP' = SP -1 [(0, "cat")]`
     </div>
 </div>
 
-
-
-</div>
-
-\newthought{In Summary} the key points about refinement types are:
-
-1. A refinement type is just a type *decorated* with logical predicates.
-2. A term can have *different* refinements for different properties.
-3. When we *erase* the predicates we get the standard Haskell types.
-
-Writing Specifications
-----------------------
-
-We can also add specifications as pre- and post-conditions of functions.
-
-Remember the divide function from before? We can add the case of dividing by zero
-with this `die "message"` to indicate that this case should be handled before
-running the code.
-
-\begin{code}
-divide'     :: Int -> Int -> Int
-divide' n 0 = die "divide by zero"
-divide' n d = n `div` d
-\end{code}
-
-So, now we can specify that the first case will never with a *pre-condition*
-that says that the second argument is non-zero:
-
-\begin{code}
-{-@ divide :: Int -> NonZero -> Int @-}
-divide _ 0 = die "divide by zero"
-divide n d = n `div` d
-\end{code}
-
-You can run the both pieces of code and check that the first one
-throws an error while the second one does not since it can infer that
-the first case will not be called.
-
-\newthought{Establishing Pre-conditions}
-The above signature forces us to ensure that that when we
-*use* `divide`, we only supply provably `NonZero` arguments.
-
-
-<div class="interact" id="question1" style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
-   <b> Exercise:</b>
-   <p>Select which of the following functions that call divide would <b>raise an error:</b> </p>
-   <label class="container"> foo x y   = divide (x + y) 2 <input type="radio" name="q3" value="1"> <span class="checkmark"></span> </label><br>
-   <label class="container"> foo' x y z = divide (divide (x + y) 3) 10 <input type="radio" name="q3" value="2"><span class="checkmark"></span> </label><br>
-   <label class="container"> foo'' x y z = divide (x + y) z  <input type="radio" name="q3" value="3"><span class="checkmark"></span> </label><br>
-   <button class="btn-select" onclick="checkAnswer(3)">Submit</button> <p id="result3"></p> <input type="hidden" id="correctAnswer3" value="3">
-
-   <button class="btn-answer" onclick="toggleCollapsible(3)"> Answer</button>
-    <div id="collapsibleDiv3">
-`foo''` is the invocation that could trigger a crash since we have no guarantees that z is a `NonZero` value. 
-    </div>
 </div>
 
 
-Refining Function Types: Post-conditions
----------------------------------------
+\newthought{Field Measures} It is convenient to write an alias
+for sparse vectors of a given size `N`. So that we can easily say in
+a refinement that we have a sparse vector of a certain size.
 
-Next, let's see how we can use refinements to describe the *outputs* of a
-function. Consider the following simple *absolute value* function
-
-\begin{code}
-abs           :: Int -> Int
-abs n
-  | 0 < n     = n
-  | otherwise = 0 - n
-\end{code}
-
-We can use a refinement on the output type to specify that the function
-returns non-negative values
-
-\begin{code}
-{-@ abs :: Int -> Nat @-}
-\end{code}
-
-LiquidHaskell *verifies* that `abs` indeed enjoys the
-above type by deducing that `n` is trivially non-negative
-when `0 < n` and that in the `otherwise` case,
-the value `0 - n` is indeed non-negative. 
+For this we can use *measures*.
 
 
-Dependent Refinements
----------------------------------------
+\newthought{Measures with Sparse Vectors}
 
-The predicates in pre- and post- conditions can also refer to previous arguments
-of the function.
+Similarly, the sparse vector also has a *measure* for its dimension, but in this
+case it is already defined by `spDim`, so we can use it to create the new alias 
+of sparse vectors of size N.
 
-For example, including that the output is greater than the input.
 
-\begin{code}
-{-@ plus1 :: a:Int -> {b:Int |b > a}@-}
-plus1 :: Int -> Int 
-plus1 a = a + 1
-\end{code}
+<div class="think-aloud">
+<b><span class="think-aloud-text">Think Aloud:</span></b>
 
-And the same could be done between input values.
+For the following exercise, we will use a technique called Think Aloud, where you
+should try to say everything that comes to your mind while you engage with the exercise.
+
+In specific, aim:
+
+a) to speak all thoughts, even if they are unrelated to the task;
+
+b) to refrain from  explaining the  thoughts; 
+
+c) to not try to plan out what to say; 
+
+d) to imagine that you are alone and speaking to yourself; and  
+
+e) to speak continuously. 
+
+For the following exercise, read the question aloud and remeber to voice your thoughts while 
+solving the exercise.
+</div>
 
 <div class="interact">
-<b>Exercise:</b>
+Following what we did with the lists, write the alias `SparseN` for sparse vector of
+length N, using `spDim` instead of `size`.
 
-Let's put everything together now.
-
-Write a specification for the method `calcPer` that:
-
-1) first receives a positive int;
-
-2) then an int with a value between zero and the first int;
-
-3) returns a percentage;
-
-Use the aliases created in the exercises you have completed before.
+\hint When you are done, you can see how we can use `SparseN` in the example below.
 
 \begin{code}
-calcPer       :: Int -> Int -> Int
-calcPer a b    = (b * 100) `div` a
-
-
-cpc = calcPer 10 5 :: Int  -- should be correct
-cpi = calcPer 10 11 :: Int -- should be incorrect
-
+-- write the alias here
 \end{code}
 
 <div>
-   <button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
-    <div id="collapsibleDiv5">
-`{-@ calcPer :: a:Positive -> {b:Int | 0 <= b && b <= a} -> c:Percentage @-}`
-    </div>
+<button class="btn-answer" onclick="toggleCollapsible(5)"> Answer</button>
+   <div id="collapsibleDiv5">
+e.g., `{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
+   </div>
 </div>
 
 </div>
 
-You finished the first part of the Tutorial!
+\newthought{Sparse Products}
+`Vector`s are similar to Sparse Vectors, and therefore, have a
+*measure* of size named `vlen`.
+So, now, we can see that LiquidHaskell is able to compute a sparse product,
+making the product of all the same indexes and returning its sum.
+Remove the comments and run the code ahead.
+
+\begin{code}
+-- dotProd :: Vector Int -> Sparse Int -> Int
+-- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+-- dotProd x (SP _ y) = go 0 y
+--  where
+--    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
+--    go sum []            = sum
+\end{code}
+
+\noindent
+LiquidHaskell verifies the above by using the specification
+to conclude that for each tuple `(i, v)` in the list `y`, the
+value of `i` is within the bounds of the vector `x`, thereby
+proving `x ! i` safe.
+
+
+\newthought{You finished the second part of the Tutorial!}
+You finished the Tutorial!
 Tell the interviewers you got to the end of the page, and answer some questions from our team before moving to the next section.
 
-<a href="Tutorial_05_Datatypes.html" >
+\newthought{Next Exercise!}
+Now that you have learned the main blocks of LiquidHaskell, let's complete
+an exercise using all the concepts.
+
+You can open a <a href="Tutorial_Cheat_sheet.html" >Cheat Sheet</a> with examples of the main concepts on another tab on the side.
+
+
+<a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
     <button class="btn-next">Next</button>
 </a> 
