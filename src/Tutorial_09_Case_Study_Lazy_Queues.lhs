@@ -218,10 +218,10 @@ Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
 <div class = "interact">
-\newthought{Now define an alias} `NEList` for lists that are not empty:
+\newthought{Now define an alias} `NEList` for lists that are not empty by replacing `{true}` by the correct signature.
 
 \begin{code}
--- write the NEList alias
+{-@ type NEList a = {true} @-}
 \end{code}
 
 <div>
@@ -507,8 +507,8 @@ The Rotate function `rot`:
 
 \begin{code}
 {-@ rot :: f:SList a
-          -> b:SList a {1 - size f}
-          -> acc:List a
+          -> b:SListN a {1 - size f}
+          -> acc:SList a
           -> SListN a {size acc}
 @-}
 rot f b acc
