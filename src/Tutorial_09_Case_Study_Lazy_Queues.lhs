@@ -527,7 +527,7 @@ rot f b acc
 `{-@ rot :: f:SList a`<br/>
 `         -> b:SListN a {1 + size f}`<br/>
 `         -> acc:SList a`<br/>
-`         -> SListN a {size f + size b + size ac}`<br/>
+`         -> SListN a {size f + size b + size acc}`<br/>
 `@-}`
     </div>
 
