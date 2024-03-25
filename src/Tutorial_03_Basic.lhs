@@ -125,9 +125,13 @@ What is this business of *subtyping*? Suppose we have some more refinements of `
 
 \begin{code}
 {-@ type Nat      = {v:Int | 0 <= v}        @-}
+
 {-@ type Positive = {v:Int | 0 < v}         @-}
+
 {-@ type Even     = {v:Int | v mod 2 == 0 } @-}
+
 {-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100}         @-}
+
 \end{code}
 
 \newthought{Subtyping and Implication}
