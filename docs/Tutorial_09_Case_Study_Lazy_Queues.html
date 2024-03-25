@@ -462,7 +462,8 @@ question aloud and voice your thoughts while solving the exercise.</p>
 <div class="interact">
 <p><br />
 <strong>Now define an alias</strong> <code>NEList</code> for lists that
-are not empty:</p>
+are not empty by replacing <code>{true}</code> by the correct
+signature.</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -471,7 +472,7 @@ are not empty:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">-- write the NEList alias</div>
+  <div id="program-6" class="programbox">{-@ type NEList a = {true} @-}</div>
 </div>
 
 <div>
@@ -844,8 +845,8 @@ additional to be rotated.</li>
   </button>
  
   <div id="program-18" class="programbox">{-@ rot :: f:SList a
-          -> b:SList a {1 - size f}
-          -> acc:List a
+          -> b:SListN a {1 - size f}
+          -> acc:SList a
           -> SListN a {size acc}
 @-}
 rot f b acc
