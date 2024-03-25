@@ -174,6 +174,17 @@ Write a measure `realSize` to get the number of elements in any list:
 -- write measure realSize in here
 \end{code}
 
+
+\hint When you are done, uncomment `data SList`, that specifies a *refined* type for `SList` that ensures that the *real* size is saved in the `size` field.
+
+\begin{code}
+-- {-@ data SList a = SL {
+--      size  :: Nat
+--    , elems :: {v:[a] | realSize v = size}
+--    }
+-- @-}
+\end{code}
+
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
@@ -185,20 +196,8 @@ Write a measure `realSize` to get the number of elements in any list:
 </div>
 </div>
 
-Now, we can specify a *refined* type for `SList` that ensures
-that the *real* size is saved in the `size` field.
 
-\begin{code}
-{-@ data SList a = SL {
-      size  :: Nat
-    , elems :: {v:[a] | realSize v = size}
-    }
-@-}
-\end{code}
-
-
-
-As a sanity check, consider this:
+Now, as a sanity check, consider this:
 
 \begin{code}
 okList  = SL 1 ["cat"]    -- accepted
@@ -218,10 +217,10 @@ Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
 <div class = "interact">
-\newthought{Now define an alias} `NEList` for lists that are not empty:
+\newthought{Now define an alias} `NEList` for lists that are not empty by replacing `{true}` by the correct signature.
 
 \begin{code}
--- write the NEList alias
+{-@ type NEList a = {true} @-}
 \end{code}
 
 <div>
@@ -510,8 +509,8 @@ The Rotate function `rot`:
 
 \begin{code}
 {-@ rot :: f:SList a
-          -> b:SList a {1 - size f}
-          -> acc:List a
+          -> b:SListN a {1 - size f}
+          -> acc:SList a
           -> SListN a {size acc}
 @-}
 rot f b acc
