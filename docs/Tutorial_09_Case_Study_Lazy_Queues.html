@@ -516,8 +516,9 @@ function returns just the element at the front of the list.</p>
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
--- {-@ hd           :: xs:NEList a -> a @-}
--- implement hd</div>
+{-@ hd           :: xs:NEList a -> a @-}
+hd (SL _ (x:_))  = x
+hd _             = die "empty SList"</div>
 </div>
 
 <p><strong>Hint: </strong>When you are done, <code>okHd</code> should be
