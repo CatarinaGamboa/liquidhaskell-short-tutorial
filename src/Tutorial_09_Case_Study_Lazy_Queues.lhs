@@ -40,10 +40,30 @@ replicate :: Int -> a -> Queue a
 -- {-@ ignore tl   @-}
 -- {-@ ignore badQ @-}
 
--- {-@ fail hd   @-}
+
+-- {-@ fail okList   @-}
+-- {-@ fail badList   @-}
+-- {-@ fail nil   @-}
+-- {-@ fail cons   @-}
 -- {-@ fail tl   @-}
+-- {-@ fail hd   @-}
+-- {-@ fail okHd   @-}
 -- {-@ fail badHd   @-}
+-- {-@ fail okQ   @-}
+-- {-@ fail badQ   @-}
+-- {-@ fail emp   @-}
+-- {-@ fail example2Q   @-}
+-- {-@ fail example0Q   @-}
+-- {-@ fail remove   @-}
+-- {-@ fail okRemove   @-}
+-- {-@ fail badRemove   @-}
+-- {-@ fail insert   @-}
+-- {-@ fail replicate   @-}
+-- {-@ fail okReplicate   @-}
 -- {-@ fail badReplicate   @-}
+-- {-@ fail makeq   @-}
+-- {-@ fail rot   @-}
+
 
 
 \end{code}
