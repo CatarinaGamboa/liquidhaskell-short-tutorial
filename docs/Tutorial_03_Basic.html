@@ -341,8 +341,11 @@ more refinements of <code>Int</code></p>
   </button>
  
   <div id="program-4" class="programbox">{-@ type Nat      = {v:Int | 0 <= v}        @-}
+
 {-@ type Positive = {v:Int | 0 < v}         @-}
+
 {-@ type Even     = {v:Int | v mod 2 == 0 } @-}
+
 {-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100}         @-}</div>
 </div>
 
