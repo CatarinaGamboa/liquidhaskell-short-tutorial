@@ -141,8 +141,14 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_03_Basic.html#'><b>2.5.</b> Refining Function Types: Post-conditions</a></li>
 <li><a href='Tutorial_03_Basic.html#'><b>2.6.</b> Dependent Refinements</a></li>
 </ul>
-<li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refined Datatypes</a></li>
+<li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refinement Types</a></li>
 <ul class='section'>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.1.</b> Defining Types</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.2.</b> Errors</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.3.</b> Subtyping</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.4.</b> Writing Specifications</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.5.</b> Refining Function Types: Post-conditions</a></li>
+<li><a href='Tutorial_05_Datatypes.html#'><b>3.6.</b> Dependent Refinements</a></li>
 </ul>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>4.</b>Case Study: Okasaki's Lazy Queues</a></li>
 <ul class='section'>
@@ -202,8 +208,8 @@ MathJax.Hub.Config({
 <div id='page-wrapper'>
 <div id='page'>
 
-<section id="refined-datatypes" class="level1">
-<h1>Refined Datatypes</h1>
+<section id="refinement-types" class="level1">
+<h1>Refinement Types</h1>
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
 
@@ -213,46 +219,46 @@ MathJax.Hub.Config({
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-0" class="programbox">{-@ LIQUID "--short-names"    @-}
+  <div id="program-0" class="programbox">{-@ LIQUID "--short-names" @-}
 {-@ LIQUID "--no-termination" @-}
+module Tutorial_05_Datatypes where
 
-module Tutorial_05_Datatypes
-       (
-         -- * Sparse: Data
-         Sparse (..)
+import Prelude hiding (abs)
+divide  :: Int -> Int -> Int
 
-         -- * Sparse: Functions
-       , dotProd, dotProd', plus, fromList
+die     :: String -> a
+{-@ die :: {v:String | false} -> a  @-}
+die msg = error msg
 
-         -- * Sparse: Examples
-       , okSP, badSP, test1, test2
 
-          -- * OrdList: Data
-       , IncList  (..)
-
-          -- * OrdList: Examples
-       , okList, badList
-
-          -- * OrdList: Functions
-       ,  insertSort, insertSort', mergeSort, quickSort
-
-          -- * BST: Data
-       , BST (..)
-
-          -- * BST: Functions
-       , mem, add, delMin, del, bstSort, toBST, toIncList
-
-          -- * BST: Examples
-       , okBST, badBST
-
-       )
-      where
+-- {-@ fail nonsense  @-}
+-- {-@ fail canDie    @-}
+-- {-@ fail divide'   @-}
+-- {-@ fail avg       @-}
+-- {-@ fail percentT  @-}
+-- {-@ fail percentF  @-}
+-- {-@ fail cpc  @-}
+-- {-@ fail cpi  @-}
+-- {-@ ignore lAssert @-}
 
 </div>
 </div>
 
 </div>
 
+<p><br />
+<strong>What is a Refinement Type?</strong> In a nutshell,</p>
+<blockquote>
+<p><em>Refinement Types</em> = <em>Types</em> + <em>Predicates</em></p>
+</blockquote>
+<p> That is, refinement types allow us to decorate types with
+<em>logical predicates</em>, which you can think of as
+<em>boolean-valued</em> Haskell expressions, that constrain the set of
+values described by the type. This lets us specify sophisticated
+invariants of the underlying values.</p>
+<section id="defining-types" class="level2">
+<h2>Defining Types</h2>
+<p>Let us define some refinement types:</p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -261,13 +267,311 @@ module Tutorial_05_Datatypes
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">{-@ measure size @-}
-{-@ size' :: [a] -> Nat @-}
-size' :: [a] -> Int
-size' []     = 0
-size' (_:rs) = 1 + size' rs</div>
+  <div id="program-1" class="programbox">{-@ type Zero    = {v:Int | v == 0} @-}
+{-@ type NonZero = {v:Int | v /= 0} @-}</div>
 </div>
 
+<p><br />
+<strong>The Value Variable</strong> <code>v</code> denotes the set of
+valid inhabitants of each refinement type. Hence, <code>Zero</code>
+describes the <em>set of</em> <code>Int</code> values that are equal to
+<code>0</code>, that is, the singleton set containing just
+<code>0</code>, and <code>NonZero</code> describes the set of
+<code>Int</code> values that are <em>not</em> equal to <code>0</code>,
+that is, the set <code>{1, -1, 2, -2, ...}</code> and so on.</p>
+<p>To indicate that these specifications are for LiquidHaskell we write
+them like <code>{-@ spec @-}</code>.</p>
+<p><br />
+<strong>Now, to use</strong> these types we can write:</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ zero :: Zero @-}
+zero  = 0 :: Int
+
+{-@ one, two, three :: NonZero @-}
+one   = 1 :: Int
+two   = 2 :: Int
+three = 3 :: Int</div>
+</div>
+
+</section>
+<section id="errors" class="level2">
+<h2>Errors</h2>
+<p>If we try to say nonsensical things like:</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">nonsense :: Int
+nonsense = one'
+  where
+  {-@ one' :: Zero @-}
+  one' = 1 </div>
+</div>
+
+<p> LiquidHaskell will complain with an error message:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">../liquidhaskell-tutorial/src/03-basic.lhs:72:3-6:</span> Error: Liquid Type Mismatch</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">72</span> <span class="kw">|</span>   <span class="ex">one</span><span class="st">&#39; = 1 :: Int</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">       ^^^^</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">  Inferred type</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">    VV : {VV : Int | VV == (1 : int)}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">  not a subtype of Required type</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">    VV : {VV : Int | VV == 0}</span></span></code></pre></div>
+<p> The message says that the expression <code>1 :: Int</code> has the
+type</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">{v:Int</span> <span class="kw">|</span> <span class="ex">v</span> == 1}</span></code></pre></div>
+<p> which is <em>not</em> (a subtype of) the <em>required</em> type</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">{v:Int</span> <span class="kw">|</span> <span class="ex">v</span> == 0}</span></code></pre></div>
+<p> as <code>1</code> is not equal to <code>0</code>.</p>
+</section>
+<section id="subtyping" class="level2">
+<h2>Subtyping</h2>
+<p>What is this business of <em>subtyping</em>? Suppose we have some
+more refinements of <code>Int</code></p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ type Nat      = {v:Int | 0 <= v}        @-}
+
+{-@ type Positive = {v:Int | 0 < v}         @-}
+
+{-@ type Even     = {v:Int | v mod 2 == 0 } @-}
+
+{-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100} @-}</div>
+</div>
+
+<p><code>Zero</code> is the most precise type for <code>0::Int</code>,
+as it is a <em>subtype</em> of <code>Nat</code>, <code>Even</code>.
+However, it is not a subtype of <code>Positive</code>. The alias
+<code>TensToHundred</code> represents the multiples of 10 smaller than
+100, meaning that <code>Even</code> is a <em>subtype</em> of it but all
+the other ones are not.</p>
+<div class="interact">
+<p><b>Exercise:</b> Now let us try a new predicate.</p>
+<p>Write a type <code>Percentage</code> for the numbers that represent a
+percentage (between 0 and 100).</p>
+<p>Then, remove the comment the liquid type signatures and run the code.
+The first example should be correct and the second should not.</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">-- write the alias here
+
+-- {-@ percentT  :: Percentage  @-}
+percentT    = 10 :: Int
+-- {-@ percentF  :: Percentage  @-}
+percentF :: Int
+percentF    = 10 + 99 :: Int</div>
+</div>
+
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(1)">
+Answer</button>
+<div id="collapsibleDiv1">
+<code>{-@ type Percentage = {v:Int | 0 &lt;= v &amp;&amp; v &lt;= 100}  @-}</code>
+</div>
+</div>
+</div>
+<p><br />
+<strong>In Summary</strong> the key points about refinement types
+are:</p>
+<ol type="1">
+<li>A refinement type is just a type <em>decorated</em> with logical
+predicates.</li>
+<li>A term can have <em>different</em> refinements for different
+properties.</li>
+<li>When we <em>erase</em> the predicates we get the standard Haskell
+types.</li>
+</ol>
+</section>
+<section id="writing-specifications" class="level2">
+<h2>Writing Specifications</h2>
+<p>We can also add specifications as pre- and post-conditions of
+functions.</p>
+<p>Remember the divide function from before? We can add the case of
+dividing by zero with this <code>die "message"</code> to indicate that
+this case should be handled before running the code.</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">divide'     :: Int -> Int -> Int
+divide' n 0 = die "divide by zero"
+divide' n d = n `div` d</div>
+</div>
+
+<p>So, now we can specify that the first case will never with a
+<em>pre-condition</em> that says that the second argument is
+non-zero:</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ divide :: Int -> NonZero -> Int @-}
+divide _ 0 = die "divide by zero"
+divide n d = n `div` d</div>
+</div>
+
+<p>You can run the both pieces of code and check that the first one
+throws an error while the second one does not since it can infer that
+the first case will not be called.</p>
+<p>The above signature forces us to ensure that that when we
+<em>use</em> <code>divide</code>, we only supply provably
+<code>NonZero</code> arguments.</p>
+<div id="question1" class="interact"
+style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
+<b> Exercise:</b>
+<p>
+Select which of the following functions that call divide would <b>raise
+an error:</b>
+</p>
+<label class="container"> foo x y = divide (x + y) 2
+<input type="radio" name="q3" value="1"> <span class="checkmark"></span>
+</label><br> <label class="container"> foo’ x y z = divide (divide (x +
+y) 3) 10 <input type="radio" name="q3" value="2"><span
+class="checkmark"></span> </label><br> <label class="container"> foo’’ x
+y z = divide (x + y) z <input type="radio" name="q3" value="3"><span
+class="checkmark"></span> </label><br>
+<button class="btn-select" onclick="checkAnswer(3)">Submit</button>
+<p id="result3">
+</p>
+<p><input type="hidden" id="correctAnswer3" value="3"></p>
+<button class="btn-answer" onclick="toggleCollapsible(3)">
+Answer</button>
+<div id="collapsibleDiv3">
+<code>foo''</code> is the invocation that could trigger a crash since we
+have no guarantees that z is a <code>NonZero</code> value.
+</div>
+</div>
+</section>
+<section id="refining-function-types-post-conditions" class="level2">
+<h2>Refining Function Types: Post-conditions</h2>
+<p>Next, let’s see how we can use refinements to describe the
+<em>outputs</em> of a function. Consider the following simple
+<em>absolute value</em> function</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">abs           :: Int -> Int
+abs n
+  | 0 < n     = n
+  | otherwise = 0 - n</div>
+</div>
+
+<p>We can use a refinement on the output type to specify that the
+function returns non-negative values</p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ abs :: Int -> Nat @-}</div>
+</div>
+
+<p>LiquidHaskell <em>verifies</em> that <code>abs</code> indeed enjoys
+the above type by deducing that <code>n</code> is trivially non-negative
+when <code>0 &lt; n</code> and that in the <code>otherwise</code> case,
+the value <code>0 - n</code> is indeed non-negative.</p>
+</section>
+<section id="dependent-refinements" class="level2">
+<h2>Dependent Refinements</h2>
+<p>The predicates in pre- and post- conditions can also refer to
+previous arguments of the function.</p>
+<p>For example, including that the output is greater than the input.</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ plus1 :: a:Int -> {b:Int |b > a}@-}
+plus1 :: Int -> Int 
+plus1 a = a + 1</div>
+</div>
+
+<p>And the same could be done between input values.</p>
+<div class="interact">
+<p><b>Exercise:</b></p>
+<p>Let’s put everything together now.</p>
+<p>Write a specification for the method <code>calcPer</code> that:</p>
+<ol type="1">
+<li><p>first receives a positive int;</p></li>
+<li><p>then an int with a value between zero and the first int;</p></li>
+<li><p>returns a percentage;</p></li>
+</ol>
+<p>Use the aliases created in the exercises you have completed
+before.</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">calcPer       :: Int -> Int -> Int
+calcPer a b    = (b * 100) `div` a
+
+
+cpc = calcPer 10 5 :: Int  -- should be correct
+cpi = calcPer 10 11 :: Int -- should be incorrect</div>
+</div>
+
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(5)">
+Answer</button>
+<div id="collapsibleDiv5">
+<code>{-@ calcPer :: a:Positive -&gt; {b:Int | 0 &lt;= b &amp;&amp; b &lt;= a} -&gt; c:Percentage @-}</code>
+</div>
+</div>
+</div>
+<p>You finished the first part of the Tutorial! Tell the interviewers
+you got to the end of the page, and answer some questions from our team
+before moving to the next section.</p>
+<p><a href="Tutorial_05_Datatypes.html" >
+<button class="btn-next">Next</button> </a></p>
+</section>
 </section>
 
 </div>
