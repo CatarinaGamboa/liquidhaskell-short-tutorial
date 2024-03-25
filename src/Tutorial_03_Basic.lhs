@@ -130,7 +130,7 @@ What is this business of *subtyping*? Suppose we have some more refinements of `
 
 {-@ type Even     = {v:Int | v mod 2 == 0 } @-}
 
-{-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100}         @-}
+{-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100} @-}
 
 \end{code}
 

@@ -265,7 +265,8 @@ This function returns just the element at the front of the list.
 </div>
 
 \begin{code}
-{-@ tl           :: {xs:NEList a| size xs < 0 }-> SListN a {size xs}  @-}
+{-@ tl           :: {xs:NEList a| size xs < 0}
+                    -> SListN a {size xs}  @-}
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
@@ -468,7 +469,9 @@ directly returns the `Queue`, and otherwise transfers the elements
 from `b` over using the rotate function `rot` described next.
 
 \begin{code}
-{-@ makeq :: f:SList a -> b:SListLE a {size f + 1 } -> QueueN a {size f + size b} @-}
+{-@ makeq :: f:SList a -> 
+             b:SListLE a {size f + 1 } -> 
+             QueueN a {size f + size b} @-}
 makeq f b
   | size b <= size f = Q f b
   | otherwise        = Q (rot f b nil) nil
@@ -513,7 +516,7 @@ The Rotate function `rot`:
 @-}
 rot f b acc
   | size f == 0 = hd b `cons` acc
-  | otherwise   = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)
+  | otherwise = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)
 \end{code}
 
 
