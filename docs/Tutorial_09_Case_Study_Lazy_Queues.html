@@ -522,8 +522,8 @@ shown below.</p>
 <p>For <code>tl</code>, fix the signature such that it receives a
 non-empty list and returns another without the first element.</p>
 <p>For <code>hd</code>, do the opposite. From the presented signature,
-remove the comment from the signature and write the implementation. This
-function returns just the element at the front of the list.</p>
+write the implementation. This function returns just the element at the
+front of the list.</p>
 <br />
 <br />
 
@@ -541,7 +541,8 @@ function returns just the element at the front of the list.</p>
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
-{-@ hd'           :: xs:NEList a -> a @-}</div>
+{-@ hd'           :: xs:NEList a -> a @-}
+hd' _ = die "empty SList"</div>
 </div>
 
 <p><strong>Hint: </strong>When you are done, <code>okHd</code> should be
