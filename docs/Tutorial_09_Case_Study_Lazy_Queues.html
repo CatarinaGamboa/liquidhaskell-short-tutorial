@@ -398,6 +398,25 @@ to get the number of elements in any list:</p>
   <div id="program-2" class="programbox">-- write measure realSize in here</div>
 </div>
 
+<p><strong>Hint: </strong>When you are done, uncomment
+<code>data SList</code>, that specifies a <em>refined</em> type for
+<code>SList</code> that ensures that the <em>real</em> size is saved in
+the <code>size</code> field.</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">-- {-@ data SList a = SL {
+--      size  :: Nat
+--    , elems :: {v:[a] | realSize v = size}
+--    }
+-- @-}</div>
+</div>
+
 <div>
 <button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
@@ -409,25 +428,7 @@ Answer</button>
 </div>
 </div>
 </div>
-<p>Now, we can specify a <em>refined</em> type for <code>SList</code>
-that ensures that the <em>real</em> size is saved in the
-<code>size</code> field.</p>
-<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-3" class="programbox">{-@ data SList a = SL {
-      size  :: Nat
-    , elems :: {v:[a] | realSize v = size}
-    }
-@-}</div>
-</div>
-
-<p>As a sanity check, consider this:</p>
+<p>Now, as a sanity check, consider this:</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
