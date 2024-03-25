@@ -143,7 +143,6 @@ MathJax.Hub.Config({
 </ul>
 <li><a href='Tutorial_05_Datatypes.html'><b>3.</b>Refined Datatypes</a></li>
 <ul class='section'>
-<li><a href='Tutorial_05_Datatypes.html#'><b>3.1.</b> Sparse Vectors</a></li>
 </ul>
 <li><a href='Tutorial_09_Case_Study_Lazy_Queues.html'><b>4.</b>Case Study: Okasaki's Lazy Queues</a></li>
 <ul class='section'>
@@ -159,6 +158,10 @@ MathJax.Hub.Config({
 <li><a href='Tutorial_Cheat_sheet.html#'><b>5.2.</b> Alias</a></li>
 <li><a href='Tutorial_Cheat_sheet.html#'><b>5.3.</b> Liquid types in Datatypes</a></li>
 <li><a href='Tutorial_Cheat_sheet.html#'><b>5.4.</b> Measures</a></li>
+</ul>
+<li><a href='test.html'><b>6.</b>Refined Datatypes</a></li>
+<ul class='section'>
+<li><a href='test.html#'><b>6.1.</b> Sparse Vectors</a></li>
 </ul>
 </ul>
 
@@ -214,35 +217,6 @@ MathJax.Hub.Config({
 {-@ LIQUID "--no-termination" @-}
 
 module Tutorial_05_Datatypes
-       (
-         -- * Sparse: Data
-         Sparse (..)
-
-         -- * Sparse: Functions
-       , dotProd, dotProd', plus, fromList
-
-         -- * Sparse: Examples
-       , okSP, badSP, test1, test2
-
-          -- * OrdList: Data
-       , IncList  (..)
-
-          -- * OrdList: Examples
-       , okList, badList
-
-          -- * OrdList: Functions
-       ,  insertSort, insertSort', mergeSort, quickSort
-
-          -- * BST: Data
-       , BST (..)
-
-          -- * BST: Functions
-       , mem, add, delMin, del, bstSort, toBST, toIncList
-
-          -- * BST: Examples
-       , okBST, badBST
-
-       )
       where
 
 import Prelude      hiding (abs, length, min)
@@ -268,27 +242,6 @@ die msg = error msg
 
 </div>
 
-<p>So far, we have seen how to refine the types of <em>functions</em>,
-to specify, for example, pre-conditions on the inputs, or
-post-conditions on the outputs. In this section we will see how to apply
-these in datatypes. First, by defining properties of data values, and
-then by defining <em>datatypes</em> that satisfy certain invariants. In
-the latter, it is handy to be able to directly refine the
-<code>data</code> definition, making it impossible to create illegal
-inhabitants.</p>
-<p><br />
-<strong>Measures</strong> are used to define <em>properties</em> of
-Haskell data values that are useful for specification and
-verification.</p>
-<p><br />
-<strong>A measure</strong> is a <em>total</em> Haskell function, 1. With
-a <em>single</em> equation per data constructor, and 2. Guaranteed to
-<em>terminate</em>, typically via structural recursion.</p>
-<p> We can tell LiquidHaskell to <em>lift</em> a function meeting the
-above requirements into the refinement logic by declaring:</p>
-<p><code>{-@ measure nameOfMeasure @-}</code></p>
-<p>For example, for a list we can define a way to <em>measure</em> its
-size with the following function.</p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -304,286 +257,6 @@ size []     = 0
 size (_:rs) = 1 + size rs</div>
 </div>
 
-<p>Then, we can use this measure to define aliases.</p>
-<div class="interact">
-<p>Let’s create another measure named <code>notEmpty</code> that takes a
-list as input and returns a <code>Bool</code> with the information if it
-is empty or not.</p>
-<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-2" class="programbox">-- write notEmpty measure</div>
-</div>
-
-<div>
-<button class="btn-answer" onclick="toggleCollapsible(2)">
-Answer</button>
-<div id="collapsibleDiv2">
-<code>{-@ measure notEmpty @-}</code><br/>
-<code>notEmpty       :: [a] -&gt; Bool</code><br/>
-<code>notEmpty []    = False</code><br/>
-<code>notEmpty (_:_) = True</code>
-</div>
-</div>
-</div>
-<p>We can now define a couple of useful aliases for describing lists of
-a given dimension.</p>
-<p>For example, we can define that a list has exactly <code>N</code>
-elements.</p>
-<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-3" class="programbox">{-@ type ListN a N = {v:[a] | size v == N} @-}</div>
-</div>
-
-<p>Note that when defining refinement type aliases, we use uppercase
-variables like <code>N</code> to distinguish <em>value</em> parameters
-from the lowercase <em>type</em> parameters like <code>a</code>.</p>
-<div class="interact">
-<p>Now, try to create an alias <code>NEList</code> for an empty list,
-using the measure <code>notEmpty</code> created before. When removed
-from comment, the first example should raise an error while the second
-should not.</p>
-<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-4" class="programbox">-- write the alias here
-
--- {-@ ne1 :: NEList Int@-}
--- ne1 = [] ::  [Int]
--- {-@ ne1 :: NEList Int@-}
--- ne2 = [1,2,3,4] :: [Int]</div>
-</div>
-
-<div>
-<p><button class="btn-answer" onclick="toggleCollapsible(40)">
-Answer</button></p>
-<div id="collapsibleDiv40">
-<code>{-@ type NEList a = {v:[a] | notEmpty v} @-}</code>
-</div>
-</div>
-</div>
-<section id="sparse-vectors" class="level2">
-<h2>Sparse Vectors</h2>
-<p>As our first example of a refined datatype, let’s see Sparse Vectors.
-While the standard Vector is great for dense arrays, often we have to
-manipulate sparse vectors where most elements are just 0. We might
-represent such vectors as a list of index-value tuples
-<code>[(Int, a)]</code>.</p>
-<p>Let’s create a new datatype to represent such vectors:</p>
-<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-5" class="programbox">data Sparse a = SP { spDim   :: Int
-                   , spElems :: [(Int, a)] }</div>
-</div>
-
-<p> Thus, a sparse vector is a pair of a dimension and a list of
-index-value tuples. Implicitly, all indices <em>other</em> than those in
-the list have the value <code>0</code> or the equivalent value type
-<code>a</code>.</p>
-<p><code>Sparse</code> vectors satisfy two crucial properties. 1. the
-dimension stored in <code>spDim</code> is non-negative;</p>
-<ol start="2" type="1">
-<li>every index in <code>spElems</code> must be valid, i.e. between
-<code>0</code> and the dimension.</li>
-</ol>
-<p>Unfortunately, Haskell’s type system does not make it easy to ensure
-that <em>illegal vectors are not representable</em>.</p>
-<p><br />
-<strong>Data Invariants</strong> LiquidHaskell lets us enforce these
-invariants with a refined data definition:</p>
-<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-6" class="programbox">{-@ data Sparse a = SP { spDim   :: Nat
-                       , spElems :: [(Btwn 0 spDim, a)]} @-}</div>
-</div>
-
-<p>Where, as before, we use the aliases:</p>
-<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-7" class="programbox">{-@ type Nat        = {v:Int | 0 <= v}            @-}
-{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} </div>
-</div>
-
-<p><br />
-<strong>Refined Data Constructors</strong> The refined data definition
-is internally converted into refined types for the data constructor
-<code>SP</code>. So, by using refined input types for <code>SP</code> we
-have automatically converted it into a <em>smart</em> constructor that
-ensures that <em>every</em> instance of a <code>Sparse</code> is legal.
-Consequently, LiquidHaskell verifies:</p>
-<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-8" class="programbox">okSP :: Sparse String
-okSP = SP 5 [ (0, "cat")
-            , (3, "dog") ]</div>
-</div>
-
-<p>but rejects, due to the invalid index:</p>
-<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-9" class="programbox">badSP :: Sparse String
-badSP = SP 5 [ (0, "cat")
-             , (6, "dog") ]</div>
-</div>
-
-<div class="interact">
-Write another example of a Sparse data type that is invalid. Remove the
-comment from the type signature below and complete the implementation
-with the example.
-<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-10" class="programbox">-- badSP' :: Sparse String</div>
-</div>
-
-<div>
-<button class="btn-answer" onclick="toggleCollapsible(1)">
-Answer</button>
-<div id="collapsibleDiv1">
-e.g., <code>badSP' = SP -1 [(0, "cat")]</code>
-</div>
-</div>
-</div>
-<p><br />
-<strong>Field Measures</strong> It is convenient to write an alias for
-sparse vectors of a given size <code>N</code>. So that we can easily say
-in a refinement that we have a sparse vector of a certain size.</p>
-<p>For this we can use <em>measures</em>.</p>
-<p>Similarly, the sparse vector also has a <em>measure</em> for its
-dimension, but in this case it is already defined by <code>spDim</code>,
-so we can use it to create the new alias of sparse vectors of size
-N.</p>
-<div class="think-aloud">
-<p><b><span class="think-aloud-text">Think Aloud:</span></b></p>
-<p>For the following exercise, we will use a technique called Think
-Aloud, where you should try to say everything that comes to your mind
-while you engage with the exercise.</p>
-<p>In specific, aim:</p>
-<ol type="a">
-<li><p>to speak all thoughts, even if they are unrelated to the
-task;</p></li>
-<li><p>to refrain from explaining the thoughts;</p></li>
-<li><p>to not try to plan out what to say;</p></li>
-<li><p>to imagine that you are alone and speaking to yourself;
-and</p></li>
-<li><p>to speak continuously.</p></li>
-</ol>
-<p>For the following exercise, read the question aloud and remeber to
-voice your thoughts while solving the exercise.</p>
-</div>
-<div class="interact">
-<p>Following what we did with the lists, write the alias
-<code>SparseN</code> for sparse vector of length N, using
-<code>spDim</code> instead of <code>size</code>.</p>
-<p><strong>Hint: </strong>When you are done, you can see how we can use
-<code>SparseN</code> in the example below.</p>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-11" class="programbox">-- write the alias here</div>
-</div>
-
-<div>
-<button class="btn-answer" onclick="toggleCollapsible(5)">
-Answer
-</button>
-<div id="collapsibleDiv5">
-e.g.,
-<code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
-</div>
-</div>
-</div>
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
-see that LiquidHaskell is able to compute a sparse product, making the
-product of all the same indexes and returning its sum. Remove the
-comments and run the code ahead.</p>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-12" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
--- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
--- dotProd x (SP _ y) = go 0 y
---  where
---    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
---    go sum []            = sum</div>
-</div>
-
-<p> LiquidHaskell verifies the above by using the specification to
-conclude that for each tuple <code>(i, v)</code> in the list
-<code>y</code>, the value of <code>i</code> is within the bounds of the
-vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
-<p>You finished the Tutorial! Tell the interviewers you got to the end
-of the page, and answer some questions from our team before moving to
-the next section.</p>
-<p>Now that you have learned the main blocks of LiquidHaskell, let’s
-complete an exercise using all the concepts.</p>
-<p>You can open a <a href="Tutorial_Cheat_sheet.html" >Cheat Sheet</a>
-with examples of the main concepts on another tab on the side.</p>
-<p><a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
-<button class="btn-next">Next</button> </a></p>
-</section>
 </section>
 
 </div>

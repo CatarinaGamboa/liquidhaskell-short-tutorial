@@ -202,8 +202,8 @@ MathJax.Hub.Config({
 <div id='page-wrapper'>
 <div id='page'>
 
-<section id="refinement-types" class="level1">
-<h1>Refinement Types</h1>
+<section id="refined-datatypes" class="level1">
+<h1>Refined Datatypes</h1>
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
 
@@ -213,46 +213,85 @@ MathJax.Hub.Config({
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-0" class="programbox">{-@ LIQUID "--short-names" @-}
+  <div id="program-0" class="programbox">{-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-termination" @-}
-module Tutorial_03_Basic where
 
-import Prelude hiding (abs)
-divide  :: Int -> Int -> Int
+module Tutorial_05_Datatypes
+       (
+         -- * Sparse: Data
+         Sparse (..)
 
-die     :: String -> a
-{-@ die :: {v:String | false} -> a  @-}
+         -- * Sparse: Functions
+       , dotProd, dotProd', plus, fromList
+
+         -- * Sparse: Examples
+       , okSP, badSP, test1, test2
+
+          -- * OrdList: Data
+       , IncList  (..)
+
+          -- * OrdList: Examples
+       , okList, badList
+
+          -- * OrdList: Functions
+       ,  insertSort, insertSort', mergeSort, quickSort
+
+          -- * BST: Data
+       , BST (..)
+
+          -- * BST: Functions
+       , mem, add, delMin, del, bstSort, toBST, toIncList
+
+          -- * BST: Examples
+       , okBST, badBST
+
+       )
+      where
+
+import Prelude      hiding (abs, length, min)
+import Data.List    (foldl')
+import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
+import Data.Maybe   (fromJust)
+ 
+
+{-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
 
+-- {-@ fail badSP @-}
+-- {-@ fail badSP' @-}
+-- {-@ fail badList @-}
+-- {-@ ignore append @-}
+-- {-@ fail badBST @-}
+-- {-@ fail ne1 @-}
+-- {-@ ignore delMin @-}
 
--- {-@ fail nonsense  @-}
--- {-@ fail canDie    @-}
--- {-@ fail divide'   @-}
--- {-@ fail avg       @-}
--- {-@ fail percentT  @-}
--- {-@ fail percentF  @-}
--- {-@ fail cpc  @-}
--- {-@ fail cpi  @-}
--- {-@ ignore lAssert @-}
 
 </div>
 </div>
 
 </div>
 
+<p>So far, we have seen how to refine the types of <em>functions</em>,
+to specify, for example, pre-conditions on the inputs, or
+post-conditions on the outputs. In this section we will see how to apply
+these in datatypes. First, by defining properties of data values, and
+then by defining <em>datatypes</em> that satisfy certain invariants. In
+the latter, it is handy to be able to directly refine the
+<code>data</code> definition, making it impossible to create illegal
+inhabitants.</p>
 <p><br />
-<strong>What is a Refinement Type?</strong> In a nutshell,</p>
-<blockquote>
-<p><em>Refinement Types</em> = <em>Types</em> + <em>Predicates</em></p>
-</blockquote>
-<p> That is, refinement types allow us to decorate types with
-<em>logical predicates</em>, which you can think of as
-<em>boolean-valued</em> Haskell expressions, that constrain the set of
-values described by the type. This lets us specify sophisticated
-invariants of the underlying values.</p>
-<section id="defining-types" class="level2">
-<h2>Defining Types</h2>
-<p>Let us define some refinement types:</p>
+<strong>Measures</strong> are used to define <em>properties</em> of
+Haskell data values that are useful for specification and
+verification.</p>
+<p><br />
+<strong>A measure</strong> is a <em>total</em> Haskell function, 1. With
+a <em>single</em> equation per data constructor, and 2. Guaranteed to
+<em>terminate</em>, typically via structural recursion.</p>
+<p> We can tell LiquidHaskell to <em>lift</em> a function meeting the
+above requirements into the refinement logic by declaring:</p>
+<p><code>{-@ measure nameOfMeasure @-}</code></p>
+<p>For example, for a list we can define a way to <em>measure</em> its
+size with the following function.</p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -261,22 +300,18 @@ invariants of the underlying values.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">{-@ type Zero    = {v:Int | v == 0} @-}
-{-@ type NonZero = {v:Int | v /= 0} @-}</div>
+  <div id="program-1" class="programbox">{-@ measure size @-}
+{-@ size :: [a] -> Nat @-}
+size :: [a]->Int
+size []     = 0
+size (_:rs) = 1 + size rs</div>
 </div>
 
-<p><br />
-<strong>The Value Variable</strong> <code>v</code> denotes the set of
-valid inhabitants of each refinement type. Hence, <code>Zero</code>
-describes the <em>set of</em> <code>Int</code> values that are equal to
-<code>0</code>, that is, the singleton set containing just
-<code>0</code>, and <code>NonZero</code> describes the set of
-<code>Int</code> values that are <em>not</em> equal to <code>0</code>,
-that is, the set <code>{1, -1, 2, -2, ...}</code> and so on.</p>
-<p>To indicate that these specifications are for LiquidHaskell we write
-them like <code>{-@ spec @-}</code>.</p>
-<p><br />
-<strong>Now, to use</strong> these types we can write:</p>
+<p>Then, we can use this measure to define aliases.</p>
+<div class="interact">
+<p>Let’s create another measure named <code>notEmpty</code> that takes a
+list as input and returns a <code>Bool</code> with the information if it
+is empty or not.</p>
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -285,19 +320,24 @@ them like <code>{-@ spec @-}</code>.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">{-@ zero :: Zero @-}
-zero  = 0 :: Int
-
-{-@ one, two, three :: NonZero @-}
-one   = 1 :: Int
-two   = 2 :: Int
-three = 3 :: Int</div>
+  <div id="program-2" class="programbox">-- write notEmpty measure</div>
 </div>
 
-</section>
-<section id="errors" class="level2">
-<h2>Errors</h2>
-<p>If we try to say nonsensical things like:</p>
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(2)">
+Answer</button>
+<div id="collapsibleDiv2">
+<code>{-@ measure notEmpty @-}</code><br/>
+<code>notEmpty       :: [a] -&gt; Bool</code><br/>
+<code>notEmpty []    = False</code><br/>
+<code>notEmpty (_:_) = True</code>
+</div>
+</div>
+</div>
+<p>We can now define a couple of useful aliases for describing lists of
+a given dimension.</p>
+<p>For example, we can define that a list has exactly <code>N</code>
+elements.</p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -306,35 +346,17 @@ three = 3 :: Int</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">nonsense :: Int
-nonsense = one'
-  where
-  {-@ one' :: Zero @-}
-  one' = 1 </div>
+  <div id="program-3" class="programbox">{-@ type ListN a N = {v:[a] | size v == N} @-}</div>
 </div>
 
-<p> LiquidHaskell will complain with an error message:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">../liquidhaskell-tutorial/src/03-basic.lhs:72:3-6:</span> Error: Liquid Type Mismatch</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">72</span> <span class="kw">|</span>   <span class="ex">one</span><span class="st">&#39; = 1 :: Int</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">       ^^^^</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">  Inferred type</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">    VV : {VV : Int | VV == (1 : int)}</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">  not a subtype of Required type</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">    VV : {VV : Int | VV == 0}</span></span></code></pre></div>
-<p> The message says that the expression <code>1 :: Int</code> has the
-type</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">{v:Int</span> <span class="kw">|</span> <span class="ex">v</span> == 1}</span></code></pre></div>
-<p> which is <em>not</em> (a subtype of) the <em>required</em> type</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">{v:Int</span> <span class="kw">|</span> <span class="ex">v</span> == 0}</span></code></pre></div>
-<p> as <code>1</code> is not equal to <code>0</code>.</p>
-</section>
-<section id="subtyping" class="level2">
-<h2>Subtyping</h2>
-<p>What is this business of <em>subtyping</em>? Suppose we have some
-more refinements of <code>Int</code></p>
+<p>Note that when defining refinement type aliases, we use uppercase
+variables like <code>N</code> to distinguish <em>value</em> parameters
+from the lowercase <em>type</em> parameters like <code>a</code>.</p>
+<div class="interact">
+<p>Now, try to create an alias <code>NEList</code> for an empty list,
+using the measure <code>notEmpty</code> created before. When removed
+from comment, the first example should raise an error while the second
+should not.</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -343,27 +365,30 @@ more refinements of <code>Int</code></p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">{-@ type Nat      = {v:Int | 0 <= v}        @-}
+  <div id="program-4" class="programbox">-- write the alias here
 
-{-@ type Positive = {v:Int | 0 < v}         @-}
-
-{-@ type Even     = {v:Int | v mod 2 == 0 } @-}
-
-{-@ type TensToHundred = {v:Int | v mod 10 == 0 && v <= 100} @-}</div>
+-- {-@ ne1 :: NEList Int@-}
+-- ne1 = [] ::  [Int]
+-- {-@ ne1 :: NEList Int@-}
+-- ne2 = [1,2,3,4] :: [Int]</div>
 </div>
 
-<p><code>Zero</code> is the most precise type for <code>0::Int</code>,
-as it is a <em>subtype</em> of <code>Nat</code>, <code>Even</code>.
-However, it is not a subtype of <code>Positive</code>. The alias
-<code>TensToHundred</code> represents the multiples of 10 smaller than
-100, meaning that <code>Even</code> is a <em>subtype</em> of it but all
-the other ones are not.</p>
-<div class="interact">
-<p><b>Exercise:</b> Now let us try a new predicate.</p>
-<p>Write a type <code>Percentage</code> for the numbers that represent a
-percentage (between 0 and 100).</p>
-<p>Then, remove the comment the liquid type signatures and run the code.
-The first example should be correct and the second should not.</p>
+<div>
+<p><button class="btn-answer" onclick="toggleCollapsible(40)">
+Answer</button></p>
+<div id="collapsibleDiv40">
+<code>{-@ type NEList a = {v:[a] | notEmpty v} @-}</code>
+</div>
+</div>
+</div>
+<section id="sparse-vectors" class="level2">
+<h2>Sparse Vectors</h2>
+<p>As our first example of a refined datatype, let’s see Sparse Vectors.
+While the standard Vector is great for dense arrays, often we have to
+manipulate sparse vectors where most elements are just 0. We might
+represent such vectors as a list of index-value tuples
+<code>[(Int, a)]</code>.</p>
+<p>Let’s create a new datatype to represent such vectors:</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -372,42 +397,25 @@ The first example should be correct and the second should not.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">-- write the alias here
-
--- {-@ percentT  :: Percentage  @-}
-percentT    = 10 :: Int
--- {-@ percentF  :: Percentage  @-}
-percentF :: Int
-percentF    = 10 + 99 :: Int</div>
+  <div id="program-5" class="programbox">data Sparse a = SP { spDim   :: Int
+                   , spElems :: [(Int, a)] }</div>
 </div>
 
-<div>
-<button class="btn-answer" onclick="toggleCollapsible(1)">
-Answer</button>
-<div id="collapsibleDiv1">
-<code>{-@ type Percentage = {v:Int | 0 &lt;= v &amp;&amp; v &lt;= 100}  @-}</code>
-</div>
-</div>
-</div>
-<p><br />
-<strong>In Summary</strong> the key points about refinement types
-are:</p>
-<ol type="1">
-<li>A refinement type is just a type <em>decorated</em> with logical
-predicates.</li>
-<li>A term can have <em>different</em> refinements for different
-properties.</li>
-<li>When we <em>erase</em> the predicates we get the standard Haskell
-types.</li>
+<p> Thus, a sparse vector is a pair of a dimension and a list of
+index-value tuples. Implicitly, all indices <em>other</em> than those in
+the list have the value <code>0</code> or the equivalent value type
+<code>a</code>.</p>
+<p><code>Sparse</code> vectors satisfy two crucial properties. 1. the
+dimension stored in <code>spDim</code> is non-negative;</p>
+<ol start="2" type="1">
+<li>every index in <code>spElems</code> must be valid, i.e. between
+<code>0</code> and the dimension.</li>
 </ol>
-</section>
-<section id="writing-specifications" class="level2">
-<h2>Writing Specifications</h2>
-<p>We can also add specifications as pre- and post-conditions of
-functions.</p>
-<p>Remember the divide function from before? We can add the case of
-dividing by zero with this <code>die "message"</code> to indicate that
-this case should be handled before running the code.</p>
+<p>Unfortunately, Haskell’s type system does not make it easy to ensure
+that <em>illegal vectors are not representable</em>.</p>
+<p><br />
+<strong>Data Invariants</strong> LiquidHaskell lets us enforce these
+invariants with a refined data definition:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -416,14 +424,11 @@ this case should be handled before running the code.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">divide'     :: Int -> Int -> Int
-divide' n 0 = die "divide by zero"
-divide' n d = n `div` d</div>
+  <div id="program-6" class="programbox">{-@ data Sparse a = SP { spDim   :: Nat
+                       , spElems :: [(Btwn 0 spDim, a)]} @-}</div>
 </div>
 
-<p>So, now we can specify that the first case will never with a
-<em>pre-condition</em> that says that the second argument is
-non-zero:</p>
+<p>Where, as before, we use the aliases:</p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -432,48 +437,17 @@ non-zero:</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ divide :: Int -> NonZero -> Int @-}
-divide _ 0 = die "divide by zero"
-divide n d = n `div` d</div>
+  <div id="program-7" class="programbox">{-@ type Nat        = {v:Int | 0 <= v}            @-}
+{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} </div>
 </div>
 
-<p>You can run the both pieces of code and check that the first one
-throws an error while the second one does not since it can infer that
-the first case will not be called.</p>
-<p>The above signature forces us to ensure that that when we
-<em>use</em> <code>divide</code>, we only supply provably
-<code>NonZero</code> arguments.</p>
-<div id="question1" class="interact"
-style="width=640px;border= 2px solid #3498db; border-radius= 10px;">
-<b> Exercise:</b>
-<p>
-Select which of the following functions that call divide would <b>raise
-an error:</b>
-</p>
-<label class="container"> foo x y = divide (x + y) 2
-<input type="radio" name="q3" value="1"> <span class="checkmark"></span>
-</label><br> <label class="container"> foo’ x y z = divide (divide (x +
-y) 3) 10 <input type="radio" name="q3" value="2"><span
-class="checkmark"></span> </label><br> <label class="container"> foo’’ x
-y z = divide (x + y) z <input type="radio" name="q3" value="3"><span
-class="checkmark"></span> </label><br>
-<button class="btn-select" onclick="checkAnswer(3)">Submit</button>
-<p id="result3">
-</p>
-<p><input type="hidden" id="correctAnswer3" value="3"></p>
-<button class="btn-answer" onclick="toggleCollapsible(3)">
-Answer</button>
-<div id="collapsibleDiv3">
-<code>foo''</code> is the invocation that could trigger a crash since we
-have no guarantees that z is a <code>NonZero</code> value.
-</div>
-</div>
-</section>
-<section id="refining-function-types-post-conditions" class="level2">
-<h2>Refining Function Types: Post-conditions</h2>
-<p>Next, let’s see how we can use refinements to describe the
-<em>outputs</em> of a function. Consider the following simple
-<em>absolute value</em> function</p>
+<p><br />
+<strong>Refined Data Constructors</strong> The refined data definition
+is internally converted into refined types for the data constructor
+<code>SP</code>. So, by using refined input types for <code>SP</code> we
+have automatically converted it into a <em>smart</em> constructor that
+ensures that <em>every</em> instance of a <code>Sparse</code> is legal.
+Consequently, LiquidHaskell verifies:</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -482,14 +456,12 @@ have no guarantees that z is a <code>NonZero</code> value.
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">abs           :: Int -> Int
-abs n
-  | 0 < n     = n
-  | otherwise = 0 - n</div>
+  <div id="program-8" class="programbox">okSP :: Sparse String
+okSP = SP 5 [ (0, "cat")
+            , (3, "dog") ]</div>
 </div>
 
-<p>We can use a refinement on the output type to specify that the
-function returns non-negative values</p>
+<p>but rejects, due to the invalid index:</p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -498,19 +470,15 @@ function returns non-negative values</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">{-@ abs :: Int -> Nat @-}</div>
+  <div id="program-9" class="programbox">badSP :: Sparse String
+badSP = SP 5 [ (0, "cat")
+             , (6, "dog") ]</div>
 </div>
 
-<p>LiquidHaskell <em>verifies</em> that <code>abs</code> indeed enjoys
-the above type by deducing that <code>n</code> is trivially non-negative
-when <code>0 &lt; n</code> and that in the <code>otherwise</code> case,
-the value <code>0 - n</code> is indeed non-negative.</p>
-</section>
-<section id="dependent-refinements" class="level2">
-<h2>Dependent Refinements</h2>
-<p>The predicates in pre- and post- conditions can also refer to
-previous arguments of the function.</p>
-<p>For example, including that the output is greater than the input.</p>
+<div class="interact">
+Write another example of a Sparse data type that is invalid. Remove the
+comment from the type signature below and complete the implementation
+with the example.
 <div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -519,23 +487,50 @@ previous arguments of the function.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-10" class="programbox">{-@ plus1 :: a:Int -> {b:Int |b > a}@-}
-plus1 :: Int -> Int 
-plus1 a = a + 1</div>
+  <div id="program-10" class="programbox">-- badSP' :: Sparse String</div>
 </div>
 
-<p>And the same could be done between input values.</p>
-<div class="interact">
-<p><b>Exercise:</b></p>
-<p>Let’s put everything together now.</p>
-<p>Write a specification for the method <code>calcPer</code> that:</p>
-<ol type="1">
-<li><p>first receives a positive int;</p></li>
-<li><p>then an int with a value between zero and the first int;</p></li>
-<li><p>returns a percentage;</p></li>
+<div>
+<button class="btn-answer" onclick="toggleCollapsible(1)">
+Answer</button>
+<div id="collapsibleDiv1">
+e.g., <code>badSP' = SP -1 [(0, "cat")]</code>
+</div>
+</div>
+</div>
+<p><br />
+<strong>Field Measures</strong> It is convenient to write an alias for
+sparse vectors of a given size <code>N</code>. So that we can easily say
+in a refinement that we have a sparse vector of a certain size.</p>
+<p>For this we can use <em>measures</em>.</p>
+<p>Similarly, the sparse vector also has a <em>measure</em> for its
+dimension, but in this case it is already defined by <code>spDim</code>,
+so we can use it to create the new alias of sparse vectors of size
+N.</p>
+<div class="think-aloud">
+<p><b><span class="think-aloud-text">Think Aloud:</span></b></p>
+<p>For the following exercise, we will use a technique called Think
+Aloud, where you should try to say everything that comes to your mind
+while you engage with the exercise.</p>
+<p>In specific, aim:</p>
+<ol type="a">
+<li><p>to speak all thoughts, even if they are unrelated to the
+task;</p></li>
+<li><p>to refrain from explaining the thoughts;</p></li>
+<li><p>to not try to plan out what to say;</p></li>
+<li><p>to imagine that you are alone and speaking to yourself;
+and</p></li>
+<li><p>to speak continuously.</p></li>
 </ol>
-<p>Use the aliases created in the exercises you have completed
-before.</p>
+<p>For the following exercise, read the question aloud and remeber to
+voice your thoughts while solving the exercise.</p>
+</div>
+<div class="interact">
+<p>Following what we did with the lists, write the alias
+<code>SparseN</code> for sparse vector of length N, using
+<code>spDim</code> instead of <code>size</code>.</p>
+<p><strong>Hint: </strong>When you are done, you can see how we can use
+<code>SparseN</code> in the example below.</p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -544,26 +539,52 @@ before.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">calcPer       :: Int -> Int -> Int
-calcPer a b    = (b * 100) `div` a
-
-
-cpc = calcPer 10 5 :: Int  -- should be correct
-cpi = calcPer 10 11 :: Int -- should be incorrect</div>
+  <div id="program-11" class="programbox">-- write the alias here</div>
 </div>
 
 <div>
 <button class="btn-answer" onclick="toggleCollapsible(5)">
-Answer</button>
+Answer
+</button>
 <div id="collapsibleDiv5">
-<code>{-@ calcPer :: a:Positive -&gt; {b:Int | 0 &lt;= b &amp;&amp; b &lt;= a} -&gt; c:Percentage @-}</code>
+e.g.,
+<code>{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}</code>
 </div>
 </div>
 </div>
-<p>You finished the first part of the Tutorial! Tell the interviewers
-you got to the end of the page, and answer some questions from our team
-before moving to the next section.</p>
-<p><a href="Tutorial_05_Datatypes.html" >
+<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
+have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
+see that LiquidHaskell is able to compute a sparse product, making the
+product of all the same indexes and returning its sum. Remove the
+comments and run the code ahead.</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
+-- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
+-- dotProd x (SP _ y) = go 0 y
+--  where
+--    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
+--    go sum []            = sum</div>
+</div>
+
+<p> LiquidHaskell verifies the above by using the specification to
+conclude that for each tuple <code>(i, v)</code> in the list
+<code>y</code>, the value of <code>i</code> is within the bounds of the
+vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
+<p>You finished the Tutorial! Tell the interviewers you got to the end
+of the page, and answer some questions from our team before moving to
+the next section.</p>
+<p>Now that you have learned the main blocks of LiquidHaskell, let’s
+complete an exercise using all the concepts.</p>
+<p>You can open a <a href="Tutorial_Cheat_sheet.html" >Cheat Sheet</a>
+with examples of the main concepts on another tab on the side.</p>
+<p><a href="Tutorial_09_Case_Study_Lazy_Queues.html" >
 <button class="btn-next">Next</button> </a></p>
 </section>
 </section>
