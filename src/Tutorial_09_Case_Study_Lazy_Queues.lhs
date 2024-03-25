@@ -415,7 +415,7 @@ the *smart constructor* `makeq` to ensure that the balance invariant holds.
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
-<div class="hwex" id="Insert">Write down a liquid type signature for `replicate` (that uses `insert``),
+<div class="hwex" id="Insert">Write down a liquid type signature for `replicate` (that uses `insert`),
 so that it adds the same element n times to the queue, and `okReplicate` is accepted by LiquidHaskell, but `badReplicate`
 is rejected.
 </div>
