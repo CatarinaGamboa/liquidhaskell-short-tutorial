@@ -530,7 +530,8 @@ function returns just the element at the front of the list.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">{-@ tl           :: {xs:NEList a| size xs < 0 }-> SListN a {size xs}  @-}
+  <div id="program-8" class="programbox">{-@ tl           :: {xs:NEList a| size xs < 0}
+                    -> SListN a {size xs}  @-}
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
@@ -797,7 +798,9 @@ next.</p>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-17" class="programbox">{-@ makeq :: f:SList a -> b:SListLE a {size f + 1 } -> QueueN a {size f + size b} @-}
+  <div id="program-17" class="programbox">{-@ makeq :: f:SList a -> 
+             b:SListLE a {size f + 1 } -> 
+             QueueN a {size f + size b} @-}
 makeq f b
   | size b <= size f = Q f b
   | otherwise        = Q (rot f b nil) nil</div>
@@ -852,7 +855,7 @@ additional to be rotated.</li>
 @-}
 rot f b acc
   | size f == 0 = hd b `cons` acc
-  | otherwise   = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)</div>
+  | otherwise = hd f `cons` rot (tl f) (tl b) (hd b `cons` acc)</div>
 </div>
 
 <div>
