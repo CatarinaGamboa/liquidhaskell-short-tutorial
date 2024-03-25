@@ -20,7 +20,7 @@ The full version of the tutorial can be found in the [project's website](https:/
 
 One of the great things about Haskell is its brainy type system that
 allows one to enforce a variety of invariants at compile time, thereby
-nipping in the bud a large swathe of run-time [errors](#getting-started).
+nipping in the bud a large swathe of run-time errors.
 
 Well-Typed Programs Do Go Wrong 
 ------------------------------------------
