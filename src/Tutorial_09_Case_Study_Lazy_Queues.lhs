@@ -265,7 +265,7 @@ function as shown below.
 For `tl`, fix the signature such that it receives
 a non-empty list and returns another without the first element.
 
-For `hd`, do the opposite. From the presented signature, remove the comment from the signature and write the implementation.
+For `hd`, do the opposite. From the presented signature, write the implementation.
 This function returns just the element at the front of the list.
 </div>
 
@@ -276,6 +276,7 @@ tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
 {-@ hd'           :: xs:NEList a -> a @-}
+hd' _ = die "empty SList"
 
 \end{code}
 
