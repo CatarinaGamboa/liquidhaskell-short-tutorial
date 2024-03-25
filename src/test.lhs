@@ -91,7 +91,7 @@ the following function.
 \begin{code}
 {-@ measure size @-}
 {-@ size :: [a] -> Nat @-}
-size :: [a]->Int
+size :: [a] -> Int
 size []     = 0
 size (_:rs) = 1 + size rs
 \end{code}

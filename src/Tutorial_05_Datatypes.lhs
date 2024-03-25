@@ -9,33 +9,45 @@ Refined Datatypes
 {-@ LIQUID "--no-termination" @-}
 
 module Tutorial_05_Datatypes
+       (
+         -- * Sparse: Data
+         Sparse (..)
+
+         -- * Sparse: Functions
+       , dotProd, dotProd', plus, fromList
+
+         -- * Sparse: Examples
+       , okSP, badSP, test1, test2
+
+          -- * OrdList: Data
+       , IncList  (..)
+
+          -- * OrdList: Examples
+       , okList, badList
+
+          -- * OrdList: Functions
+       ,  insertSort, insertSort', mergeSort, quickSort
+
+          -- * BST: Data
+       , BST (..)
+
+          -- * BST: Functions
+       , mem, add, delMin, del, bstSort, toBST, toIncList
+
+          -- * BST: Examples
+       , okBST, badBST
+
+       )
       where
-
-import Prelude      hiding (abs, length, min)
-import Data.List    (foldl')
-import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
-import Data.Maybe   (fromJust)
- 
-
-{-@ die :: {v:_ | false} -> a @-}
-die msg = error msg
-
--- {-@ fail badSP @-}
--- {-@ fail badSP' @-}
--- {-@ fail badList @-}
--- {-@ ignore append @-}
--- {-@ fail badBST @-}
--- {-@ fail ne1 @-}
--- {-@ ignore delMin @-}
-
 
 \end{code}
 \end{comment}
 
 \begin{code}
 {-@ measure size @-}
-{-@ size :: [a] -> Nat @-}
-size :: [a]->Int
-size []     = 0
-size (_:rs) = 1 + size rs
+{-@ size' :: [a] -> Nat @-}
+size' :: [a] -> Int
+size' []     = 0
+size' (_:rs) = 1 + size' rs
+
 \end{code}
