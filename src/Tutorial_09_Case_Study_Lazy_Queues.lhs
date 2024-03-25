@@ -35,7 +35,8 @@ die x = error x
 replicate :: Int -> a -> Queue a
 
 
-
+-- {-@ ignore tl   @-}
+-- {-@ ignore hd   @-}
 
 -- {-@ fail okList   @-}
 -- {-@ fail badList   @-}
@@ -60,6 +61,11 @@ replicate :: Int -> a -> Queue a
 -- {-@ fail makeq   @-}
 -- {-@ fail rot   @-}
 
+
+
+{-@ hd           :: xs:NEList a -> a @-}
+hd (SL _ (x:_))  = x
+hd _             = die "empty SList"
 
 
 \end{code}
@@ -268,9 +274,8 @@ This function returns just the element at the front of the list.
 tl (SL n (_:xs)) = SL (n-1) xs
 tl _             = die "empty SList"
 
-{-@ hd           :: xs:NEList a -> a @-}
-hd (SL _ (x:_))  = x
-hd _             = die "empty SList"
+{-@ hd'           :: xs:NEList a -> a @-}
+
 \end{code}
 
 \hint When you are done, `okHd` should be verified, but `badHd` should be rejected.
@@ -278,9 +283,9 @@ hd _             = die "empty SList"
 \begin{code}
 {-@ okList :: SListN String 1 @-}
 
-okHd  = hd okList       -- accepted
+okHd  = hd' okList       -- accepted
 
-badHd = hd (tl okList)  -- rejected
+badHd = hd' (tl okList)  -- rejected
 \end{code}
 
 <div>
@@ -288,8 +293,8 @@ badHd = hd (tl okList)  -- rejected
     <div id="collapsibleDiv9">
 `{-@ tl           :: xs:NEList a -> SListN a {size xs - 1}  @-}`<br/>
 <br/>
-`hd (SL _ (x:_))  = x`<br/>
-`hd _             = die "empty SList"`
+`hd' (SL _ (x:_))  = x`<br/>
+`hd' _             = die "empty SList"`
     </div>
 </div>
 

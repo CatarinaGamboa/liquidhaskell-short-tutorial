@@ -13,8 +13,30 @@ module Tutorial_05_Datatypes
          -- * Sparse: Data
          Sparse (..)
 
+         -- * Sparse: Functions
+       , dotProd, dotProd', plus, fromList
+
          -- * Sparse: Examples
-       , okSP, badSP
+       , okSP, badSP, test1, test2
+
+          -- * OrdList: Data
+       , IncList  (..)
+
+          -- * OrdList: Examples
+       , okList, badList
+
+          -- * OrdList: Functions
+       ,  insertSort, insertSort', mergeSort, quickSort
+
+          -- * BST: Data
+       , BST (..)
+
+          -- * BST: Functions
+       , mem, add, delMin, del, bstSort, toBST, toIncList
+
+          -- * BST: Examples
+       , okBST, badBST
+
        )
       where
 
