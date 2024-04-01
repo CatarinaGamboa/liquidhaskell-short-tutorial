@@ -219,41 +219,10 @@ MathJax.Hub.Config({
 
 module Tutorial_05_Datatypes
        (
-         -- * Sparse: Data
-         Sparse (..)
-
-         -- * Sparse: Functions
-       , dotProd, dotProd', plus, fromList
-
-         -- * Sparse: Examples
-       , okSP, badSP, test1, test2
-
-          -- * OrdList: Data
-       , IncList  (..)
-
-          -- * OrdList: Examples
-       , okList, badList
-
-          -- * OrdList: Functions
-       ,  insertSort, insertSort', mergeSort, quickSort
-
-          -- * BST: Data
-       , BST (..)
-
-          -- * BST: Functions
-       , mem, add, delMin, del, bstSort, toBST, toIncList
-
-          -- * BST: Examples
-       , okBST, badBST
-
        )
       where
 
-import Prelude      hiding (abs, length, min)
-import Data.List    (foldl')
 import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
-import Data.Maybe   (fromJust)
- 
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -368,6 +337,7 @@ should not.</p>
  
   <div id="program-4" class="programbox">-- write the alias here
 
+-- Remove the comments below to test the alias
 -- {-@ ne1 :: NEList Int@-}
 -- ne1 = [] ::  [Int]
 -- {-@ ne1 :: NEList Int@-}
@@ -505,9 +475,8 @@ sparse vectors of a given size <code>N</code>. So that we can easily say
 in a refinement that we have a sparse vector of a certain size.</p>
 <p>For this we can use <em>measures</em>.</p>
 <p>Similarly, the sparse vector also has a <em>measure</em> for its
-dimension, but in this case it is already defined by <code>spDim</code>,
-so we can use it to create the new alias of sparse vectors of size
-N.</p>
+dimension, and it is already defined by <code>spDim</code>, so we can
+use it to create the new alias of sparse vectors of size N.</p>
 <div class="think-aloud">
 <p><b><span class="think-aloud-text">Think Aloud:</span></b></p>
 <p>For the following exercise, we will use a technique called Think
