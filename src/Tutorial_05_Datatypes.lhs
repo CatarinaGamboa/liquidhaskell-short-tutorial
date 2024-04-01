@@ -10,41 +10,10 @@ Refined Datatypes
 
 module Tutorial_05_Datatypes
        (
-         -- * Sparse: Data
-         Sparse (..)
-
-         -- * Sparse: Functions
-       , dotProd, dotProd', plus, fromList
-
-         -- * Sparse: Examples
-       , okSP, badSP, test1, test2
-
-          -- * OrdList: Data
-       , IncList  (..)
-
-          -- * OrdList: Examples
-       , okList, badList
-
-          -- * OrdList: Functions
-       ,  insertSort, insertSort', mergeSort, quickSort
-
-          -- * BST: Data
-       , BST (..)
-
-          -- * BST: Functions
-       , mem, add, delMin, del, bstSort, toBST, toIncList
-
-          -- * BST: Examples
-       , okBST, badBST
-
        )
       where
 
-import Prelude      hiding (abs, length, min)
-import Data.List    (foldl')
 import Data.Vector  hiding (singleton, foldl', foldr, fromList, (++))
-import Data.Maybe   (fromJust)
- 
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -96,6 +65,7 @@ size []     = 0
 size (_:rs) = 1 + size rs
 \end{code}
 
+
 Then, we can use this measure to define aliases.
 
 <div class = "interact">
@@ -131,6 +101,7 @@ Note that when defining refinement type aliases, we use uppercase variables
 like `N` to distinguish *value* parameters from the lowercase
 *type* parameters like `a`.
 
+
 <div class="interact">
 Now, try to create an alias `NEList` for an empty list, using the measure 
 `notEmpty` created before. When removed from comment, the first example should raise an error while the
@@ -139,6 +110,7 @@ second should not.
 \begin{code}
 -- write the alias here
 
+-- Remove the comments below to test the alias
 -- {-@ ne1 :: NEList Int@-}
 -- ne1 = [] ::  [Int]
 -- {-@ ne1 :: NEList Int@-}
@@ -154,16 +126,6 @@ second should not.
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
 
 Sparse Vectors
 -------------------------------------
@@ -211,6 +173,7 @@ these invariants with a refined data definition:
 {-@ type Nat        = {v:Int | 0 <= v}            @-}
 {-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-} 
 \end{code}
+
 
 \newthought{Refined Data Constructors} The refined data
 definition is internally converted into refined types
@@ -260,9 +223,8 @@ For this we can use *measures*.
 
 
 \newthought{Measures with Sparse Vectors}
-
-Similarly, the sparse vector also has a *measure* for its dimension, but in this
-case it is already defined by `spDim`, so we can use it to create the new alias 
+Similarly, the sparse vector also has a *measure* for its dimension, and it
+is already defined by `spDim`, so we can use it to create the new alias 
 of sparse vectors of size N.
 
 
