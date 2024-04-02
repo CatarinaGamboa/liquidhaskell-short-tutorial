@@ -402,7 +402,7 @@ the calls to `hd` and `tl` are safe.
 
 
 <div class = "think-aloud">
-<b><span class="think-aloud-text">📣💭Think Aloud:</span></b>
+<b><span class="think-aloud-text">📣💭 Think Aloud:</span></b>
 Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
