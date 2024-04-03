@@ -12,7 +12,8 @@ module Tutorial_05_Datatypes
        (
        )
       where
-
+      
+import Data.Vector 
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
