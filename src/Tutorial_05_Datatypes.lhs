@@ -12,8 +12,7 @@ module Tutorial_05_Datatypes
        (
        )
       where
-      
-import Data.Vector 
+
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -254,8 +253,6 @@ solving the exercise.
 Following what we did with the lists, write the alias `SparseN` for sparse vector of
 length N, using `spDim` instead of `size`.
 
-\hint When you are done, you can see how we can use `SparseN` in the example below.
-
 \begin{code}
 -- write the alias here
 \end{code}
@@ -269,30 +266,9 @@ e.g., `{-@ type SparseN a N = {v:Sparse a | spDim v == N} @-}`
 
 </div>
 
-\newthought{Sparse Products}
-`Vector`s are similar to Sparse Vectors, and therefore, have a
-*measure* of size named `vlen`.
-So, now, we can see that LiquidHaskell is able to compute a sparse product,
-making the product of all the same indexes and returning its sum.
-Remove the comments and run the code ahead.
-
-\begin{code}
--- dotProd :: Vector Int -> Sparse Int -> Int
--- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
--- dotProd x (SP _ y) = go 0 y
---  where
---    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
---    go sum []            = sum
-\end{code}
-
-\noindent
-LiquidHaskell verifies the above by using the specification
-to conclude that for each tuple `(i, v)` in the list `y`, the
-value of `i` is within the bounds of the vector `x`, thereby
-proving `x ! i` safe.
 
 
-\newthought{You finished the second part of the Tutorial!}
+\newthought{You finished the Tutorial!}
 You finished the Tutorial!
 Tell the interviewers you got to the end of the page, and answer some questions from our team before moving to the next section.
 
