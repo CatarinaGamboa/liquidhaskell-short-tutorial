@@ -221,8 +221,7 @@ module Tutorial_05_Datatypes
        (
        )
       where
-      
-import Data.Vector 
+
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -499,8 +498,6 @@ voice your thoughts while solving the exercise.</p>
 <p>Following what we did with the lists, write the alias
 <code>SparseN</code> for sparse vector of length N, using
 <code>spDim</code> instead of <code>size</code>.</p>
-<p><strong>Hint: </strong>When you are done, you can see how we can use
-<code>SparseN</code> in the example below.</p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -522,31 +519,6 @@ e.g.,
 </div>
 </div>
 </div>
-<p><code>Vector</code>s are similar to Sparse Vectors, and therefore,
-have a <em>measure</em> of size named <code>vlen</code>. So, now, we can
-see that LiquidHaskell is able to compute a sparse product, making the
-product of all the same indexes and returning its sum. Remove the
-comments and run the code ahead.</p>
-<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-12" class="programbox">-- dotProd :: Vector Int -> Sparse Int -> Int
--- {-@ dotProd :: x:Vector Int -> SparseN Int (vlen x) -> Int @-}
--- dotProd x (SP _ y) = go 0 y
---  where
---    go sum ((i, v) : y') = go (sum + (x ! i) * v) y'
---    go sum []            = sum</div>
-</div>
-
-<p> LiquidHaskell verifies the above by using the specification to
-conclude that for each tuple <code>(i, v)</code> in the list
-<code>y</code>, the value of <code>i</code> is within the bounds of the
-vector <code>x</code>, thereby proving <code>x ! i</code> safe.</p>
 <p>You finished the Tutorial! Tell the interviewers you got to the end
 of the page, and answer some questions from our team before moving to
 the next section.</p>
