@@ -221,7 +221,8 @@ module Tutorial_05_Datatypes
        (
        )
       where
-
+      
+import Data.Vector 
 
 {-@ die :: {v:_ | false} -> a @-}
 die msg = error msg
@@ -338,8 +339,8 @@ should not.</p>
 
 -- Remove the comments below to test the alias
 -- {-@ ne1 :: NEList Int@-}
--- ne1 = [] ::  [Int]
--- {-@ ne1 :: NEList Int@-}
+-- ne1 = [] ::  [Int]       -- should fail
+-- {-@ ne2 :: NEList Int@-} -- should be correct 
 -- ne2 = [1,2,3,4] :: [Int]</div>
 </div>
 
@@ -464,7 +465,7 @@ with the example.
 <button class="btn-answer" onclick="toggleCollapsible(1)">
 Answer</button>
 <div id="collapsibleDiv1">
-e.g., <code>badSP' = SP -1 [(0, "cat")]</code>
+e.g., <code>badSP' = SP (-1) [(0, "cat")]</code>
 </div>
 </div>
 </div>
