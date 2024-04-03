@@ -111,8 +111,8 @@ second should not.
 
 -- Remove the comments below to test the alias
 -- {-@ ne1 :: NEList Int@-}
--- ne1 = [] ::  [Int]
--- {-@ ne1 :: NEList Int@-}
+-- ne1 = [] ::  [Int]       -- should fail
+-- {-@ ne2 :: NEList Int@-} -- should be correct 
 -- ne2 = [1,2,3,4] :: [Int]
 \end{code}
 
@@ -207,7 +207,7 @@ Remove the comment from the type signature below and complete the implementation
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(1)"> Answer</button>
     <div id="collapsibleDiv1">
-e.g., `badSP' = SP -1 [(0, "cat")]`
+e.g., `badSP' = SP (-1) [(0, "cat")]`
     </div>
 </div>
 
