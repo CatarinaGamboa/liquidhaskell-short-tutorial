@@ -362,8 +362,8 @@ For the remaining operations we need some more information.
 Do the following steps:
 
 1. Write a *measure* qsize to describe the queue size,
-2. Use it to complete the definition of `QueueN` below, and
-3. In the next step use QueueN.
+2. Use it to complete the definition of `QueueN` below replacing the `true` predicate, and
+3. In the next exercise use QueueN.
 </div>
 
 \begin{code}
