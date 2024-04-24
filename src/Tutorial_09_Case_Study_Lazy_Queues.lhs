@@ -375,10 +375,10 @@ Do the following steps:
 {-@ emp :: QueueN _ 0 @-}
 
 {-@ example2Q :: QueueN _ 2 @-}
-example2Q = Q (1 `cons` (2 `cons` nil)) nil -- accept
+example2Q = Q (1 `cons` (2 `cons` nil)) nil
 
-{-@ example0Q :: QueueN _ 1 @-}
-example0Q = Q nil nil -- reject
+{-@ example0Q :: QueueN _ 0 @-}
+example0Q = Q nil nil
 \end{code}
 
 <div>
@@ -421,7 +421,7 @@ badRemove = remove example0Q   -- reject
 <div>
    <button class="btn-answer" onclick="toggleCollapsible(4)"> Answer</button>
     <div id="collapsibleDiv4">
-`{-@ remove :: {q:Queue a | qsize q > 0} a -> (a, QueueN a {qsize q - 1}) @-}`
+`{-@ remove :: {q:Queue a | qsize q > 0} -> (a, QueueN a {qsize q - 1}) @-}`
     </div>
 </div>
 
