@@ -662,9 +662,9 @@ question aloud and voice your thoughts while solving the exercise.</p>
 we need some more information. Do the following steps:</p>
 <ol type="1">
 <li>Write a <em>measure</em> qsize to describe the queue size,</li>
-<li>Use it to complete the definition of <code>QueueN</code> below,
-and</li>
-<li>In the next step use QueueN.</li>
+<li>Use it to complete the definition of <code>QueueN</code> below
+replacing the <code>true</code> predicate, and</li>
+<li>Check the use of the alias in the examples.</li>
 </ol>
 <br />
 <br />
@@ -678,7 +678,7 @@ and</li>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-14" class="programbox">-- | create measuere qsize here
+  <div id="program-14" class="programbox">-- | create measure qsize here
 
 -- | Queues of size `N`
 {-@ type QueueN a N = {v:Queue a | true} @-}
@@ -737,7 +737,7 @@ badRemove = remove example0Q   -- reject</div>
 <button class="btn-answer" onclick="toggleCollapsible(4)">
 Answer</button>
 <div id="collapsibleDiv4">
-<code>{-@ remove       :: {q:Queue a | qsize q &gt; 0} a -&gt; (a, QueueN a {qsize q - 1}) @-}</code>
+<code>{-@ remove :: {q:Queue a | qsize q &gt; 0} -&gt; (a, QueueN a {qsize q - 1}) @-}</code>
 </div>
 </div>
 </div>
@@ -798,7 +798,8 @@ constructor takes two lists, the front <code>f</code> and back
 <code>b</code> and if they are balanced, directly returns the
 <code>Queue</code>, and otherwise transfers the elements from
 <code>b</code> over using the rotate function <code>rot</code> described
-next.</p>
+next. However, <code>rot</code> still needs to have an appropriate
+liquid signature.</p>
 <div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
