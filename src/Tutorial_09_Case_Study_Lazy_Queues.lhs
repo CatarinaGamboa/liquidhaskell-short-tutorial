@@ -363,7 +363,7 @@ Do the following steps:
 
 1. Write a *measure* qsize to describe the queue size,
 2. Use it to complete the definition of `QueueN` below replacing the `true` predicate, and
-3. In the next exercise use QueueN.
+3. Check the use of the alias in the examples.
 </div>
 
 \begin{code}
@@ -375,10 +375,10 @@ Do the following steps:
 {-@ emp :: QueueN _ 0 @-}
 
 {-@ example2Q :: QueueN _ 2 @-}
-example2Q = Q (1 `cons` (2 `cons` nil)) nil
+example2Q = Q (1 `cons` (2 `cons` nil)) nil -- accept
 
-{-@ example0Q :: QueueN _ 0 @-}
-example0Q = Q nil nil
+{-@ example0Q :: QueueN _ 1 @-}
+example0Q = Q nil nil -- reject
 \end{code}
 
 <div>
