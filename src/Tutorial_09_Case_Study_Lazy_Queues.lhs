@@ -367,7 +367,7 @@ Do the following steps:
 </div>
 
 \begin{code}
--- | create measuere qsize here
+-- | create measure qsize here
 
 -- | Queues of size `N`
 {-@ type QueueN a N = {v:Queue a | true} @-}
