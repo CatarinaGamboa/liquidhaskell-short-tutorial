@@ -472,6 +472,7 @@ badReplicate = replicate 1 "No!"   -- reject
 takes two lists, the front `f` and back `b` and if they are balanced,
 directly returns the `Queue`, and otherwise transfers the elements
 from `b` over using the rotate function `rot` described next.
+However, `rot` still needs to have an appropriate liquid signature. 
 
 \begin{code}
 {-@ makeq :: f:SList a -> 
