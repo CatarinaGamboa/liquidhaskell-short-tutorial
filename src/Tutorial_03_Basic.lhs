@@ -155,7 +155,6 @@ The first example should be correct and the second should not.
 -- {-@ percentT  :: Percentage  @-}
 percentT    = 10 :: Int
 -- {-@ percentF  :: Percentage  @-}
-percentF :: Int
 percentF    = 10 + 99 :: Int
 \end{code}
 
