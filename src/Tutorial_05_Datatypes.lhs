@@ -102,7 +102,7 @@ like `N` to distinguish *value* parameters from the lowercase
 
 
 <div class="interact">
-Now, try to create an alias `NEList` for an empty list, using the measure 
+Now, try to create an alias `NEList` for a non-empty list, using the measure 
 `notEmpty` created before. When removed from comment, the first example should raise an error while the
 second should not.
 

@@ -211,7 +211,7 @@ okList  = SL 1 ["cat"]    -- accepted
 badList = SL 1 []         -- rejected
 \end{code}
 
-\newthought{Lets define an alias} for lists of a given size `N`:
+\newthought{Lets define an alias} for SLists of a given size `N`:
 
 \begin{code}
 {-@ type SListN a N = {v:SList a | size v = N} @-}
@@ -223,7 +223,7 @@ Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 
 <div class = "interact">
-\newthought{Now define an alias} `NEList` for lists that are not empty by replacing `{true}` by the correct signature.
+\newthought{Now define an alias} `NEList` for SLists that are not empty by replacing `{true}` by the correct signature.
 
 \begin{code}
 {-@ type NEList a = {true} @-}
@@ -363,7 +363,7 @@ Do the following steps:
 
 1. Write a *measure* qsize to describe the queue size,
 2. Use it to complete the definition of `QueueN` below replacing the `true` predicate, and
-3. Check the use of the alias in the examples.
+3. See the use of the alias in the examples.
 </div>
 
 \begin{code}
@@ -386,7 +386,7 @@ example0Q = Q nil nil
     <div id="collapsibleDiv71">
 `{-@ measure qsize @-}`<br/>
 `qsize         :: Queue a -> Int`<br/>
-`qsize (Q l r) = size l + size r`<br/>
+`qsize (Q f b) = size f + size b`<br/>
 <br/>
 `{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}`
     </div>
@@ -438,7 +438,7 @@ Read the question aloud and voice your thoughts while solving the exercise.
 </div>
 <div class="interact">
 <div class="hwex" id="Insert">Write down a liquid type signature for `replicate` (that uses `insert`),
-so that it adds the same element n times to the queue, and `okReplicate` is accepted by LiquidHaskell, but `badReplicate`
+so that it creates a queue with the same element n times, and `okReplicate` is accepted by LiquidHaskell, but `badReplicate`
 is rejected.
 </div>
 

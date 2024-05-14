@@ -138,7 +138,7 @@ What is this business of *subtyping*? Suppose we have some more refinements of `
 `Zero` is the most precise type for `0::Int`, as it is a *subtype* of `Nat`,
 `Even`. However, it is not a subtype of `Positive`.
 The alias `TensToHundred` represents the multiples of 10 smaller than 100,
-meaning that `Even` is a *subtype* of it but all the other ones are not. 
+meaning it is a *subtype* of `Even` but not of all the other. 
 
 <div class = "interact">
 <b>Exercise:</b>
