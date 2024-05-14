@@ -337,10 +337,10 @@ should not.</p>
   <div id="program-4" class="programbox">-- write the alias here
 
 -- Remove the comments below to test the alias
+-- {-@ ne2 :: NEList Int@-}
+-- ne2 = [1,2,3,4] :: [Int] -- accept
 -- {-@ ne1 :: NEList Int@-}
--- ne1 = [] ::  [Int]       -- should fail
--- {-@ ne2 :: NEList Int@-} -- should be correct 
--- ne2 = [1,2,3,4] :: [Int]</div>
+-- ne1 = [] ::  [Int]       -- reject</div>
 </div>
 
 <div>
