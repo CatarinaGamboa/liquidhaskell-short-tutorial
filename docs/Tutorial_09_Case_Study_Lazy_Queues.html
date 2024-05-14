@@ -453,7 +453,7 @@ badList = SL 1 []         -- rejected</div>
 </div>
 
 <p><br />
-<strong>Lets define an alias</strong> for lists of a given size
+<strong>Lets define an alias</strong> for SLists of a given size
 <code>N</code>:</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
@@ -472,7 +472,7 @@ question aloud and voice your thoughts while solving the exercise.</p>
 </div>
 <div class="interact">
 <p><br />
-<strong>Now define an alias</strong> <code>NEList</code> for lists that
+<strong>Now define an alias</strong> <code>NEList</code> for SLists that
 are not empty by replacing <code>{true}</code> by the correct
 signature.</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
@@ -664,7 +664,7 @@ we need some more information. Do the following steps:</p>
 <li>Write a <em>measure</em> qsize to describe the queue size,</li>
 <li>Use it to complete the definition of <code>QueueN</code> below
 replacing the <code>true</code> predicate, and</li>
-<li>Check the use of the alias in the examples.</li>
+<li>See the use of the alias in the examples.</li>
 </ol>
 <br />
 <br />
@@ -698,7 +698,7 @@ Answer</button>
 <div id="collapsibleDiv71">
 <code>{-@ measure qsize @-}</code><br/>
 <code>qsize         :: Queue a -&gt; Int</code><br/>
-<code>qsize (Q l r) = size l + size r</code><br/> <br/>
+<code>qsize (Q f b) = size f + size b</code><br/> <br/>
 <code>{-@ type QueueN a N = {v:Queue a | qsize v = N} @-}</code>
 </div>
 </div>
@@ -754,9 +754,9 @@ question aloud and voice your thoughts while solving the exercise.</p>
 <p><br />
 <strong>Exercise: (Insert): </strong>Write down a liquid type signature
 for <code>replicate</code> (that uses <code>insert</code>), so that it
-adds the same element n times to the queue, and <code>okReplicate</code>
-is accepted by LiquidHaskell, but <code>badReplicate</code> is
-rejected.</p>
+creates a queue with the same element n times, and
+<code>okReplicate</code> is accepted by LiquidHaskell, but
+<code>badReplicate</code> is rejected.</p>
 <br />
 <br />
 
