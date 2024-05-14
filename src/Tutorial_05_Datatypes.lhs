@@ -110,10 +110,11 @@ second should not.
 -- write the alias here
 
 -- Remove the comments below to test the alias
+-- {-@ ne2 :: NEList Int@-}
+-- ne2 = [1,2,3,4] :: [Int] -- accept
 -- {-@ ne1 :: NEList Int@-}
--- ne1 = [] ::  [Int]       -- should fail
--- {-@ ne2 :: NEList Int@-} -- should be correct 
--- ne2 = [1,2,3,4] :: [Int]
+-- ne1 = [] ::  [Int]       -- reject
+
 \end{code}
 
 <div>

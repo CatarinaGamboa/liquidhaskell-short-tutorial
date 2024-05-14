@@ -152,10 +152,11 @@ The first example should be correct and the second should not.
 \begin{code}
 -- write the alias here
 
+-- Remove the comments below to test the alias
 -- {-@ percentT  :: Percentage  @-}
-percentT    = 10 :: Int
+-- percentT    = 10 :: Int       -- accept
 -- {-@ percentF  :: Percentage  @-}
-percentF    = 10 + 99 :: Int
+-- percentF    = 10 + 99 :: Int  -- reject
 \end{code}
 
 <div>
@@ -285,8 +286,8 @@ calcPer       :: Int -> Int -> Int
 calcPer a b    = (b * 100) `div` a
 
 
-cpc = calcPer 10 5 :: Int  -- should be correct
-cpi = calcPer 10 11 :: Int -- should be incorrect
+cpc = calcPer 10 5 :: Int  -- accept
+cpi = calcPer 10 11 :: Int -- reject
 
 \end{code}
 
